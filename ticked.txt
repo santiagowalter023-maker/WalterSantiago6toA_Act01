@@ -53,3 +53,8 @@ Bochas: 1
 Sabores: ['Limon']
 Precio: $700
 _____________________ 
+Resumen del pedido 
+Bochas: 1
+Sabores: ['MentaGranizada']
+Precio: $700
+_____________________ 
