@@ -5,30 +5,26 @@
 #atributos el nombre y la edad de una persona. Implementar los métodos necesarios para inicializar los
 #♥atributos, mostrar los datos e indicar si la persona es mayor de edad o no.#&'"3☺ →"
 
-class viejo:
+class Persona:
     
-    def Nombre(self,nom):
+    def __init__(self, nom, edd):
         self.nombre = nom
-        
-    def Edad(self,edd):
         self.edad = edd
-          
+             
 
     def Mostrar(self):
         print("Nombre :",self.nombre)
         print("Edad   :",self.edad)
         
     def Verficacion(self):
-        if self.edad >= 30:
+        if self.edad >= 18:
             print("SI es mayor de edad")
-            
         
-        if self.edad <= 30:
+        else :
             print("NO es menor de edad")
            
         
-persona01 = viejo()
-persona01.Nombre("MAXVerstappen")
-persona01.Edad(50)
+persona01 = Persona( "MAX vertapen",26)
 persona01.Mostrar()
+persona01.Verficacion()
         
