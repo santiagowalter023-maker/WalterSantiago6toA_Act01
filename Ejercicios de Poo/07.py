@@ -41,8 +41,6 @@ class PlazoFijo(Cuenta):
 fondo = CajaAhorro("Messi", 40000)
 fondo.datosmostar()
 
-print("-" * 20)
-
 plazo = PlazoFijo("Cristiano", 50000, 30, 10)
 plazo.datos()
 
