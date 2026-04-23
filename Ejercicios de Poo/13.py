@@ -52,7 +52,7 @@ d = JugadorBoot("LECRERC")
 turnos = 0
 op = 0
 
-while turnos < 5:
+while turnos < 10:
     print("Que desea hacer ?")
     print("1 - Lanzar dado  ")
     print("2 -Mostrar puntos")
