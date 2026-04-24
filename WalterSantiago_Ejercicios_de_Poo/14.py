@@ -15,27 +15,87 @@ class Torre:
         self.nombre = input("Como te llamas?")
 
     def ataque(self):
-        self.ataque = 20
-
-        self.vida = self.vida - self.ataque
-        print("La vida de la torre es de ",self.vida)
+        daños = 20
+        print("Daño hecho ;",daños)
 
     
     def defensa(self):
-        self.defensa = 10
+        defensa = 10
         
-        self.vida = self.vida + self.defensa
+        self.vida = self.vida + defensa
         print("La vida de la torre es de ",self.vida)
+
+    def daño(self,daños):
+        self.vida = self.vida - daños
+
+        if self.vida < 0:
+            self.vida = 0
+
+        print("La torre sufrio daño :",daños)
+
+    def mostrarVida(self):
+        objt = int(self.vida / 5)
+        linea = ""
+
+        for i in range(objt):
+            linea = linea + "♥"
+            
+        print("VIDA",linea,":","(",self.vida,")")
+
+
 
     def mostrar(self):
         print("Hola ",self.nombre)
-        print("La vida que le queda es ;",self.vida)
+        self.mostrarVida()
 
 class Enemigo(Torre):
     def __init__(self):
-        super().__init__(self)
+        self.vida = 100
+
+    def combate(self):
+        daño = random.randint(15,20)
+        print("Te atacaron e hicieron ",daño)
+        return daño
+
+
     
-    op = 0
+torre = Torre()
+torre.atributos()
+
+enemigo = Enemigo()
+
+op = 0
+
+while torre.vida >0:
+    print("Que desea hecer ?")
+    print("1 - Atacar")
+    print("2 - Defender")
+
+    op = int(input("Ingrese opcion : "))
+
+    time.sleep(2)
+
+    if op == 1:
+        time.sleep(2)
+        torre.ataque()
+
+
+    if op == 2:
+        time.sleep(2)
+        torre.defensa()
+
+    if op != 1 and op != 2:
+        print("elija una opcion valida")
+
+    dañor = enemigo.combate()
+    torre.daño(dañor)
+
+    torre.mostrar()
+    time.sleep(2)
+
+print("LA TORRE AH SIDO DESTRUIDA")
+    
+
 
 
 
