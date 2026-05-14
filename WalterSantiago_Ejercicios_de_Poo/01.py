@@ -6,36 +6,35 @@
 #resultado de la nota y si ha aprobado o no.
 
 class Alumno:
-    #Inicializamos la clase alumno
+    # Inicializamos la clase alumno
+    def __init__(self, nom, nt):         
+        self.nombre = nom 
+        self.nota = nt     
     
-    def inicializar(self, nom):         
-         self.nombre = nom 
-         
-    #♥ INICIALIZAMOS NT     
-    def nota(self, nt):
-         self.nota = nt  
+    # Verificamos si aprobó o reprobó
+    def verificar(self):
+        if self.nota >= 7:
+            print("Aprobó")
+        else:
+            print("Reprobado")
     
-    #MOstraMOS
-    def Mostrar(self):
-        print("Nombre",self.nombre)
-        print("Nota :",self.nota)
-        
+    # Mostramos los datos
+    def mostrar(self):
+        print(f"Nombre: {self.nombre}")
+        print(f"Nota: {self.nota}")
+        self.verificar()
+        print("-" * 30)
 
-#DEFINOS
-alumno01 = Alumno()
-alumno01.inicializar("MESSI")
-alumno01.nota("Aprobado")
-alumno01.Mostrar()
 
-alumno02 = Alumno()
-alumno02.inicializar("Mbappe")
-alumno02.nota("Aprobado")
-alumno02.Mostrar()
+# Creamos los alumnos
+alumno01 = Alumno("MESSI", 8)
+alumno01.mostrar()
 
-alumno03 = Alumno()
-alumno03.inicializar("Tito Calderon")
-alumno03.nota("REPROBADO")
-alumno03.Mostrar()
+alumno02 = Alumno("Mbappé", 9)
+alumno02.mostrar()
+
+alumno03 = Alumno("Tito Calderón", 5)
+alumno03.mostrar()
     
     
     
