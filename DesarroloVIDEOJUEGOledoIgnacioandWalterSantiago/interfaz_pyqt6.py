@@ -1,0 +1,72 @@
+import sys
+import subprocess
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QWidget,
+    QVBoxLayout, QLabel, QPushButton
+)
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
+
+
+# VENTANA PRINCIPAL
+class VentanaPrincipal(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Reminence of Gracia")
+        self.setFixedSize(800, 600)
+
+        # WIDGET Y LAYOUT CENTRAL
+        central = QWidget()
+        self.setCentralWidget(central)
+        layout = QVBoxLayout(central)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setSpacing(20)
+
+        # TITULO
+        titulo = QLabel("Reminence of Gracia")
+        titulo.setFont(QFont("Arial", 20, QFont.Weight.Bold))
+        titulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(titulo)
+
+        subtitulo = QLabel("Un juego de aventura")
+        subtitulo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(subtitulo)
+
+        # BOTONES
+        btn_jugar = QPushButton(" Jugar")
+        btn_jugar.setFixedHeight(50)
+        btn_jugar.setFont(QFont("Arial", 13))
+        btn_jugar.clicked.connect(self.iniciar_juego)
+        layout.addWidget(btn_jugar)
+
+        btn_salir = QPushButton("Salir")
+        btn_salir.setFixedHeight(35)
+        btn_salir.clicked.connect(self.close)
+        layout.addWidget(btn_salir)
+
+        # ESTILOS
+        self.setStyleSheet("""
+            QMainWindow { background-color: #1e1e2e; }
+            QWidget      { background-color: #1e1e2e; color: #cdd6f4; }
+            QLabel       { color: #cdd6f4; }
+            QPushButton  {
+                background-color: #89b4fa;
+                color: #1e1e2e;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton:hover   { background-color: #74c7ec; }
+            QPushButton:pressed { background-color: #89dceb; }
+        """)
+
+    # LOGICA DE BOTONES
+    def iniciar_juego(self):
+        subprocess.Popen([sys.executable, "codigo.py"])
+
+
+# ARRANQUE
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ventana = VentanaPrincipal()
+    ventana.show()
+    sys.exit(app.exec())
