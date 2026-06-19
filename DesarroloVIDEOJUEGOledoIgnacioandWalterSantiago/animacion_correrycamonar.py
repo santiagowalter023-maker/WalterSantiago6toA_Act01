@@ -1,48 +1,48 @@
 import arcade
+import codigosb
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Reminiscence of Gracia - Movimiento Avanzado"
 
-CHARACTER_SCALING = 2
-VELOCIDAD_CAMINAR = 3
-VELOCIDAD_CORRER = 6
+CHARACTER_SCALING = codigosb.ESCALA_PERSONAJE
+VELOCIDAD_CAMINAR = codigosb.VELOCIDAD_CAMINAR
+VELOCIDAD_CORRER = codigosb.VELOCIDAD_CORRER
 FRENTE = 0
 ESPALDA = 1
 IZQUIERDA = 2
 DERECHA = 3
 class PlayerCharacter(arcade.Sprite):
     def __init__(self):
-        super().__init__()
+        super().__init__(codigosb.SPRITE_FRENTE, scale=CHARACTER_SCALING)
         self.direccion_actual = FRENTE
         self.esta_corriendo = False
         self.frame_actual = 0
         self.tiempo_desde_ultimo_frame = 0
-        self.cambio_frame_rate = 0.1 
-        self.texturas_caminar_frente = [
-            arcade.load_texture("lediago_frente_idle.png"),
-            arcade.load_texture("lediago_frente_paso1.png"),
-            arcade.load_texture("lediago_frente_paso2.png")
-        ]
-        self.texturas_caminar_espalda = [
-            arcade.load_texture("lediago_espalda_idle.png"),
-            arcade.load_texture("lediago_espalda_paso1.png"),
-            arcade.load_texture("lediago_espalda_paso2.png")
-        ]
-        self.texturas_caminar_derecha = [
-            arcade.load_texture("lediago_perfil_idle.png"),
-            arcade.load_texture("lediago_perfil_paso1.png"),
-            arcade.load_texture("lediago_perfil_paso2.png")
-        ]
-        self.texturas_caminar_izquierda = [
-            arcade.load_texture("lediago_perfil_idle.png", flipped_horizontally=True),
-            arcade.load_texture("lediago_perfil_paso1.png", flipped_horizontally=True),
-            arcade.load_texture("lediago_perfil_paso2.png", flipped_horizontally=True)
-        ]
-        self.texturas_correr_frente = [arcade.load_texture("lediago_run_frente1.png"), arcade.load_texture("lediago_run_frente2.png")]
-        self.texturas_correr_espalda = [arcade.load_texture("lediago_run_espalda1.png"), arcade.load_texture("lediago_run_espalda2.png")]
-        self.texturas_correr_derecha = [arcade.load_texture("lediago_run_perfil1.png"), arcade.load_texture("lediago_run_perfil2.png")]
-        self.texturas_correr_izquierda = [arcade.load_texture("lediago_run_perfil1.png", flipped_horizontally=True), arcade.load_texture("lediago_run_perfil2.png", flipped_horizontally=True)]
+        self.cambio_frame_rate = 0.1
+
+        # NOTA: Todavia no existen hojas de animacion (spritesheets) con los
+        # pasos de caminata/carrera, solo tenemos 3 sprites fijos (frente,
+        # espalda y perfil). Por eso cada lista repite el mismo sprite.
+        # El dia que el equipo de arte entregue los frames reales
+        # (lediago_frente_paso1.png, lediago_run_frente1.png, etc.)
+        # alcanza con reemplazar cada entrada de estas listas.
+        textura_frente = arcade.load_texture(codigosb.SPRITE_FRENTE)
+        textura_espalda = arcade.load_texture(codigosb.SPRITE_ESPALDA)
+        textura_derecha = arcade.load_texture(codigosb.SPRITE_PERFIL)
+        textura_izquierda = textura_derecha.flip_left_right()
+
+        self.texturas_caminar_frente = [textura_frente, textura_frente, textura_frente]
+        self.texturas_caminar_espalda = [textura_espalda, textura_espalda, textura_espalda]
+        self.texturas_caminar_derecha = [textura_derecha, textura_derecha, textura_derecha]
+        self.texturas_caminar_izquierda = [textura_izquierda, textura_izquierda, textura_izquierda]
+
+        self.texturas_correr_frente = [textura_frente, textura_frente]
+        self.texturas_correr_espalda = [textura_espalda, textura_espalda]
+        self.texturas_correr_derecha = [textura_derecha, textura_derecha]
+        self.texturas_correr_izquierda = [textura_izquierda, textura_izquierda]
         self.texture = self.texturas_caminar_frente[0]
+
 
     def update_animation(self, delta_time: float = 1 / 60):
         if self.change_x < 0:
@@ -120,7 +120,7 @@ class MyGame(arcade.Window):
         elif key == arcade.key.S: self.s_apretada = True
         elif key == arcade.key.A: self.a_apretada = True
         elif key == arcade.key.D: self.d_apretada = True
-        elif key in [arcade.key.KEY_MOD_SHIFT, arcade.key.LSHIFT, arcade.key.RSHIFT]:
+        elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
             self.shift_apretado = True
 
         self.evaluar_movimiento()
@@ -132,7 +132,7 @@ class MyGame(arcade.Window):
         elif key == arcade.key.A: self.a_apretada = False
         elif key == arcade.key.D: self.d_apretada = False
         
-        elif key in [arcade.key.KEY_MOD_SHIFT, arcade.key.LSHIFT, arcade.key.RSHIFT]:
+        elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
             self.shift_apretado = False
 
         self.evaluar_movimiento()

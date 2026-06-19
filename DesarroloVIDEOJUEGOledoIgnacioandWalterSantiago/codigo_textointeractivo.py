@@ -1,4 +1,5 @@
 import arcade
+import codigosb
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -13,38 +14,37 @@ class MyGame(arcade.Window):
         self.estado_actual = ESTADO_JUGANDO
         self.dialogo_lineas = []      
         self.indice_linea_actual = 0  
-        self.npc_sprite = arcade.SpriteSolidColor(32, 32, arcade.color.RED)
+        self.npc_sprite = arcade.SpriteSolidColor(32, 32, color=arcade.color.RED)
         self.npc_sprite.center_x = 500
         self.npc_sprite.center_y = 300
-        self.player_sprite = arcade.SpriteSolidColor(32, 32, arcade.color.GREEN)
+        self.player_sprite = arcade.Sprite(codigosb.SPRITE_FRENTE, scale=codigosb.ESCALA_PERSONAJE)
         self.player_sprite.center_x = 200
         self.player_sprite.center_y = 300
 
     def on_draw(self):
         self.clear()
-        self.npc_sprite.draw()
-        self.player_sprite.draw()
+        arcade.draw_sprite(self.npc_sprite)
+        arcade.draw_sprite(self.player_sprite)
 
         if self.estado_actual == ESTADO_HABLANDO:
             self.dibujar_cuadro_dialogo()
 
     def dibujar_cuadro_dialogo(self):
         """ Dibuja el rectángulo del fondo y el texto actual """
-        arcade.draw_rectangle_filled(
-            SCREEN_WIDTH // 2, 80, 
-            SCREEN_WIDTH - 40, 120, 
-            arcade.color.BLACK
+        arcade.draw_rect_filled(
+            arcade.LRBT(20, SCREEN_WIDTH - 20, 20, 140),
+            arcade.color.BLACK,
         )
-        arcade.draw_rectangle_outline(
-            SCREEN_WIDTH // 2, 80, 
-            SCREEN_WIDTH - 40, 120, 
-            arcade.color.WHITE, 3
+        arcade.draw_rect_outline(
+            arcade.LRBT(20, SCREEN_WIDTH - 20, 20, 140),
+            arcade.color.WHITE,
+            border_width=3,
         )
         texto_a_mostrar = self.dialogo_lineas[self.indice_linea_actual]
         
         arcade.draw_text(
             texto_a_mostrar,
-            40, 110, 
+            40, 90, 
             arcade.color.WHITE,
             font_size=16,
             width=SCREEN_WIDTH - 80, 
@@ -52,7 +52,7 @@ class MyGame(arcade.Window):
         )
         arcade.draw_text(
             "[Espacio] Siguiente...",
-            SCREEN_WIDTH - 180, 40,
+            SCREEN_WIDTH - 220, 35,
             arcade.color.GRAY,
             font_size=12
         )
