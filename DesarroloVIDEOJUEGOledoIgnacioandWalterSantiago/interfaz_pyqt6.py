@@ -1,11 +1,16 @@
 import sys
 import subprocess
+from pathlib import Path
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget,
     QVBoxLayout, QLabel, QPushButton
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+
+# Carpeta donde vive este archivo. Asi el boton "Jugar" encuentra
+# codigo.py sin importar desde donde se ejecute el launcher.
+BASE_DIR = Path(__file__).resolve().parent
 
 
 # VENTANA PRINCIPAL
@@ -61,7 +66,8 @@ class VentanaPrincipal(QMainWindow):
 
     # LOGICA DE BOTONES
     def iniciar_juego(self):
-        subprocess.Popen([sys.executable, "codigo.py"])
+        codigo_path = BASE_DIR / "codigo.py"
+        subprocess.Popen([sys.executable, str(codigo_path)], cwd=str(BASE_DIR))
 
 
 # ARRANQUE

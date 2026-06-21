@@ -24,7 +24,10 @@ VELOCIDAD_CORRER = 6
 ESCALA_PERSONAJE = 0.35
 
 # Rutas de assets (absolutas, calculadas a partir de BASE_DIR)
-FONDO_ESTANCIA = str(BASE_DIR / "disenos" / "001.jpeg")
+# OJO: el fondo vive en la carpeta "disenos_estancia" (copia de la carpeta
+# original "diseños", renombrada sin eñe para evitar problemas de
+# codificacion de nombres de archivo en Windows/zip).
+FONDO_ESTANCIA = str(BASE_DIR / "disenos_estancia" / "001.jpeg")
 SPRITE_FRENTE = str(BASE_DIR / "waledo03.png")
 SPRITE_ESPALDA = str(BASE_DIR / "waledo02.png")
 SPRITE_PERFIL = str(BASE_DIR / "waledo01.png")
