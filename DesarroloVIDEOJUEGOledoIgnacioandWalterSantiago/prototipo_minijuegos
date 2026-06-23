@@ -1,0 +1,186 @@
+import arcade
+import random 
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_TITLE = "Reminiscence of Gracia - Secuencia de Minijuegos"
+class Minijuego1View(arcade.View):
+    def __init__(self):
+        super().__init__()
+        self.player = arcade.SpriteSolidColor(32, 32, arcade.color.BLUE)
+        self.player.center_x = 400
+        self.player.center_y = 300
+        self.lista_pergaminos = arcade.SpriteList()
+        self.pistas_totales = 6 
+        # Repartir 6 pergaminos amarillos al azar por la pantalla
+        for _ in range(self.pistas_totales):
+            pergamino = arcade.SpriteSolidColor(20, 20, arcade.color.YELLOW)
+            pergamino.center_x = random.randint(50, 750)
+            pergamino.center_y = random.randint(50, 550)
+            self.lista_pergaminos.append(pergamino)
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.DARK_GREEN)
+    def on_draw(self):
+        self.clear()
+        self.lista_pergaminos.draw()
+        self.player.draw()  
+        arcade.draw_text(f"Misión: Busca los {self.pistas_totales} pergaminos con WASD", 
+                         10, 570, arcade.color.WHITE, 16, bold=True)
+        arcade.draw_text(f"Faltan: {len(self.lista_pergaminos)}", 
+                         10, 540, arcade.color.YELLOW, 14, bold=True)
+    def on_key_press(self, key, modifiers):
+        vel = 5
+        if key == arcade.key.W: self.player.change_y = vel
+        elif key == arcade.key.S: self.player.change_y = -vel
+        elif key == arcade.key.A: self.player.change_x = -vel
+        elif key == arcade.key.D: self.player.change_x = vel
+    def on_key_release(self, key, modifiers):
+        if key in [arcade.key.W, arcade.key.S]: self.player.change_y = 0
+        if key in [arcade.key.A, arcade.key.D]: self.player.change_x = 0
+    def on_update(self, delta_time):
+        self.player.center_x += self.player.change_x
+        self.player.center_y += self.player.change_y
+        # Colisión con pergaminos
+        choques = arcade.check_for_collision_with_list(self.player, self.lista_pergaminos)
+        for p in choques:
+            p.remove_from_sprite_lists()
+        if len(self.lista_pergaminos) == 0:
+            siguiente_vista = Minijuego2View()
+            self.window.show_view(siguiente_vista)
+class Minijuego2View(arcade.View):
+    def __init__(self):
+        super().__init__()
+        self.piezas = arcade.SpriteList()
+        self.ranuras = arcade.SpriteList()
+        self.pieza_agarrada = None
+        self.piezas_acomodadas = 0
+
+        # Crear 4 ranuras (el "molde" transparente en el centro)
+        posiciones = [(350, 350), (450, 350), (350, 250), (450, 250)]
+        for pos in posiciones:
+            ranura = arcade.SpriteSolidColor(80, 80, arcade.color.GRAY)
+            ranura.center_x, ranura.center_y = pos
+            ranura.alpha = 100 # Semitransparente
+            self.ranuras.append(ranura)
+            pieza = arcade.SpriteSolidColor(80, 80, arcade.color.YELLOW)
+            pieza.center_x = random.randint(100, 200)
+            pieza.center_y = random.randint(100, 500)
+            pieza.destino_x, pieza.destino_y = pos # Guardamos a dónde debe ir
+            pieza.bloqueada = False # Para saber si ya se colocó bien
+            self.piezas.append(pieza)
+
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.WOOD_BROWN)
+
+    def on_draw(self):
+        self.clear()
+        self.ranuras.draw()
+        self.piezas.draw()
+        arcade.draw_text("Arrastra los trozos amarillos a las ranuras grises", 
+                         10, 570, arcade.color.WHITE, 16, bold=True)
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        # Agarrar una pieza si le hacemos clic y no está bloqueada
+        choques = arcade.get_sprites_at_point((x, y), self.piezas)
+        for pieza in choques:
+            if not pieza.bloqueada:
+                self.pieza_agarrada = pieza
+                break
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        if self.pieza_agarrada:
+            self.pieza_agarrada.center_x = x
+            self.pieza_agarrada.center_y = y
+
+    def on_mouse_release(self, x, y, button, modifiers):
+        if self.pieza_agarrada:
+            distancia = arcade.get_distance(self.pieza_agarrada.center_x, self.pieza_agarrada.center_y, 
+                                            self.pieza_agarrada.destino_x, self.pieza_agarrada.destino_y)
+            if distancia < 40:
+                self.pieza_agarrada.center_x = self.pieza_agarrada.destino_x
+                self.pieza_agarrada.center_y = self.pieza_agarrada.destino_y
+                self.pieza_agarrada.bloqueada = True
+                self.piezas_acomodadas += 1
+            
+            self.pieza_agarrada = None
+        if self.piezas_acomodadas == len(self.piezas):
+            siguiente_vista = Minijuego3View()
+            self.window.show_view(siguiente_vista)
+class Minijuego3View(arcade.View):
+    def __init__(self):
+        super().__init__()
+        self.pregunta_actual = 0
+        self.preguntas = [
+            {
+                "texto": "¿Para qué se construyó originalmente el Tajamar?",
+                "opciones": ["Lago decorativo", "Dique para regar cultivos", "Defensa militar"],
+                "correcta": 1
+            },
+            {
+                "texto": "¿Qué personaje histórico vivió en esta estancia en 1810?",
+                "opciones": ["San Martín", "Manuel Belgrano", "Santiago de Liniers"],
+                "correcta": 2
+            },
+            {
+                "texto": "¿Qué título le dio la UNESCO a la Estancia en el año 2000?",
+                "opciones": ["Monumento Local", "Patrimonio de la Humanidad", "Museo Nacional"],
+                "correcta": 1
+            }
+        ]
+
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.DARK_SLATE_GRAY)
+
+    def on_draw(self):
+        self.clear()
+        pregunta = self.preguntas[self.pregunta_actual]
+        
+        # Dibujar pregunta
+        arcade.draw_text(pregunta["texto"], SCREEN_WIDTH//2, 450, 
+                         arcade.color.WHITE, 20, bold=True, anchor_x="center")
+        for i, opcion in enumerate(pregunta["opciones"]):
+            y_pos = 300 - (i * 80)
+            arcade.draw_rectangle_filled(SCREEN_WIDTH//2, y_pos, 400, 50, arcade.color.DARK_BLUE)
+            arcade.draw_rectangle_outline(SCREEN_WIDTH//2, y_pos, 400, 50, arcade.color.WHITE, 2)
+            arcade.draw_text(opcion, SCREEN_WIDTH//2, y_pos - 8, 
+                             arcade.color.WHITE, 16, anchor_x="center")
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        pregunta = self.preguntas[self.pregunta_actual]
+        opcion_elegida = -1
+        if 275 <= y <= 325: opcion_elegida = 0
+        elif 195 <= y <= 245: opcion_elegida = 1
+        elif 115 <= y <= 165: opcion_elegida = 2
+
+        # Lógica de aciertos
+        if opcion_elegida != -1:
+            if opcion_elegida == pregunta["correcta"]:
+                self.pregunta_actual += 1
+                # CONDICIÓN DE VICTORIA FINAL
+                if self.pregunta_actual >= len(self.preguntas):
+                    siguiente_vista = VictoriaView()
+                    self.window.show_view(siguiente_vista)
+class VictoriaView(arcade.View):
+    def on_show_view(self):
+        arcade.set_background_color(arcade.color.GOLD)
+
+    def on_draw(self):
+        self.clear()
+        arcade.draw_text("¡MISTERIO RESUELTO!", SCREEN_WIDTH//2, 400, 
+                         arcade.color.BLACK, 40, bold=True, anchor_x="center")
+        
+        arcade.draw_text("Has obtenido:", SCREEN_WIDTH//2, 300, 
+                         arcade.color.BLACK, 20, anchor_x="center")
+        
+        # El Objeto Especial
+        arcade.draw_text("🗝️ EL SELLO DE LINIERS 🗝️", SCREEN_WIDTH//2, 230, 
+                         arcade.color.DARK_RED, 30, bold=True, anchor_x="center")
+def main():
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    # Arrancamos desde el Minijuego 1
+    vista_inicial = Minijuego1View()
+    window.show_view(vista_inicial)
+    arcade.run()
+
+if __name__ == "__main__":
+    main()
