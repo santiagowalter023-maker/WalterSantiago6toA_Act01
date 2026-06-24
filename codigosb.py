@@ -37,7 +37,7 @@ LOGO_FUTURISTA = str(BASE_DIR / "assets_intro" / "logo_futurista.png")
 LOGO_CAMBIO = str(BASE_DIR / "assets_intro" / "logo_cambio.png")
 LOGO_ANTIGUO = str(BASE_DIR / "assets_intro" / "logo_antiguo.png")
 MENU_INICIO = str(BASE_DIR / "assets_intro" / "menu_inicio.png")
-MUSICA_FONDO = str(BASE_DIR / "assets_intro" / "musica_fondo.wav")
+MUSICA_FONDO = str(BASE_DIR / "assets_intro" / "musica_fondo.mp3")
 
 # Volumen bajo para que la musica de fondo no tape los dialogos (0.0 a 1.0)
 VOLUMEN_MUSICA_FONDO = 0.15

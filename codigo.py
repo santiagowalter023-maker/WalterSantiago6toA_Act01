@@ -76,7 +76,7 @@ class GameView(arcade.View):
         self.musica_fondo = musica_fondo
         self.reproductor_musica = reproductor_musica
         if self.musica_fondo is None:
-            self.musica_fondo = arcade.Sound(codigosb.MUSICA_FONDO, streaming=False)
+            self.musica_fondo = arcade.Sound(codigosb.MUSICA_FONDO, streaming=True)
             self.reproductor_musica = self.musica_fondo.play(
                 volume=codigosb.VOLUMEN_MUSICA_FONDO, loop=True
             )
