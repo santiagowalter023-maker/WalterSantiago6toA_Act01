@@ -41,3 +41,12 @@ MUSICA_FONDO = str(BASE_DIR / "assets_intro" / "musica_fondo.wav")
 
 # Volumen bajo para que la musica de fondo no tape los dialogos (0.0 a 1.0)
 VOLUMEN_MUSICA_FONDO = 0.15
+
+# Assets de la escena del juicio (Tribunal Superior de Gracia, Sierras Hotel)
+# Tres fondos distintos segun el momento de la escena:
+#   INICIO  -> sala con el juez presentando el caso (arranque del juicio)
+#   ACTIVO  -> el juez de pie, "¡Orden en la sala!" (momento de tension)
+#   CERRADO -> mazo golpeado, "CASO CERRADO" (veredicto final)
+JUICIO_FONDO_INICIO = str(BASE_DIR / "assets_juicio" / "juicio_inicio.jpeg")
+JUICIO_FONDO_ACTIVO = str(BASE_DIR / "assets_juicio" / "juicio_activo.jpeg")
+JUICIO_FONDO_CERRADO = str(BASE_DIR / "assets_juicio" / "juicio_cerrado.jpeg")
