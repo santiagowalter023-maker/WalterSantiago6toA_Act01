@@ -29,6 +29,10 @@ DERECHA   = 3
 # ============================================================
 ESTADO_JUGANDO  = 0
 ESTADO_HABLANDO = 1
+ESTADO_INTRO_CURA = 2
+ESTADO_TRIVIA      = 3
+ESTADO_CIERRE_CURA = 4
+ESTADO_FIN_DEMO    = 5
 
 
 # ============================================================
@@ -60,6 +64,8 @@ class Inventario:
         "Cantimplora":        "Cantimplora de peregrino del siglo XIX.",
         "Espatula de Dubois": "Herramienta del escultor Dubois, residente en Gracia.",
         "Cronoscopio":        "Dispositivo que permite viajar por el tiempo.",
+        "Cruz de la Estancia": "Cruz bendecida por el cura de la Estancia Jesuitica, "
+                                "entregada a quien demuestra conocer su historia.",
     }
 
     def __init__(self):
@@ -67,6 +73,24 @@ class Inventario:
         self.objetos = {nombre: False for nombre in self.OBJETOS_POSIBLES}
         self.turno_viaje   = 0       # cuantas veces se uso el Cronoscopio
         self.nombre_jugador = "Lediago Waledo"
+        self.experiencia = 0         # puntos de experiencia acumulados
+        self.medallas    = []        # nombres de medallas obtenidas
+
+    # --------------------------------------------------------
+    # EXPERIENCIA Y MEDALLAS
+    # --------------------------------------------------------
+    def sumar_experiencia(self, puntos: int):
+        self.experiencia += puntos
+
+    def otorgar_medalla(self, nombre_medalla: str) -> bool:
+        """Agrega la medalla si todavia no la tiene. Devuelve True si es nueva."""
+        if nombre_medalla not in self.medallas:
+            self.medallas.append(nombre_medalla)
+            return True
+        return False
+
+    def tiene_medalla(self, nombre_medalla: str) -> bool:
+        return nombre_medalla in self.medallas
 
     # --------------------------------------------------------
     # GESTION DE OBJETOS
@@ -97,6 +121,8 @@ class Inventario:
             "nombre_jugador": self.nombre_jugador,
             "turno_viaje": self.turno_viaje,
             "objetos": self.objetos,
+            "experiencia": self.experiencia,
+            "medallas": self.medallas,
         }
         try:
             with open(codigosb.SAVE_FILE, "w", encoding="utf-8") as f:
@@ -116,6 +142,8 @@ class Inventario:
             inv = cls()
             inv.nombre_jugador = datos.get("nombre_jugador", "Lediago Waledo")
             inv.turno_viaje    = datos.get("turno_viaje", 0)
+            inv.experiencia    = datos.get("experiencia", 0)
+            inv.medallas       = datos.get("medallas", [])
             for nombre, valor in datos.get("objetos", {}).items():
                 if nombre in inv.objetos:
                     inv.objetos[nombre] = valor
@@ -225,9 +253,100 @@ class Lediago(arcade.Sprite):
 
 
 # ============================================================
-# VISTA PRINCIPAL DE LA ESTANCIA (escena libre)
+# DIALOGO Y MINIJUEGO DEL CURA - "El Desafio de la Estancia"
 # ============================================================
+# Hablante simple: (nombre_mostrado, texto). Se dibuja con el mismo
+# cuadro de dialogo generico que ya usa GameView.
+GUION_INTRO_CURA = [
+    ("CURA",   "La paz sea contigo, hijo! Veo curiosidad en tus ojos... "
+               "No todos los dias alguien se detiene a observar la "
+               "historia de este lugar."),
+    ("WALEDO", "Estoy recorriendo Alta Gracia y tratando de descubrir "
+               "los secretos que esconde cada epoca."),
+    ("CURA",   "Entonces has llegado al sitio indicado. Esta antigua "
+               "Estancia guarda casi cuatro siglos de historia, desde "
+               "la llegada de los jesuitas hasta convertirse en uno de "
+               "los mayores tesoros culturales del pais."),
+    ("WALEDO", "Eso suena interesante! Pero... como se si aprendi lo "
+               "suficiente?"),
+    ("CURA",   "Muy sencillo. Prepare un pequenio desafio. Son siete "
+               "preguntas sobre la Estancia Jesuitica. Si respondes "
+               "correctamente la mayoria, demostraras que estas listo "
+               "para continuar tu viaje por el tiempo."),
+    ("WALEDO", "Acepto el reto!"),
+    ("CURA",   "Muy bien. Lee con atencion y piensa antes de responder. "
+               "La historia siempre recompensa a quienes observan."),
+]
+
+GUION_CIERRE_CURA_EXITO = [
+    ("CURA",   "Excelente! Has demostrado conocer la historia de este "
+               "lugar. El conocimiento tambien es una forma de viajar "
+               "en el tiempo."),
+    ("WALEDO", "Gracias, padre. Ahora entiendo mucho mejor la "
+               "importancia de la Estancia."),
+    ("CURA",   "Que esta sabiduria te acompanie en los proximos viajes "
+               "del Cronoscopio."),
+]
+
+GUION_CIERRE_CURA_FALLO = [
+    ("CURA",   "No te desanimes. La historia siempre ofrece una "
+               "segunda oportunidad. Recorre nuevamente la Estancia y "
+               "vuelve cuando estes preparado."),
+    ("WALEDO", "Volvere. Todavia me queda mucho por aprender."),
+]
+
+MEDALLA_HISTORIADOR = "Historiador de la Estancia"
+XP_RECOMPENSA_TRIVIA = 100
+PREGUNTAS_MINIMAS_PARA_GANAR = 5
+
+# Cada pregunta: (texto, [4 opciones A-D], indice_correcto 0-3)
+PREGUNTAS_ESTANCIA = [
+    ("Que anio comenzo a organizarse la Estancia Jesuitica de Alta Gracia?",
+     ["1588", "1643", "1767", "1810"], 1),
+    ("Que orden religiosa administro la Estancia?",
+     ["Franciscanos", "Dominicos", "Jesuitas", "Benedictinos"], 2),
+    ("Que reconocimiento internacional recibio la Estancia?",
+     ["Patrimonio Natural", "Monumento Provincial",
+      "Patrimonio Mundial de la UNESCO", "Capital Cultural Americana"], 2),
+    ("Que importante personaje historico vivio sus ultimos dias en esta "
+     "residencia?",
+     ["Manuel Belgrano", "Jose de San Martin", "Juan Bautista Alberdi",
+      "Santiago de Liniers"], 3),
+    ("Que construccion de la Estancia permitia almacenar agua para la "
+     "comunidad?",
+     ["El campanario", "La biblioteca", "El Tajamar", "El cabildo"], 2),
+    ("Cual de estas partes todavia forma parte del conjunto historico?",
+     ["La iglesia y la residencia jesuitica", "El fuerte militar",
+      "El puerto", "El teatro colonial"], 0),
+    ("Cual era uno de los principales objetivos de las estancias "
+     "jesuiticas?",
+     ["Construir fortalezas militares.", "Extraer oro.",
+      "Sostener economicamente las obras educativas y religiosas de los "
+      "jesuitas mediante la produccion agricola y ganadera.",
+      "Fabricar barcos."], 2),
+]
+
+
 class GameView(arcade.View):
+    """
+    Escena libre de la Estancia Jesuitica.
+
+    El Cura espera del lado izquierdo de la pantalla. Al acercarse y
+    hablar con el se desbloquea el minijuego "El Desafio de la
+    Estancia": siete preguntas de opcion multiple sobre la historia
+    del lugar. Respondiendo 5 o mas correctamente se obtiene la Cruz
+    de la Estancia, experiencia y una medalla; ademas se muestra el
+    cartel de fin de demo.
+    """
+
+    # Posicion del Cura (lado izquierdo del patio). Se dibuja con
+    # draw_texture_rect (no SpriteList/atlas) porque el atlas de
+    # sprites genera un halo blanco en el contorno por sangrado de
+    # color entre el padding transparente y el sprite vecino.
+    CURA_CX = 150
+    CURA_CY = 230
+    CURA_ESCALA = 1.4
+
     def __init__(self, musica_fondo=None, reproductor_musica=None,
                  inventario: Inventario = None) -> None:
         super().__init__()
@@ -251,24 +370,146 @@ class GameView(arcade.View):
         self.player_list = arcade.SpriteList()
         self.player_list.append(self.player_sprite)
 
-        self.npc_sprite = arcade.SpriteSolidColor(32, 32, color=arcade.color.RED)
-        self.npc_sprite.center_x = codigosb.ANCHO - 200
-        self.npc_sprite.center_y = codigosb.ALTO  // 2
-        self.npc_list = arcade.SpriteList()
-        self.npc_list.append(self.npc_sprite)
+        # Texturas del Cura (idle / hablando / senalando). Ya vienen
+        # pre-escaladas (PIL + NEAREST) al tamanio final de pantalla.
+        self.tex_cura_idle      = arcade.load_texture(codigosb.CURA_IDLE)
+        self.tex_cura_dialogo   = arcade.load_texture(codigosb.CURA_DIALOGO)
+        self.tex_cura_senalando = arcade.load_texture(codigosb.CURA_SENALANDO)
+        self.tex_cruz           = arcade.load_texture(codigosb.CRUZ_ESTANCIA_IMG)
+        self.tex_cura_actual    = self.tex_cura_idle
 
         self.w_ap = self.s_ap = self.a_ap = self.d_ap = self.shift_ap = False
+
+        # Dialogo generico (bienvenida libre, ya existente)
         self.dialogo_lineas = []
         self.indice_linea_actual = 0
 
+        # Dialogo del Cura (intro / cierre), reutiliza el mismo cuadro
+        self.guion_cura_actual = []
+        self.indice_cura = 0
+
+        # Minijuego de trivia
+        self.indice_pregunta   = 0
+        self.respuestas_ok     = 0
+        self.opcion_hover      = None   # 0-3, para resaltar al pasar el mouse
+        self.feedback_visible  = False
+        self.feedback_correcta = False
+        self._ultima_opcion_elegida = -1
+
+        # Recompensa / cartel de fin de demo
+        self._mostrar_recompensa = False
+
+    # --------------------------------------------------------
+    # HELPERS DE PROXIMIDAD / FLUJO
+    # --------------------------------------------------------
+    def _cerca_del_cura(self) -> bool:
+        dx = self.player_sprite.center_x - self.CURA_CX
+        dy = self.player_sprite.center_y - self.CURA_CY
+        return (dx*dx + dy*dy) < 110*110
+
+    def _iniciar_intro_cura(self):
+        self.guion_cura_actual = GUION_INTRO_CURA
+        self.indice_cura = 0
+        self.estado_actual = ESTADO_INTRO_CURA
+        self.player_sprite.change_x = 0
+        self.player_sprite.change_y = 0
+
+    def _avanzar_intro_cura(self):
+        self.indice_cura += 1
+        if self.indice_cura >= len(self.guion_cura_actual):
+            self._iniciar_trivia()
+
+    def _iniciar_trivia(self):
+        self.indice_pregunta  = 0
+        self.respuestas_ok    = 0
+        self.feedback_visible = False
+        self.estado_actual    = ESTADO_TRIVIA
+
+    def _responder(self, opcion_idx: int):
+        if self.feedback_visible:
+            return  # ya se esta mostrando el resultado de esta pregunta
+        _, opciones, correcta = PREGUNTAS_ESTANCIA[self.indice_pregunta]
+        if opcion_idx < 0 or opcion_idx >= len(opciones):
+            return
+        self.feedback_correcta = (opcion_idx == correcta)
+        if self.feedback_correcta:
+            self.respuestas_ok += 1
+        self.feedback_visible = True
+
+    def _siguiente_pregunta(self):
+        self.indice_pregunta += 1
+        self.feedback_visible = False
+        if self.indice_pregunta >= len(PREGUNTAS_ESTANCIA):
+            self._terminar_trivia()
+
+    def _terminar_trivia(self):
+        gano = self.respuestas_ok >= PREGUNTAS_MINIMAS_PARA_GANAR
+        if gano:
+            self.guion_cura_actual = GUION_CIERRE_CURA_EXITO
+            ya_tenia_cruz = self.inventario.tiene("Cruz de la Estancia")
+            self.inventario.agregar("Cruz de la Estancia")
+            self.inventario.sumar_experiencia(XP_RECOMPENSA_TRIVIA)
+            self.inventario.otorgar_medalla(MEDALLA_HISTORIADOR)
+            self.inventario.guardar()
+            self._mostrar_recompensa = not ya_tenia_cruz
+        else:
+            self.guion_cura_actual    = GUION_CIERRE_CURA_FALLO
+            self._mostrar_recompensa = False
+        self.indice_cura   = 0
+        self.estado_actual = ESTADO_CIERRE_CURA
+
+    def _avanzar_cierre_cura(self):
+        self.indice_cura += 1
+        if self.indice_cura >= len(self.guion_cura_actual):
+            if self._mostrar_recompensa:
+                self.estado_actual = ESTADO_FIN_DEMO
+            else:
+                self.estado_actual = ESTADO_JUGANDO
+
+    # --------------------------------------------------------
+    # DIBUJADO
+    # --------------------------------------------------------
     def on_draw(self):
         self.clear()
         arcade.draw_texture_rect(
             self.fondo, arcade.LBWH(0, 0, codigosb.ANCHO, codigosb.ALTO))
-        self.npc_list.draw()
+
+        # Pose del cura segun el momento
+        if self.estado_actual in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
+            self.tex_cura_actual = self.tex_cura_dialogo
+        elif self.estado_actual == ESTADO_TRIVIA:
+            self.tex_cura_actual = self.tex_cura_senalando
+        else:
+            self.tex_cura_actual = self.tex_cura_idle
+
+        ancho_cura = int(self.tex_cura_actual.width  * self.CURA_ESCALA)
+        alto_cura  = int(self.tex_cura_actual.height * self.CURA_ESCALA)
+        arcade.draw_texture_rect(
+            self.tex_cura_actual,
+            arcade.LBWH(
+                self.CURA_CX - ancho_cura // 2,
+                self.CURA_CY - alto_cura // 2,
+                ancho_cura,
+                alto_cura,
+            )
+        )
         self.player_list.draw()
+
+        if self.estado_actual == ESTADO_JUGANDO and self._cerca_del_cura():
+            arcade.draw_text(
+                "[ ESPACIO / CLICK ] Hablar con el Cura",
+                codigosb.ANCHO // 2, self.CURA_CY + 160,
+                arcade.color.YELLOW, font_size=11,
+                anchor_x="center", bold=True)
+
         if self.estado_actual == ESTADO_HABLANDO:
             self.dibujar_cuadro_dialogo()
+        elif self.estado_actual in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
+            self._dibujar_cuadro_cura()
+        elif self.estado_actual == ESTADO_TRIVIA:
+            self._dibujar_trivia()
+        elif self.estado_actual == ESTADO_FIN_DEMO:
+            self._dibujar_fin_demo()
 
     def dibujar_cuadro_dialogo(self):
         arcade.draw_rect_filled(
@@ -283,6 +524,134 @@ class GameView(arcade.View):
         arcade.draw_text("[Espacio] Siguiente...",
             codigosb.ANCHO-220, 35, arcade.color.GRAY, font_size=12)
 
+    def _dibujar_cuadro_cura(self):
+        """Cuadro de dialogo con nombre del hablante (Cura / Waledo)."""
+        nombre, texto = self.guion_cura_actual[self.indice_cura]
+        m = 20
+        alto_caja = 150
+        color = arcade.color.GOLD if nombre == "CURA" else \
+            arcade.color.LIGHT_PASTEL_PURPLE
+        arcade.draw_rect_filled(
+            arcade.LRBT(m, codigosb.ANCHO-m, m, alto_caja), (0, 0, 0, 210))
+        arcade.draw_rect_outline(
+            arcade.LRBT(m, codigosb.ANCHO-m, m, alto_caja),
+            color, border_width=3)
+        arcade.draw_rect_filled(
+            arcade.LRBT(m, m+170, alto_caja-4, alto_caja+26), (0, 0, 0, 230))
+        arcade.draw_rect_outline(
+            arcade.LRBT(m, m+170, alto_caja-4, alto_caja+26),
+            color, border_width=2)
+        etiqueta = "CURA DE LA ESTANCIA" if nombre == "CURA" else "LEDIAGO WALEDO"
+        arcade.draw_text(etiqueta, m+14, alto_caja+3,
+            color, font_size=12, bold=True, anchor_y="center")
+        arcade.draw_text(texto, m+20, alto_caja-30, arcade.color.WHITE,
+            font_size=15, width=codigosb.ANCHO-(m*2)-40,
+            multiline=True, anchor_y="top")
+        es_ultima = self.indice_cura >= len(self.guion_cura_actual) - 1
+        pista = "[Espacio] Continuar..." if not es_ultima else \
+            "[Espacio] Continuar..."
+        arcade.draw_text(pista, codigosb.ANCHO-m-10, m+8,
+            arcade.color.GRAY, font_size=11, anchor_x="right")
+
+    def _dibujar_trivia(self):
+        """Pantalla de pregunta con 4 opciones clickeables."""
+        texto, opciones, correcta = PREGUNTAS_ESTANCIA[self.indice_pregunta]
+        m = 50
+        y_top = codigosb.ALTO - 60
+
+        arcade.draw_rect_filled(
+            arcade.LRBT(m, codigosb.ANCHO-m, codigosb.ALTO-180, y_top+20),
+            (10, 10, 30, 230))
+        arcade.draw_rect_outline(
+            arcade.LRBT(m, codigosb.ANCHO-m, codigosb.ALTO-180, y_top+20),
+            arcade.color.GOLD, border_width=2)
+        arcade.draw_text(
+            f"Pregunta {self.indice_pregunta+1}/{len(PREGUNTAS_ESTANCIA)}",
+            codigosb.ANCHO//2, y_top, arcade.color.GOLD,
+            font_size=12, bold=True, anchor_x="center")
+        arcade.draw_text(
+            texto, m+20, y_top-26, arcade.color.WHITE, font_size=14,
+            width=codigosb.ANCHO-(m*2)-40, multiline=True, anchor_y="top")
+
+        letras = ["A", "B", "C", "D"]
+        for i, op in enumerate(opciones):
+            x1, y1, x2, y2 = self._rect_opcion(i)
+            if self.feedback_visible:
+                if i == correcta:
+                    color_fondo = (40, 130, 40, 235)
+                elif i != correcta and not self.feedback_correcta and \
+                        i == self._ultima_opcion_elegida:
+                    color_fondo = (150, 30, 30, 235)
+                else:
+                    color_fondo = (25, 25, 45, 200)
+            else:
+                color_fondo = (60, 50, 20, 235) if self.opcion_hover == i \
+                    else (25, 25, 45, 200)
+            arcade.draw_rect_filled(arcade.LRBT(x1, x2, y1, y2), color_fondo)
+            arcade.draw_rect_outline(
+                arcade.LRBT(x1, x2, y1, y2), arcade.color.GOLD, border_width=1)
+            arcade.draw_text(
+                f"{letras[i]}) {op}",
+                x1+14, (y1+y2)//2, arcade.color.WHITE, font_size=13,
+                anchor_y="center", width=x2-x1-24, multiline=True)
+
+        # Franja fija al pie para feedback / ayuda (nunca se solapa
+        # con las opciones, que terminan por encima de FRANJA_PIE_Y2).
+        if self.feedback_visible:
+            msg = "Correcto!" if self.feedback_correcta else "Incorrecto."
+            col = arcade.color.GREEN_YELLOW if self.feedback_correcta \
+                else arcade.color.RED_DEVIL
+            arcade.draw_text(msg, codigosb.ANCHO//2, 22, col,
+                font_size=14, bold=True, anchor_x="center")
+        else:
+            arcade.draw_text(
+                "[1-4] o [Click] para responder",
+                codigosb.ANCHO//2, 22, arcade.color.GRAY,
+                font_size=11, anchor_x="center")
+
+    def _rect_opcion(self, i: int):
+        """Devuelve (x1, y1, x2, y2) del boton de la opcion i (0-3).
+        Ancladas debajo del cuadro de pregunta, de arriba hacia abajo,
+        dejando siempre una franja libre de pie para el feedback."""
+        m = 60
+        alto_opcion = 42
+        espacio     = 8
+        y_tope = codigosb.ALTO - 210   # justo debajo del cuadro de pregunta
+        y2 = y_tope - i * (alto_opcion + espacio)
+        y1 = y2 - alto_opcion
+        return (m, y1, codigosb.ANCHO - m, y2)
+
+    def _dibujar_fin_demo(self):
+        """Cartel final: recompensa obtenida + fin de la demo."""
+        arcade.draw_rect_filled(
+            arcade.LRBT(0, codigosb.ANCHO, 0, codigosb.ALTO), (0, 0, 0, 215))
+
+        arcade.draw_texture_rect(
+            self.tex_cruz,
+            arcade.LBWH(codigosb.ANCHO//2 - 55, 440, 110, 110))
+
+        arcade.draw_text("Cruz de la Estancia obtenida",
+            codigosb.ANCHO//2, 425, arcade.color.GOLD,
+            font_size=15, bold=True, anchor_x="center")
+        arcade.draw_text(
+            f"+{XP_RECOMPENSA_TRIVIA} Experiencia   -   Medalla: "
+            f"\"{MEDALLA_HISTORIADOR}\"",
+            codigosb.ANCHO//2, 397, arcade.color.LIGHT_PASTEL_PURPLE,
+            font_size=12, anchor_x="center")
+
+        arcade.draw_text("FIN DE LA DEMO",
+            codigosb.ANCHO//2, 260, arcade.color.WHITE,
+            font_size=30, bold=True, anchor_x="center")
+        arcade.draw_text("Gracias por jugar Reminiscence of Gracia",
+            codigosb.ANCHO//2, 210, arcade.color.LIGHT_GRAY,
+            font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Cerrar",
+            codigosb.ANCHO//2, 60, arcade.color.GRAY,
+            font_size=11, anchor_x="center")
+
+    # --------------------------------------------------------
+    # MOVIMIENTO
+    # --------------------------------------------------------
     def evaluar_movimiento(self):
         vel = codigosb.VELOCIDAD_CORRER if self.shift_ap else codigosb.VELOCIDAD_CAMINAR
         self.player_sprite.esta_corriendo = self.shift_ap
@@ -298,6 +667,9 @@ class GameView(arcade.View):
             self.player_sprite.change_x = vel
         self.player_sprite.actualizar_direccion()
 
+    # --------------------------------------------------------
+    # INPUT
+    # --------------------------------------------------------
     def on_key_press(self, key, modifiers):
         if self.estado_actual == ESTADO_JUGANDO:
             if key == arcade.key.W:     self.w_ap = True
@@ -307,22 +679,41 @@ class GameView(arcade.View):
             elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
                 self.shift_ap = True
             elif key == arcade.key.SPACE:
-                dist = arcade.get_distance_between_sprites(
-                    self.player_sprite, self.npc_sprite)
-                if dist < 80:
-                    self.disparar_dialogo([
-                        "Hola Lediago... Bienvenido a la Estancia Jesuitica.",
-                        "Necesitamos tu ayuda para resolver el misterio de Gracia.",
-                        "Busca pistas en el ala norte del edificio antes de que sea tarde.",
-                    ])
+                if self._cerca_del_cura():
+                    self._iniciar_intro_cura()
             elif key == arcade.key.J:
                 self.iniciar_juicio()
             self.evaluar_movimiento()
+
         elif self.estado_actual == ESTADO_HABLANDO:
             if key == arcade.key.SPACE:
                 self.indice_linea_actual += 1
                 if self.indice_linea_actual >= len(self.dialogo_lineas):
                     self.estado_actual = ESTADO_JUGANDO
+
+        elif self.estado_actual == ESTADO_INTRO_CURA:
+            if key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_intro_cura()
+
+        elif self.estado_actual == ESTADO_TRIVIA:
+            if not self.feedback_visible:
+                tecla_a_opcion = {
+                    arcade.key.KEY_1: 0, arcade.key.KEY_2: 1,
+                    arcade.key.KEY_3: 2, arcade.key.KEY_4: 3,
+                }
+                if key in tecla_a_opcion:
+                    self._ultima_opcion_elegida = tecla_a_opcion[key]
+                    self._responder(tecla_a_opcion[key])
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._siguiente_pregunta()
+
+        elif self.estado_actual == ESTADO_CIERRE_CURA:
+            if key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_cierre_cura()
+
+        elif self.estado_actual == ESTADO_FIN_DEMO:
+            if key == arcade.key.SPACE:
+                pass  # el cartel queda visible; se podria cerrar el juego aqui
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.W:     self.w_ap = False
@@ -331,7 +722,39 @@ class GameView(arcade.View):
         elif key == arcade.key.D:   self.d_ap = False
         elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
             self.shift_ap = False
-        self.evaluar_movimiento()
+        if self.estado_actual == ESTADO_JUGANDO:
+            self.evaluar_movimiento()
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        if self.estado_actual == ESTADO_TRIVIA and not self.feedback_visible:
+            self.opcion_hover = None
+            for i in range(4):
+                x1, y1, x2, y2 = self._rect_opcion(i)
+                if x1 <= x <= x2 and y1 <= y <= y2:
+                    self.opcion_hover = i
+                    break
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if self.estado_actual == ESTADO_JUGANDO:
+            if self._cerca_del_cura():
+                self._iniciar_intro_cura()
+
+        elif self.estado_actual == ESTADO_INTRO_CURA:
+            self._avanzar_intro_cura()
+
+        elif self.estado_actual == ESTADO_TRIVIA:
+            if not self.feedback_visible:
+                for i in range(4):
+                    x1, y1, x2, y2 = self._rect_opcion(i)
+                    if x1 <= x <= x2 and y1 <= y <= y2:
+                        self._ultima_opcion_elegida = i
+                        self._responder(i)
+                        break
+            else:
+                self._siguiente_pregunta()
+
+        elif self.estado_actual == ESTADO_CIERRE_CURA:
+            self._avanzar_cierre_cura()
 
     def on_update(self, delta_time):
         if self.estado_actual == ESTADO_JUGANDO:
@@ -922,11 +1345,15 @@ class VitrinaView(arcade.View):
             return
         self.inventario.turno_viaje += 1
         self.inventario.guardar()
-        # Aqui se conectaria con las escenas de viaje temporal.
-        # Por ahora, muestra un mensaje de activacion.
-        self._mostrar_msg(
-            f"Cronoscopio activado! Viaje #{self.inventario.turno_viaje}. "
-            "El tejido temporal se abre...")
+        # El Cronoscopio abre una puerta en el tiempo: viaja a la
+        # Estancia Jesuitica, donde espera el Cura con su desafio.
+        self.window.show_view(
+            GameView(
+                musica_fondo=self.musica_fondo,
+                reproductor_musica=self.reproductor_musica,
+                inventario=self.inventario,
+            )
+        )
 
     def _volver_al_hotel(self):
         """Vuelve a la escena del Hotel Sierras conservando el inventario."""

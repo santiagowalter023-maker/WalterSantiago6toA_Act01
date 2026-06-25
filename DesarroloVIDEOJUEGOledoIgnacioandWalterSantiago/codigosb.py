@@ -39,7 +39,13 @@ SPRITE_ESPALDA = str(BASE_DIR / "waledo02.png")
 SPRITE_PERFIL  = str(BASE_DIR / "waledo01.png")
 
 # Fondos
-FONDO_ESTANCIA = str(BASE_DIR / "disenos_estancia" / "001.jpeg")
+FONDO_ESTANCIA = str(BASE_DIR / "assets_estancia" / "estancia_jesuitica_principal.jpg")
+
+# Assets del Cura y el minijuego de la Estancia
+CURA_IDLE      = str(BASE_DIR / "assets_estancia" / "cura_idle.png")
+CURA_DIALOGO   = str(BASE_DIR / "assets_estancia" / "cura_dialogo.png")
+CURA_SENALANDO = str(BASE_DIR / "assets_estancia" / "cura_senalando.png")
+CRUZ_ESTANCIA_IMG = str(BASE_DIR / "assets_estancia" / "cruz_estancia.png")
 
 # Assets de la intro
 LOGO_FUTURISTA = str(BASE_DIR / "assets_intro" / "logo_futurista.png")
