@@ -5,11 +5,6 @@
 from pathlib import Path
 
 # Carpeta donde esta este archivo (la carpeta del proyecto).
-# Usamos esto para armar rutas ABSOLUTAS a los assets. Si dejamos las rutas
-# relativas ("disenos/001.jpeg"), Arcade las resuelve con pathlib.resolve()
-# tomando como base la carpeta desde donde se ejecuta python, y en Windows
-# eso puede fallar o deformar la ruta cuando el path tiene espacios
-# (por ejemplo "Programacion 3"). Con BASE_DIR evitamos ese problema.
 BASE_DIR = Path(__file__).resolve().parent
 
 ANCHO = 800
@@ -20,40 +15,56 @@ TITULO = "REMINENCE OF GRACIA"
 VELOCIDAD_CAMINAR = 3
 VELOCIDAD_CORRER = 6
 
-# Escala del sprite del personaje (las imagenes originales son grandes)
+# Escala del sprite del personaje
 ESCALA_PERSONAJE = 0.35
 
-# Rutas de assets (absolutas, calculadas a partir de BASE_DIR)
-# OJO: el fondo vive en la carpeta "disenos_estancia" (copia de la carpeta
-# original "diseños", renombrada sin eñe para evitar problemas de
-# codificacion de nombres de archivo en Windows/zip).
-FONDO_ESTANCIA = str(BASE_DIR / "disenos_estancia" / "001.jpeg")
-SPRITE_FRENTE = str(BASE_DIR / "waledo03.png")
+# ---------------------------------------------------------------
+# SPRITE SHEET DEL PERSONAJE PRINCIPAL (Lediago)
+# 4 columnas x 3 filas = 12 frames
+#   Fila 0 (arriba): caminar hacia ABAJO  (frente) - 4 frames
+#   Fila 1 (medio) : caminar de LADO      (derecha) - 4 frames
+#   Fila 2 (abajo) : caminar hacia ARRIBA (espalda) - 4 frames
+# Para caminar a la IZQUIERDA se espeja la fila 1.
+# ---------------------------------------------------------------
+SPRITE_SHEET      = str(BASE_DIR / "assets_juicio" / "sprite_sheet.png")
+SPRITE_SHEET_COLS = 4
+SPRITE_SHEET_ROWS = 3
+SPRITE_FRAME_W    = 104   # 416 / 4
+SPRITE_FRAME_H    = 200   # 600 / 3
+ANIM_FPS          = 8     # frames por segundo de la animacion de caminar
+
+# Rutas legadas (para retrocompatibilidad con GameView si se usa)
+SPRITE_FRENTE  = str(BASE_DIR / "waledo03.png")
 SPRITE_ESPALDA = str(BASE_DIR / "waledo02.png")
-SPRITE_PERFIL = str(BASE_DIR / "waledo01.png")
+SPRITE_PERFIL  = str(BASE_DIR / "waledo01.png")
 
-# Assets de la intro (logos, transicion, menu de inicio y musica de fondo)
+# Fondos
+FONDO_ESTANCIA = str(BASE_DIR / "disenos_estancia" / "001.jpeg")
+
+# Assets de la intro
 LOGO_FUTURISTA = str(BASE_DIR / "assets_intro" / "logo_futurista.png")
-LOGO_CAMBIO = str(BASE_DIR / "assets_intro" / "logo_cambio.png")
-LOGO_ANTIGUO = str(BASE_DIR / "assets_intro" / "logo_antiguo.png")
-MENU_INICIO = str(BASE_DIR / "assets_intro" / "menu_inicio.png")
-MUSICA_FONDO = str(BASE_DIR / "assets_intro" / "musica_fondo.wav")
+LOGO_CAMBIO    = str(BASE_DIR / "assets_intro" / "logo_cambio.png")
+LOGO_ANTIGUO   = str(BASE_DIR / "assets_intro" / "logo_antiguo.png")
+MENU_INICIO    = str(BASE_DIR / "assets_intro" / "menu_inicio.png")
+MUSICA_FONDO   = str(BASE_DIR / "assets_intro" / "musica_fondo.wav")
 
-# Volumen bajo para que la musica de fondo no tape los dialogos (0.0 a 1.0)
 VOLUMEN_MUSICA_FONDO = 0.15
 
-# Assets de la escena del juicio (Tribunal Superior de Gracia, Sierras Hotel)
-# Tres fondos distintos segun el momento de la escena:
-#   INICIO  -> sala con el juez presentando el caso (arranque del juicio)
-#   ACTIVO  -> el juez de pie, "¡Orden en la sala!" (momento de tension)
-#   CERRADO -> mazo golpeado, "CASO CERRADO" (veredicto final)
-JUICIO_FONDO_INICIO = str(BASE_DIR / "assets_juicio" / "juicio_inicio.jpeg")
-JUICIO_FONDO_ACTIVO = str(BASE_DIR / "assets_juicio" / "juicio_activo.jpeg")
+# Assets de la escena del juicio
+JUICIO_FONDO_INICIO  = str(BASE_DIR / "assets_juicio" / "juicio_inicio.jpeg")
+JUICIO_FONDO_ACTIVO  = str(BASE_DIR / "assets_juicio" / "juicio_activo.jpeg")
 JUICIO_FONDO_CERRADO = str(BASE_DIR / "assets_juicio" / "juicio_cerrado.jpeg")
 
-# Assets de la escena del Hotel Sierras (gameplay + dialogo con Walter y Ledo)
+# Assets de la escena del Hotel Sierras (gameplay + dialogo)
 HOTEL_SIERRAS_FONDO    = str(BASE_DIR / "assets_juicio" / "hotel_sierras_fondo.png")
-# Versiones con fondo negro removido (sufijo _t = transparent)
 HOTEL_WALTER_LEDO_IDLE = str(BASE_DIR / "assets_juicio" / "walter_ledo_pies_t.png")
 HOTEL_WALTER_LEDO_AFK  = str(BASE_DIR / "assets_juicio" / "walter_ledo_afk_t.png")
 HOTEL_WALTER_LEDO_DLG  = str(BASE_DIR / "assets_juicio" / "walter_ledo_dialogo_t.png")
+
+# Assets de la Vitrina de Objetos (Estudio de Curiosidades)
+VITRINA_FONDO    = str(BASE_DIR / "assets_juicio" / "vitrina_fondo.jpeg")
+VITRINA_ABIERTA  = str(BASE_DIR / "assets_juicio" / "vitrina_abierta.jpeg")
+CRONOSCOPIO_IMG  = str(BASE_DIR / "assets_juicio" / "cronoscopio.png")
+
+# Archivo de guardado de partida
+SAVE_FILE = str(BASE_DIR / "partida_guardada.json")

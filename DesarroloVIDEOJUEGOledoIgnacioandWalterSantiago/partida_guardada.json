@@ -1,0 +1,16 @@
+{
+  "nombre_jugador": "Lediago Waledo",
+  "turno_viaje": 1,
+  "objetos": {
+    "Piedra de Moler": false,
+    "Herramienta Jesuita": false,
+    "Llave Maestra": false,
+    "Sello Real": false,
+    "Cincel del Cantero": false,
+    "Quijote": false,
+    "Metronomo": false,
+    "Cantimplora": false,
+    "Espatula de Dubois": false,
+    "Cronoscopio": true
+  }
+}
