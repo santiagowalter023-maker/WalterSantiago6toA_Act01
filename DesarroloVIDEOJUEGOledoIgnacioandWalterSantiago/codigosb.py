@@ -50,3 +50,10 @@ VOLUMEN_MUSICA_FONDO = 0.15
 JUICIO_FONDO_INICIO = str(BASE_DIR / "assets_juicio" / "juicio_inicio.jpeg")
 JUICIO_FONDO_ACTIVO = str(BASE_DIR / "assets_juicio" / "juicio_activo.jpeg")
 JUICIO_FONDO_CERRADO = str(BASE_DIR / "assets_juicio" / "juicio_cerrado.jpeg")
+
+# Assets de la escena del Hotel Sierras (gameplay + dialogo con Walter y Ledo)
+HOTEL_SIERRAS_FONDO    = str(BASE_DIR / "assets_juicio" / "hotel_sierras_fondo.png")
+# Versiones con fondo negro removido (sufijo _t = transparent)
+HOTEL_WALTER_LEDO_IDLE = str(BASE_DIR / "assets_juicio" / "walter_ledo_pies_t.png")
+HOTEL_WALTER_LEDO_AFK  = str(BASE_DIR / "assets_juicio" / "walter_ledo_afk_t.png")
+HOTEL_WALTER_LEDO_DLG  = str(BASE_DIR / "assets_juicio" / "walter_ledo_dialogo_t.png")

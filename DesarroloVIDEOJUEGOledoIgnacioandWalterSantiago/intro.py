@@ -157,25 +157,20 @@ class IntroView(arcade.View):
     def _arrancar_juego(self):
         """ Al apretar una tecla/click en el menu, primero se reproduce
         la escena del juicio (JuicioView) y SOLO cuando esa escena termina
-        se crea GameView y se entra recien ahi al juego.
+        se crea HotelSierrasView (gameplay + dialogo con Walter y Ledo).
 
-        OJO: le pasamos a JuicioView una FUNCION que crea el GameView
-        (en vez de un GameView ya creado) para que la creacion -con toda
-        la carga de texturas/sprites que conlleva- no pase en el mismo
-        instante en que se aprieta la tecla para salir del menu. Si se
-        creaba GameView ahi mismo, la ventana se quedaba sin responder
-        un instante justo al apretar [Espacio]/click, dando la sensacion
-        de que el juego "se traba" en ese momento.
+        OJO: le pasamos a JuicioView una FUNCION que crea la vista siguiente
+        (en vez de una instancia ya creada) para diferir la carga de texturas
+        hasta que el juicio realmente termine, evitando el "trabo" al apretar
+        [Espacio]/click en el menu.
         """
-        # Import diferido para evitar import circular (codigo.py importa
-        # intro.py y por lo tanto codigo.py no se puede importar arriba).
-        from codigo import GameView, JuicioView
+        from codigo import JuicioView, HotelSierrasView
 
-        def crear_game_view():
-            return GameView(
+        def crear_hotel_view():
+            return HotelSierrasView(
                 musica_fondo=self.musica_fondo,
                 reproductor_musica=self.reproductor_musica,
             )
 
-        juicio = JuicioView(vista_siguiente=crear_game_view)
+        juicio = JuicioView(vista_siguiente=crear_hotel_view)
         self.window.show_view(juicio)

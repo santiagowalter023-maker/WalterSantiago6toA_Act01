@@ -652,6 +652,372 @@ class JuicioView(arcade.View):
         self.avanzar_dialogo()
 
 
+
+# ============================================================
+# ESCENA DEL HOTEL SIERRAS - SALON PRINCIPAL (gameplay + dialogo)
+# ============================================================
+# Flujo:
+#   1) El jugador controla a Lediago dentro del Salon Principal
+#      del Hotel Sierras (fondo pixel-art del ecenario.png).
+#   2) Walter y Ledo aparecen al fondo-derecha como NPCs visibles.
+#   3) Al hacer CLICK sobre cualquiera de los dos NPCs se dispara
+#      la escena de dialogo completa (guion GUION_HOTEL).
+#   4) Una vez terminado el dialogo la pantalla se queda quieta
+#      (fin de la demo de esta seccion).
+
+# ------------------------------------------------------------
+# GUION DE LA ESCENA DEL SALON PRINCIPAL
+# Cada entrada: (hablante_clave, texto)
+# Reutilizamos el diccionario HABLANTES ya definido arriba.
+# ------------------------------------------------------------
+GUION_HOTEL = [
+    ("WALTER",   "¡Por fin despertaste!"),
+    ("LEDIAGO",  "¿Dónde estoy?"),
+    ("LEDO",     "En el Hotel Sierras. O mejor dicho... en lo que queda de él."),
+    ("LEDIAGO",  "No entiendo nada. ¿Quiénes son ustedes?"),
+    ("WALTER",   "Mi nombre es Walter."),
+    ("LEDO",     "Y yo soy Ledo. Somos los guardianes del Archivo Histórico de Alta Gracia."),
+    ("LEDIAGO",  "¿Y por qué me trajeron aquí?"),
+    ("WALTER",   "Porque la ciudad está en peligro. Muy pronto todo esto podría desaparecer."),
+    ("LEDIAGO",  "¿Desaparecer?"),
+    ("LEDO",     "Una corporación quiere demoler los lugares históricos para construir algo nuevo."),
+    ("LEDIAGO",  "¿Y qué esperan que haga yo?"),
+    ("NARRADOR", "(Walter señala una extraña máquina llena de engranajes y luces.)"),
+    ("WALTER",   "Necesitamos que uses el Cronoscopio."),
+    ("LEDIAGO",  "¿Cronoscopio?"),
+    ("LEDO",     "Una máquina capaz de abrir puertas hacia distintas épocas de Alta Gracia."),
+    ("LEDIAGO",  "¿Me están diciendo que viaje en el tiempo?"),
+    ("WALTER",   "Exactamente."),
+    ("LEDIAGO",  "Eso suena imposible."),
+    ("LEDO",     "También sonaba imposible perder toda la historia de una ciudad."),
+    ("WALTER",   "Tu misión será viajar al pasado, conocer a quienes construyeron esta tierra "
+                 "y recuperar fragmentos de su memoria."),
+    ("LEDIAGO",  "¿Y si algo sale mal?"),
+    ("LEDO",     "No cambiarás la historia."),
+    ("WALTER",   "Solo la observarás... y traerás pruebas de que sigue viva."),
+    ("NARRADOR", "(El Cronoscopio comienza a iluminarse.)"),
+    ("LEDIAGO",  "Supongo que no tengo muchas opciones."),
+    ("LEDO",     "Ninguna."),
+    ("WALTER",   "Prepárate, viajero."),
+    ("LEDO",     "Tu primera parada te espera hace cientos de años."),
+]
+
+# Radio en pixeles de la zona clickeable sobre cada NPC
+_RADIO_CLICK_NPC = 80
+
+
+class HotelSierrasView(arcade.View):
+    """Escena del Salon Principal del Hotel Sierras.
+
+    Fases:
+      FASE_GAMEPLAY  -> Lediago se mueve libremente; los NPCs estan visibles.
+      FASE_DIALOGO   -> cuadro de dialogo estilo JuicioView; Lediago no se mueve.
+    """
+
+    FASE_GAMEPLAY = 0
+    FASE_DIALOGO  = 1
+
+    def __init__(self, musica_fondo=None, reproductor_musica=None) -> None:
+        super().__init__()
+
+        self.fase = HotelSierrasView.FASE_GAMEPLAY
+
+        # --- Musica heredada del flujo anterior ---
+        self.musica_fondo = musica_fondo
+        self.reproductor_musica = reproductor_musica
+        if self.musica_fondo is None:
+            self.musica_fondo = arcade.Sound(codigosb.MUSICA_FONDO, streaming=False)
+            self.reproductor_musica = self.musica_fondo.play(
+                volume=codigosb.VOLUMEN_MUSICA_FONDO, loop=True
+            )
+
+        # --- Fondo del Hotel Sierras ---
+        self.tex_fondo = arcade.load_texture(codigosb.HOTEL_SIERRAS_FONDO)
+
+        # --- Texturas de Walter+Ledo ---
+        # idle: parados de frente (walteryledopies.png)
+        # afk : postura "esperando" (walteyledoafk.png)
+        # dlg : pose de dialogo - boca abierta (walterledodialogo.png)
+        self.tex_npc_idle = arcade.load_texture(codigosb.HOTEL_WALTER_LEDO_IDLE)
+        self.tex_npc_afk  = arcade.load_texture(codigosb.HOTEL_WALTER_LEDO_AFK)
+        self.tex_npc_dlg  = arcade.load_texture(codigosb.HOTEL_WALTER_LEDO_DLG)
+
+        # Posicion y tamaño de los NPCs en pantalla.
+        # Imagen original ~1024 x 1536 px (los dos personajes juntos).
+        # Queremos que se vean al FONDO del salon, mas chicos que Lediago
+        # para dar sensacion de profundidad. ~155 px de alto = ~26% de 600.
+        self._npc_escala = 155 / 1536          # ≈ 0.101
+        self._npc_ancho  = int(1024 * self._npc_escala)   # ≈ 103
+        self._npc_alto   = int(1536 * self._npc_escala)   # ≈ 155
+
+        # Posicion: derecha del escenario, mas arriba para simular que estan
+        # al fondo (perspectiva). El "suelo del fondo" en el ecenario.png
+        # esta aprox al 42% de alto desde abajo.
+        self._npc_cx = int(codigosb.ANCHO * 0.74)
+        self._npc_cy = int(codigosb.ALTO  * 0.42)         # fondo del salon
+
+        # Zona clickeable: un rect que abarca ambos personajes + algo de margen
+        self._npc_rect_x1 = self._npc_cx - self._npc_ancho // 2 - 15
+        self._npc_rect_x2 = self._npc_cx + self._npc_ancho // 2 + 15
+        self._npc_rect_y1 = self._npc_cy - self._npc_alto // 2 - 10
+        self._npc_rect_y2 = self._npc_cy + self._npc_alto // 2 + 10
+
+        # --- Personaje jugable: Lediago ---
+        # Escala reducida para que se note la perspectiva del salon:
+        # los NPCs al fondo son ~155px, Lediago en primer plano ~210px.
+        self.player = Lediago()
+        self.player.scale = 0.28          # mas chico que el 0.35 del GameView
+        self.player.center_x = codigosb.ANCHO * 0.30
+        self.player.center_y = 90         # primer plano, cerca del borde inferior
+        self.player_list = arcade.SpriteList()
+        self.player_list.append(self.player)
+
+        # Teclas
+        self.w_ap = self.s_ap = self.a_ap = self.d_ap = self.shift_ap = False
+
+        # --- Estado del dialogo ---
+        self.dialogo_lineas  = []    # lista de tuplas (hablante_clave, texto)
+        self.dialogo_idx     = 0
+        self.dialogo_fin     = False
+
+        # Temporizador para animar los NPCs en idle (cambian entre idle y afk)
+        self._anim_timer   = 0.0
+        self._anim_periodo = 3.5     # segundos entre cambio de pose idle<->afk
+        self._npc_pose_afk = False   # False=idle, True=afk
+
+    # --------------------------------------------------------
+    # HELPERS DE MOVIMIENTO (identico a GameView)
+    # --------------------------------------------------------
+    def _evaluar_movimiento(self):
+        vel = codigosb.VELOCIDAD_CORRER if self.shift_ap else codigosb.VELOCIDAD_CAMINAR
+        self.player.change_x = 0
+        self.player.change_y = 0
+        if self.w_ap and not self.s_ap:
+            self.player.change_y = vel
+        elif self.s_ap and not self.w_ap:
+            self.player.change_y = -vel
+        if self.a_ap and not self.d_ap:
+            self.player.change_x = -vel
+        elif self.d_ap and not self.a_ap:
+            self.player.change_x = vel
+        self.player.actualizar_direccion()
+
+    # --------------------------------------------------------
+    # DIALOGO
+    # --------------------------------------------------------
+    def _iniciar_dialogo(self):
+        self.dialogo_lineas = GUION_HOTEL
+        self.dialogo_idx    = 0
+        self.dialogo_fin    = False
+        self.fase           = HotelSierrasView.FASE_DIALOGO
+        self.player.change_x = 0
+        self.player.change_y = 0
+
+    def _avanzar_dialogo(self):
+        if self.dialogo_fin:
+            return   # la escena se queda en el ultimo frame (fin de demo)
+        self.dialogo_idx += 1
+        if self.dialogo_idx >= len(self.dialogo_lineas):
+            self.dialogo_idx = len(self.dialogo_lineas) - 1
+            self.dialogo_fin = True
+
+    def _npc_en_pose_dialogo(self):
+        """Devuelve True si el hablante actual es WALTER o LEDO."""
+        if self.dialogo_idx >= len(self.dialogo_lineas):
+            return False
+        hab, _ = self.dialogo_lineas[self.dialogo_idx]
+        return hab in ("WALTER", "LEDO")
+
+    # --------------------------------------------------------
+    # CLICK: comprueba si el click cayo sobre los NPCs
+    # --------------------------------------------------------
+    def _click_en_npc(self, x, y) -> bool:
+        return (self._npc_rect_x1 <= x <= self._npc_rect_x2 and
+                self._npc_rect_y1 <= y <= self._npc_rect_y2)
+
+    # --------------------------------------------------------
+    # DIBUJADO
+    # --------------------------------------------------------
+    def on_draw(self) -> None:
+        self.clear()
+
+        # Fondo estirado a toda la ventana
+        arcade.draw_texture_rect(
+            self.tex_fondo,
+            arcade.LBWH(0, 0, codigosb.ANCHO, codigosb.ALTO),
+        )
+
+        # NPCs: textura segun fase y pose
+        if self.fase == HotelSierrasView.FASE_DIALOGO:
+            tex_npc = self.tex_npc_dlg if self._npc_en_pose_dialogo() else self.tex_npc_idle
+        else:
+            tex_npc = self.tex_npc_afk if self._npc_pose_afk else self.tex_npc_idle
+
+        arcade.draw_texture_rect(
+            tex_npc,
+            arcade.LBWH(
+                self._npc_cx - self._npc_ancho // 2,
+                self._npc_cy - self._npc_alto  // 2,
+                self._npc_ancho,
+                self._npc_alto,
+            ),
+        )
+
+        # Lediago
+        self.player_list.draw()
+
+        # Indicador de interaccion (solo en gameplay, NPCs visibles)
+        if self.fase == HotelSierrasView.FASE_GAMEPLAY:
+            self._dibujar_hint_npc()
+
+        # Cuadro de dialogo
+        if self.fase == HotelSierrasView.FASE_DIALOGO:
+            self._dibujar_cuadro_dialogo()
+
+    def _dibujar_hint_npc(self):
+        """Pequeño cartel sobre los NPCs indicando que son clicables."""
+        arcade.draw_text(
+            "[ Haz CLICK para hablar ]",
+            self._npc_cx,
+            self._npc_cy + self._npc_alto // 2 + 12,
+            arcade.color.YELLOW,
+            font_size=11,
+            anchor_x="center",
+            bold=True,
+        )
+
+    def _dibujar_cuadro_dialogo(self):
+        """Caja de dialogo igual a la de JuicioView."""
+        if self.dialogo_idx >= len(self.dialogo_lineas):
+            return
+
+        hablante_clave, texto = self.dialogo_lineas[self.dialogo_idx]
+        info = HABLANTES[hablante_clave]
+
+        alto_caja = 150
+        margen    = 20
+
+        # Fondo semitransparente
+        arcade.draw_rect_filled(
+            arcade.LRBT(margen, codigosb.ANCHO - margen, margen, alto_caja),
+            (0, 0, 0, 210),
+        )
+        arcade.draw_rect_outline(
+            arcade.LRBT(margen, codigosb.ANCHO - margen, margen, alto_caja),
+            info["color_borde"],
+            border_width=3,
+        )
+
+        # Etiqueta nombre (no para NARRADOR)
+        if hablante_clave != "NARRADOR":
+            arcade.draw_rect_filled(
+                arcade.LRBT(margen, margen + 230, alto_caja - 4, alto_caja + 26),
+                (0, 0, 0, 230),
+            )
+            arcade.draw_rect_outline(
+                arcade.LRBT(margen, margen + 230, alto_caja - 4, alto_caja + 26),
+                info["color_borde"],
+                border_width=2,
+            )
+            arcade.draw_text(
+                info["nombre"],
+                margen + 14, alto_caja + 3,
+                info["color_nombre"],
+                font_size=13,
+                bold=True,
+                anchor_y="center",
+            )
+
+        # Texto del dialogo
+        color_texto = (
+            arcade.color.LIGHT_GRAY if hablante_clave == "NARRADOR"
+            else arcade.color.WHITE
+        )
+        arcade.draw_text(
+            texto,
+            margen + 20, alto_caja - 30,
+            color_texto,
+            font_size=15,
+            width=codigosb.ANCHO - (margen * 2) - 40,
+            multiline=True,
+            anchor_y="top",
+        )
+
+        # Contador y pista de avance
+        if not self.dialogo_fin:
+            pista = (f"{self.dialogo_idx + 1}/{len(self.dialogo_lineas)}   "
+                     "[Espacio / Click] Siguiente...")
+        else:
+            pista = "— FIN DE LA ESCENA —"
+
+        arcade.draw_text(
+            pista,
+            codigosb.ANCHO - margen - 10, margen + 8,
+            arcade.color.GRAY,
+            font_size=11,
+            anchor_x="right",
+        )
+
+    # --------------------------------------------------------
+    # INPUT – teclado
+    # --------------------------------------------------------
+    def on_key_press(self, key, modifiers):
+        if self.fase == HotelSierrasView.FASE_GAMEPLAY:
+            if key == arcade.key.W:     self.w_ap = True
+            elif key == arcade.key.S:   self.s_ap = True
+            elif key == arcade.key.A:   self.a_ap = True
+            elif key == arcade.key.D:   self.d_ap = True
+            elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
+                self.shift_ap = True
+            self._evaluar_movimiento()
+
+        elif self.fase == HotelSierrasView.FASE_DIALOGO:
+            if key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_dialogo()
+
+    def on_key_release(self, key, modifiers):
+        if self.fase == HotelSierrasView.FASE_GAMEPLAY:
+            if key == arcade.key.W:     self.w_ap = False
+            elif key == arcade.key.S:   self.s_ap = False
+            elif key == arcade.key.A:   self.a_ap = False
+            elif key == arcade.key.D:   self.d_ap = False
+            elif key in (arcade.key.LSHIFT, arcade.key.RSHIFT):
+                self.shift_ap = False
+            self._evaluar_movimiento()
+
+    # --------------------------------------------------------
+    # INPUT – mouse
+    # --------------------------------------------------------
+    def on_mouse_press(self, x, y, button, modifiers):
+        if self.fase == HotelSierrasView.FASE_GAMEPLAY:
+            # Click sobre los NPCs → dispara el dialogo
+            if self._click_en_npc(x, y):
+                self._iniciar_dialogo()
+        elif self.fase == HotelSierrasView.FASE_DIALOGO:
+            self._avanzar_dialogo()
+
+    # --------------------------------------------------------
+    # ACTUALIZACION POR FRAME
+    # --------------------------------------------------------
+    def on_update(self, delta_time: float):
+        if self.fase == HotelSierrasView.FASE_GAMEPLAY:
+            # Movimiento de Lediago con limites de ventana
+            nueva_x = self.player.center_x + self.player.change_x
+            nueva_y = self.player.center_y + self.player.change_y
+            mw = self.player.width  / 2
+            mh = self.player.height / 2
+            nueva_x = max(mw, min(codigosb.ANCHO - mw, nueva_x))
+            nueva_y = max(mh, min(codigosb.ALTO - mh, nueva_y))
+            self.player.center_x = nueva_x
+            self.player.center_y = nueva_y
+
+            # Animacion idle/afk de los NPCs
+            self._anim_timer += delta_time
+            if self._anim_timer >= self._anim_periodo:
+                self._anim_timer   = 0.0
+                self._npc_pose_afk = not self._npc_pose_afk
+
+
 def main():
     window = arcade.Window(codigosb.ANCHO, codigosb.ALTO, codigosb.TITULO)
     window.center_window()
