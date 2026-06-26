@@ -1,6 +1,6 @@
 {
   "nombre_jugador": "Lediago Waledo",
-  "turno_viaje": 2,
+  "turno_viaje": 4,
   "objetos": {
     "Piedra de Moler": false,
     "Herramienta Jesuita": false,
@@ -14,7 +14,7 @@
     "Cronoscopio": true,
     "Cruz de la Estancia": true
   },
-  "experiencia": 100,
+  "experiencia": 400,
   "medallas": [
     "Historiador de la Estancia"
   ]

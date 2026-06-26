@@ -345,7 +345,7 @@ class GameView(arcade.View):
     # color entre el padding transparente y el sprite vecino.
     CURA_CX = 150
     CURA_CY = 230
-    CURA_ESCALA = 1.4
+    CURA_ESCALA = 0.65
 
     def __init__(self, musica_fondo=None, reproductor_musica=None,
                  inventario: Inventario = None) -> None:
@@ -461,10 +461,7 @@ class GameView(arcade.View):
     def _avanzar_cierre_cura(self):
         self.indice_cura += 1
         if self.indice_cura >= len(self.guion_cura_actual):
-            if self._mostrar_recompensa:
-                self.estado_actual = ESTADO_FIN_DEMO
-            else:
-                self.estado_actual = ESTADO_JUGANDO
+            self.estado_actual = ESTADO_FIN_DEMO
 
     # --------------------------------------------------------
     # DIBUJADO
@@ -626,18 +623,23 @@ class GameView(arcade.View):
         arcade.draw_rect_filled(
             arcade.LRBT(0, codigosb.ANCHO, 0, codigosb.ALTO), (0, 0, 0, 215))
 
-        arcade.draw_texture_rect(
-            self.tex_cruz,
-            arcade.LBWH(codigosb.ANCHO//2 - 55, 440, 110, 110))
+        if self._mostrar_recompensa:
+            arcade.draw_texture_rect(
+                self.tex_cruz,
+                arcade.LBWH(codigosb.ANCHO//2 - 55, 440, 110, 110))
 
-        arcade.draw_text("Cruz de la Estancia obtenida",
-            codigosb.ANCHO//2, 425, arcade.color.GOLD,
-            font_size=15, bold=True, anchor_x="center")
-        arcade.draw_text(
-            f"+{XP_RECOMPENSA_TRIVIA} Experiencia   -   Medalla: "
-            f"\"{MEDALLA_HISTORIADOR}\"",
-            codigosb.ANCHO//2, 397, arcade.color.LIGHT_PASTEL_PURPLE,
-            font_size=12, anchor_x="center")
+            arcade.draw_text("Cruz de la Estancia obtenida",
+                codigosb.ANCHO//2, 425, arcade.color.GOLD,
+                font_size=15, bold=True, anchor_x="center")
+            arcade.draw_text(
+                f"+{XP_RECOMPENSA_TRIVIA} Experiencia   -   Medalla: "
+                f"\"{MEDALLA_HISTORIADOR}\"",
+                codigosb.ANCHO//2, 397, arcade.color.LIGHT_PASTEL_PURPLE,
+                font_size=12, anchor_x="center")
+        else:
+            arcade.draw_text("Podras intentarlo de nuevo...",
+                codigosb.ANCHO//2, 430, arcade.color.LIGHT_GRAY,
+                font_size=14, anchor_x="center")
 
         arcade.draw_text("FIN DE LA DEMO",
             codigosb.ANCHO//2, 260, arcade.color.WHITE,
