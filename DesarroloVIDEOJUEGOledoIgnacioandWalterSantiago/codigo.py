@@ -6,6 +6,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
+# Tamaño de la ventana y velocidades del personaje
 ANCHO = 800
 ALTO = 600
 TITULO = "REMINENCE OF GRACIA"
@@ -15,6 +16,7 @@ VELOCIDAD_CORRER = 6
 ESCALA_PERSONAJE = 0.35
 VOLUMEN_MUSICA_FONDO = 0.15
 
+# Rutas a todas las imágenes/audios usados (sprite sheet, fondos, personajes, etc.)
 SPRITE_SHEET = str(BASE_DIR / "assets_juicio" / "sprite_sheet.png")
 SPRITE_FRAME_W = 104
 SPRITE_FRAME_H = 200
@@ -54,6 +56,7 @@ ESPALDA = 1
 IZQUIERDA = 2
 DERECHA = 3
 
+# Posibles "modos" en los que puede estar la escena de la Estancia (caminando, hablando, en la trivia, etc.)
 ESTADO_JUGANDO = 0
 ESTADO_HABLANDO = 1
 ESTADO_INTRO_CURA = 2
@@ -78,6 +81,7 @@ ETAPA_TRANSICION = 1
 ETAPA_LOGO_ANTIGUO = 2
 ETAPA_MENU = 3
 
+# Datos de cada personaje que puede hablar (nombre a mostrar y color de sus cuadros de diálogo)
 HABLANTES = {
     "JUEZ": {"nombre": "JUEZ DEL TRIBUNAL", "color_nombre": arcade.color.GOLD, "color_borde": arcade.color.GOLD},
     "ABOGADO": {"nombre": "ABOGADO DE LA CORPORACION", "color_nombre": arcade.color.RED_DEVIL, "color_borde": arcade.color.RED_DEVIL},
@@ -88,6 +92,8 @@ HABLANTES = {
     "NARRADOR": {"nombre": "", "color_nombre": arcade.color.WHITE, "color_borde": arcade.color.WHITE},
 }
 
+# A partir de acá: guiones de diálogo (listas de tuplas "quién habla" + "qué dice")
+# usados en las distintas escenas del juego
 GUION_INTRO_CURA = [
     ("CURA", "La paz sea contigo, hijo! Veo curiosidad en tus ojos... No todos los dias alguien se detiene a observar la historia de este lugar."),
     ("WALEDO", "Estoy recorriendo Alta Gracia y tratando de descubrir los secretos que esconde cada epoca."),
@@ -109,6 +115,7 @@ GUION_CIERRE_CURA_FALLO = [
     ("WALEDO", "Volvere. Todavia me queda mucho por aprender."),
 ]
 
+# Preguntas de la trivia: (enunciado, lista de opciones, índice de la opción correcta)
 PREGUNTAS_ESTANCIA = [
     ("Que anio comenzo a organizarse la Estancia Jesuitica de Alta Gracia?",
      ["1588", "1643", "1767", "1810"], 1),
@@ -225,6 +232,8 @@ GUION_HOTEL = [
 ]
 
 
+# Guarda qué objetos juntó el jugador, su experiencia y medallas.
+# También sabe guardar/cargar esos datos en un archivo JSON (el "save").
 class Inventario:
     OBJETOS_POSIBLES = {
         "Piedra de Moler": "Herramienta indigena anterior a la colonizacion.",
@@ -303,6 +312,8 @@ class Inventario:
             return None
 
 
+# El personaje jugable. Carga el sprite sheet y elige qué cuadro de animación
+# mostrar según hacia dónde se mueve (frente/espalda/izquierda/derecha).
 class Lediago(arcade.Sprite):
     def __init__(self, escala=0.35):
         super().__init__(scale=escala)
@@ -361,6 +372,8 @@ class Lediago(arcade.Sprite):
             self.texture = frames[self._anim_frame]
 
 
+# Funciones sueltas que usan varias pantallas: calcular distancia (para saber si
+# el jugador está cerca de un NPC) y mover al personaje según las teclas W/A/S/D.
 def distancia(x1, y1, x2, y2):
     return math.hypot(x1 - x2, y1 - y2)
 
@@ -381,6 +394,7 @@ def mover_personaje(player, w_ap, s_ap, a_ap, d_ap, shift_ap):
     player.actualizar_direccion()
 
 
+# Dibuja el cajón de diálogo (nombre + texto + "siguiente") que reutilizan varias escenas
 def dibujar_cuadro_dialogo_generico(hablante_clave, texto, indice, total, fin=False):
     info = HABLANTES[hablante_clave]
     m = 20
@@ -400,6 +414,8 @@ def dibujar_cuadro_dialogo_generico(hablante_clave, texto, indice, total, fin=Fa
     arcade.draw_text(pista, ANCHO - m - 10, m + 8, arcade.color.GRAY, font_size=11, anchor_x="right")
 
 
+# Pantalla inicial: logos animados y después el menú de "presiona cualquier tecla".
+# Al arrancar, revisa si hay una partida guardada.
 class IntroView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -456,6 +472,8 @@ class IntroView(arcade.View):
         self.window.show_view(juicio)
 
 
+# Escena del juicio: solo va mostrando el GUION_JUICIO línea por línea
+# y cambia el fondo según en qué parte del guion estemos.
 class JuicioView(arcade.View):
     def __init__(self, musica_fondo=None, reproductor_musica=None, inventario=None):
         super().__init__()
@@ -496,6 +514,8 @@ class JuicioView(arcade.View):
         self.avanzar()
 
 
+# Escena del hotel: el jugador camina libremente y, al acercarse al NPC (Walter/Ledo),
+# se abre el diálogo del GUION_HOTEL.
 class HotelSierrasView(arcade.View):
     FASE_GAMEPLAY = 0
     FASE_DIALOGO = 1
@@ -629,6 +649,8 @@ class HotelSierrasView(arcade.View):
                 self.npc_pose_afk = not self.npc_pose_afk
 
 
+# Escena de la vitrina: permite abrir/cerrar la vitrina, guardar la partida
+# y usar el Cronoscopio para pasar a la escena de la Estancia (GameView).
 class VitrinaView(arcade.View):
     FASE_CERRADA = "cerrada"
     FASE_ABIERTA = "abierta"
@@ -765,6 +787,8 @@ class VitrinaView(arcade.View):
             self.msg_timer = max(0, self.msg_timer - delta_time)
 
 
+# Escena de la Estancia: caminar, hablar con el Cura, responder la trivia
+# de 7 preguntas y, si aprueba, recibir la Cruz de la Estancia (fin de la demo).
 class GameView(arcade.View):
     CURA_CX = 150
     CURA_CY = 230
@@ -826,6 +850,7 @@ class GameView(arcade.View):
             self.respuestas_ok = 0
             self.feedback_visible = False
 
+    # Revisa si la opción elegida es la correcta y guarda el resultado para mostrar feedback
     def _responder(self, opcion):
         if self.feedback_visible:
             return
@@ -1047,6 +1072,7 @@ class GameView(arcade.View):
             self.player.update_animation(delta_time)
 
 
+# Punto de entrada: crea la ventana y arranca mostrando la IntroView
 def main():
     window = arcade.Window(ANCHO, ALTO, TITULO)
     window.center_window()

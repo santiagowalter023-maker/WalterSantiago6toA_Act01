@@ -65,12 +65,15 @@ class VentanaPrincipal(QMainWindow):
         """)
 
     # LOGICA DE BOTONES
+    # Abre codigo.py como un proceso aparte (no se importa, se lanza el juego en su propia ventana)
     def iniciar_juego(self):
         codigo_path = BASE_DIR / "codigo.py"
         subprocess.Popen([sys.executable, str(codigo_path)], cwd=str(BASE_DIR))
 
 
 # ARRANQUE
+# Crea la aplicación Qt, muestra la ventana y queda esperando eventos (clicks, etc.)
+# (en PyQt6 el método se llama exec(), no exec_() como en PyQt5)
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ventana = VentanaPrincipal()
