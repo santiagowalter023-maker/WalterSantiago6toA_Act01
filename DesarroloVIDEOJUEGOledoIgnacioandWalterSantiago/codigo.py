@@ -1,8 +1,11 @@
 import arcade
+import asyncio
+import hashlib
 import json
 import os
 import math
 from pathlib import Path
+import edge_tts
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -80,6 +83,23 @@ ETAPA_LOGO_FUTURISTA = 0
 ETAPA_TRANSICION = 1
 ETAPA_LOGO_ANTIGUO = 2
 ETAPA_MENU = 3
+
+# Voz de Edge TTS asignada a cada personaje (usada por generar_voces.py
+# para generar los audios). El nombre de la voz tiene que terminar en
+# "Neural" -- podés listar las disponibles con: edge-tts --list-voices
+VOCES_PERSONAJE = {
+    "JUEZ"      : "es-ES-AlvaroNeural",
+    "ABOGADO"   : "es-US-AlonsoNeural",
+    "WALTER"    : "es-AR-TomasNeural",
+    "LEDO"      : "es-BO-MarceloNeural",
+    "LEDIAGO"   : "es-CL-LorenzoNeural",
+    "CIUDADANOS": "es-MX-JorgeNeural",
+    "NARRADOR"  : "es-ES-XabierNeural",
+    "CURA"      : "es-CR-JuanNeural",
+    "WALEDO"    : "es-CL-LorenzoNeural",
+}
+VOZ_POR_DEFECTO = "es-AR-ElenaNeural"
+
 
 # Datos de cada personaje que puede hablar (nombre a mostrar y color de sus cuadros de diálogo)
 HABLANTES = {
@@ -395,6 +415,104 @@ def mover_personaje(player, w_ap, s_ap, a_ap, d_ap, shift_ap):
 
 
 # Dibuja el cajón de diálogo (nombre + texto + "siguiente") que reutilizan varias escenas
+# --- Sistema de voces (edge-tts) -------------------------------------------
+# Todo vive en este mismo archivo: la generación (con edge_tts, necesita
+# internet) corre una sola vez al arrancar el juego -normalmente instantánea,
+# porque solo genera lo que falta- y deja los audios en la carpeta voces/.
+# La reproducción después solo busca esos archivos y los pasa por arcade.Sound.
+CARPETA_VOCES = BASE_DIR / "voces"
+VOLUMEN_VOCES = 1.0
+
+_cache_sonidos_voz = {}
+_reproductor_voz_actual = None
+
+
+def _clave_voz(hablante, texto):
+    contenido = f"{hablante}|{texto}".encode("utf-8")
+    return hashlib.md5(contenido).hexdigest()[:12]
+
+
+def _lineas_de_guion(guion):
+    """(hablante, texto) de un guion, sin importar si trae un 3er campo (fondo)."""
+    for fila in guion:
+        yield fila[0], fila[1]
+
+
+def _todas_las_lineas_de_dialogo():
+    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL]
+    lineas = {}
+    for guion in guiones:
+        for hablante, texto in _lineas_de_guion(guion):
+            lineas[_clave_voz(hablante, texto)] = (hablante, texto)
+    return lineas
+
+
+async def _generar_una_voz(clave, hablante, texto):
+    destino = CARPETA_VOCES / f"{clave}.mp3"
+    if destino.exists():
+        return
+    voz = VOCES_PERSONAJE.get(hablante, VOZ_POR_DEFECTO)
+    comunicador = edge_tts.Communicate(texto, voz)
+    await comunicador.save(str(destino))
+
+
+async def _generar_voces_faltantes_async():
+    CARPETA_VOCES.mkdir(exist_ok=True)
+    lineas = _todas_las_lineas_de_dialogo()
+    faltantes = {c: ht for c, ht in lineas.items() if not (CARPETA_VOCES / f"{c}.mp3").exists() and not (CARPETA_VOCES / f"{c}.wav").exists()}
+    if not faltantes:
+        return
+    print(f"Generando voces ({len(faltantes)} lineas nuevas, puede tardar un momento)...")
+    for clave, (hablante, texto) in faltantes.items():
+        try:
+            await _generar_una_voz(clave, hablante, texto)
+        except Exception as e:
+            print(f"  No se pudo generar la voz de {hablante!r}: {e}")
+    print("Voces listas.")
+
+
+def generar_voces_faltantes():
+    """Se llama una vez al arrancar el juego (ver main()). Necesita internet
+    la primera vez; después no vuelve a tocar los archivos que ya existen."""
+    try:
+        asyncio.run(_generar_voces_faltantes_async())
+    except Exception as e:
+        print(f"No se pudieron generar las voces (¿sin internet?): {e}")
+        print("El juego va a seguir funcionando, solo que sin voz en las lineas que falten.")
+
+
+def _sonido_voz(hablante, texto):
+    clave = _clave_voz(hablante, texto)
+    ruta = CARPETA_VOCES / f"{clave}.wav"
+    if not ruta.exists():
+        ruta = CARPETA_VOCES / f"{clave}.mp3"
+    if not ruta.exists():
+        return None
+    if ruta not in _cache_sonidos_voz:
+        try:
+            _cache_sonidos_voz[ruta] = arcade.Sound(str(ruta), streaming=False)
+        except Exception:
+            _cache_sonidos_voz[ruta] = None
+    return _cache_sonidos_voz[ruta]
+
+
+def reproducir_voz(hablante, texto):
+    """Corta la voz que esté sonando y reproduce la de la línea actual.
+    Si todavía no se generó el audio de esa línea, no hace nada
+    (el juego sigue funcionando igual, solo sin voz en esa línea)."""
+    global _reproductor_voz_actual
+    if _reproductor_voz_actual is not None:
+        try:
+            _reproductor_voz_actual.pause()
+        except Exception:
+            pass
+        _reproductor_voz_actual = None
+    sonido = _sonido_voz(hablante, texto)
+    if sonido is not None:
+        _reproductor_voz_actual = sonido.play(volume=VOLUMEN_VOCES)
+# -----------------------------------------------------------------------------
+
+
 def dibujar_cuadro_dialogo_generico(hablante_clave, texto, indice, total, fin=False):
     info = HABLANTES[hablante_clave]
     m = 20
@@ -487,6 +605,7 @@ class JuicioView(arcade.View):
         }
         self.indice = 0
         self.terminado = False
+        reproducir_voz(*GUION_JUICIO[0][:2])
 
     def on_draw(self):
         self.clear()
@@ -505,6 +624,7 @@ class JuicioView(arcade.View):
         if self.indice >= len(GUION_JUICIO):
             self.indice = len(GUION_JUICIO) - 1
             self.terminado = True
+        reproducir_voz(*GUION_JUICIO[self.indice][:2])
 
     def on_key_press(self, key, modifiers):
         if key in (arcade.key.SPACE, arcade.key.ENTER):
@@ -566,6 +686,7 @@ class HotelSierrasView(arcade.View):
         self.fase = HotelSierrasView.FASE_DIALOGO
         self.player.change_x = 0
         self.player.change_y = 0
+        reproducir_voz(*GUION_HOTEL[0])
 
     def _avanzar_dialogo(self):
         if self.dialogo_fin:
@@ -575,6 +696,7 @@ class HotelSierrasView(arcade.View):
         if self.dialogo_idx >= len(GUION_HOTEL):
             self.dialogo_idx = len(GUION_HOTEL) - 1
             self.dialogo_fin = True
+        reproducir_voz(*GUION_HOTEL[self.dialogo_idx])
 
     def on_draw(self):
         self.clear()
@@ -841,6 +963,7 @@ class GameView(arcade.View):
         self.estado = ESTADO_INTRO_CURA
         self.player.change_x = 0
         self.player.change_y = 0
+        reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_intro(self):
         self.indice_cura += 1
@@ -849,6 +972,8 @@ class GameView(arcade.View):
             self.indice_pregunta = 0
             self.respuestas_ok = 0
             self.feedback_visible = False
+        else:
+            reproducir_voz(*self.guion_cura[self.indice_cura])
 
     # Revisa si la opción elegida es la correcta y guarda el resultado para mostrar feedback
     def _responder(self, opcion):
@@ -881,11 +1006,14 @@ class GameView(arcade.View):
                 self.mostrar_recompensa = False
             self.indice_cura = 0
             self.estado = ESTADO_CIERRE_CURA
+            reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_cierre(self):
         self.indice_cura += 1
         if self.indice_cura >= len(self.guion_cura):
             self.estado = ESTADO_FIN_DEMO
+        else:
+            reproducir_voz(*self.guion_cura[self.indice_cura])
 
     def _rect_opcion(self, i):
         m = 60
@@ -1074,6 +1202,7 @@ class GameView(arcade.View):
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView
 def main():
+    generar_voces_faltantes()
     window = arcade.Window(ANCHO, ALTO, TITULO)
     window.center_window()
     window.show_view(IntroView())
