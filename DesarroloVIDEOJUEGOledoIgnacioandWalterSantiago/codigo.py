@@ -79,6 +79,10 @@ DURACION_LOGO_FUTURISTA = 2.5
 DURACION_TRANSICION = 0.4
 DURACION_LOGO_ANTIGUO = 2.5
 
+# Tiempo (en segundos) que tarda en terminar de "escribirse" cada línea de
+# diálogo en pantalla, efecto cinemática.
+DURACION_TEXTO_DIALOGO = 8.0
+
 ETAPA_LOGO_FUTURISTA = 0
 ETAPA_TRANSICION = 1
 ETAPA_LOGO_ANTIGUO = 2
@@ -513,6 +517,31 @@ def reproducir_voz(hablante, texto):
 # -----------------------------------------------------------------------------
 
 
+def texto_progresivo(texto, tiempo_transcurrido, duracion=DURACION_TEXTO_DIALOGO):
+    """Corta el texto según cuánto tiempo pasó, para el efecto de cinemática
+    donde las letras van apareciendo de a poco hasta completarse en
+    `duracion` segundos."""
+    if duracion <= 0 or tiempo_transcurrido >= duracion:
+        return texto
+    progreso = max(0.0, tiempo_transcurrido / duracion)
+    return texto[:int(len(texto) * progreso)]
+
+
+def dibujar_boton_saltar(x=ANCHO - 160, y=ALTO - 34, w=140, h=26):
+    """Botón simple de 'Saltar escena'. Devuelve su rectángulo (x1, y1, x2, y2)
+    para poder detectar el click sobre él."""
+    arcade.draw_rect_filled(arcade.LRBT(x, x + w, y, y + h), (20, 20, 20, 215))
+    arcade.draw_rect_outline(arcade.LRBT(x, x + w, y, y + h), arcade.color.LIGHT_GRAY, border_width=1)
+    arcade.draw_text("Saltar escena >>", x + w / 2, y + h / 2, arcade.color.WHITE,
+                      font_size=10, anchor_x="center", anchor_y="center", bold=True)
+    return (x, y, x + w, y + h)
+
+
+def click_en_rect(x, y, rect):
+    x1, y1, x2, y2 = rect
+    return x1 <= x <= x2 and y1 <= y <= y2
+
+
 def dibujar_cuadro_dialogo_generico(hablante_clave, texto, indice, total, fin=False):
     info = HABLANTES[hablante_clave]
     m = 20
@@ -605,15 +634,22 @@ class JuicioView(arcade.View):
         }
         self.indice = 0
         self.terminado = False
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
         reproducir_voz(*GUION_JUICIO[0][:2])
 
     def on_draw(self):
         self.clear()
         hablante, texto, fondo = GUION_JUICIO[self.indice]
         arcade.draw_texture_rect(self.texturas_fondo[fondo], arcade.LBWH(0, 0, ANCHO, ALTO))
-        dibujar_cuadro_dialogo_generico(hablante, texto, self.indice, len(GUION_JUICIO), fin=self.terminado)
+        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice, len(GUION_JUICIO), fin=self.terminado)
         if self.terminado:
             arcade.draw_text("FIN DE LA ESCENA", ANCHO // 2, ALTO - 30, arcade.color.WHITE, font_size=14, bold=True, anchor_x="center")
+        self._rect_saltar = dibujar_boton_saltar()
+
+    def on_update(self, delta_time):
+        self.tiempo_linea += delta_time
 
     def avanzar(self):
         if self.terminado:
@@ -624,13 +660,23 @@ class JuicioView(arcade.View):
         if self.indice >= len(GUION_JUICIO):
             self.indice = len(GUION_JUICIO) - 1
             self.terminado = True
+        self.tiempo_linea = 0.0
         reproducir_voz(*GUION_JUICIO[self.indice][:2])
 
+    def _saltar_escena(self):
+        siguiente_vista = HotelSierrasView(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario)
+        self.window.show_view(siguiente_vista)
+
     def on_key_press(self, key, modifiers):
-        if key in (arcade.key.SPACE, arcade.key.ENTER):
+        if key == arcade.key.TAB:
+            self._saltar_escena()
+        elif key in (arcade.key.SPACE, arcade.key.ENTER):
             self.avanzar()
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            self._saltar_escena()
+            return
         self.avanzar()
 
 
@@ -672,6 +718,8 @@ class HotelSierrasView(arcade.View):
         self.dialogo_fin = False
         self.anim_timer = 0.0
         self.npc_pose_afk = False
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
 
     def _mover_player(self):
         mover_personaje(self.player, self.w_ap, self.s_ap, self.a_ap, self.d_ap, self.shift_ap)
@@ -686,6 +734,7 @@ class HotelSierrasView(arcade.View):
         self.fase = HotelSierrasView.FASE_DIALOGO
         self.player.change_x = 0
         self.player.change_y = 0
+        self.tiempo_linea = 0.0
         reproducir_voz(*GUION_HOTEL[0])
 
     def _avanzar_dialogo(self):
@@ -696,7 +745,11 @@ class HotelSierrasView(arcade.View):
         if self.dialogo_idx >= len(GUION_HOTEL):
             self.dialogo_idx = len(GUION_HOTEL) - 1
             self.dialogo_fin = True
+        self.tiempo_linea = 0.0
         reproducir_voz(*GUION_HOTEL[self.dialogo_idx])
+
+    def _saltar_dialogo(self):
+        self.window.show_view(VitrinaView(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario))
 
     def on_draw(self):
         self.clear()
@@ -714,9 +767,12 @@ class HotelSierrasView(arcade.View):
         if self.fase == HotelSierrasView.FASE_GAMEPLAY and self._cerca_npc():
             arcade.draw_text("[ ESPACIO / CLICK ] Hablar", self.npc_cx, self.npc_cy + self.npc_h // 2 + 14, arcade.color.YELLOW, font_size=11, anchor_x="center", bold=True)
 
+        self._rect_saltar = None
         if self.fase == HotelSierrasView.FASE_DIALOGO:
             hablante, texto = GUION_HOTEL[self.dialogo_idx]
-            dibujar_cuadro_dialogo_generico(hablante, texto, self.dialogo_idx, len(GUION_HOTEL), fin=self.dialogo_fin)
+            texto_visible = texto_progresivo(texto, self.tiempo_linea)
+            dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.dialogo_idx, len(GUION_HOTEL), fin=self.dialogo_fin)
+            self._rect_saltar = dibujar_boton_saltar()
 
     def on_key_press(self, key, modifiers):
         if self.fase == HotelSierrasView.FASE_GAMEPLAY:
@@ -734,7 +790,9 @@ class HotelSierrasView(arcade.View):
                 self._iniciar_dialogo()
             self._mover_player()
         elif self.fase == HotelSierrasView.FASE_DIALOGO:
-            if key in (arcade.key.SPACE, arcade.key.ENTER):
+            if key == arcade.key.TAB:
+                self._saltar_dialogo()
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
                 self._avanzar_dialogo()
 
     def on_key_release(self, key, modifiers):
@@ -751,6 +809,9 @@ class HotelSierrasView(arcade.View):
         self._mover_player()
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if self.fase == HotelSierrasView.FASE_DIALOGO and self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            self._saltar_dialogo()
+            return
         if self.fase == HotelSierrasView.FASE_GAMEPLAY and self._cerca_npc():
             self._iniciar_dialogo()
         elif self.fase == HotelSierrasView.FASE_DIALOGO:
@@ -769,6 +830,8 @@ class HotelSierrasView(arcade.View):
             if self.anim_timer >= 3.5:
                 self.anim_timer = 0.0
                 self.npc_pose_afk = not self.npc_pose_afk
+        elif self.fase == HotelSierrasView.FASE_DIALOGO:
+            self.tiempo_linea += delta_time
 
 
 # Escena de la vitrina: permite abrir/cerrar la vitrina, guardar la partida
@@ -949,6 +1012,8 @@ class GameView(arcade.View):
         self.feedback_correcta = False
         self.ultima_opcion = -1
         self.mostrar_recompensa = False
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
 
     def _cerca_cura(self):
         d = distancia(self.player.center_x, self.player.center_y, self.CURA_CX, self.CURA_CY)
@@ -963,10 +1028,12 @@ class GameView(arcade.View):
         self.estado = ESTADO_INTRO_CURA
         self.player.change_x = 0
         self.player.change_y = 0
+        self.tiempo_linea = 0.0
         reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_intro(self):
         self.indice_cura += 1
+        self.tiempo_linea = 0.0
         if self.indice_cura >= len(self.guion_cura):
             self.estado = ESTADO_TRIVIA
             self.indice_pregunta = 0
@@ -974,6 +1041,16 @@ class GameView(arcade.View):
             self.feedback_visible = False
         else:
             reproducir_voz(*self.guion_cura[self.indice_cura])
+
+    def _saltar_dialogo_cura(self):
+        """Salta el resto del diálogo actual del Cura (intro o cierre)."""
+        if self.estado == ESTADO_INTRO_CURA:
+            self.estado = ESTADO_TRIVIA
+            self.indice_pregunta = 0
+            self.respuestas_ok = 0
+            self.feedback_visible = False
+        elif self.estado == ESTADO_CIERRE_CURA:
+            self.estado = ESTADO_FIN_DEMO
 
     # Revisa si la opción elegida es la correcta y guarda el resultado para mostrar feedback
     def _responder(self, opcion):
@@ -1006,10 +1083,12 @@ class GameView(arcade.View):
                 self.mostrar_recompensa = False
             self.indice_cura = 0
             self.estado = ESTADO_CIERRE_CURA
+            self.tiempo_linea = 0.0
             reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_cierre(self):
         self.indice_cura += 1
+        self.tiempo_linea = 0.0
         if self.indice_cura >= len(self.guion_cura):
             self.estado = ESTADO_FIN_DEMO
         else:
@@ -1043,8 +1122,10 @@ class GameView(arcade.View):
         if self.estado == ESTADO_JUGANDO and self._cerca_cura():
             arcade.draw_text("[ ESPACIO / CLICK ] Hablar con el Cura", ANCHO // 2, self.CURA_CY + 160, arcade.color.YELLOW, font_size=11, anchor_x="center", bold=True)
 
+        self._rect_saltar = None
         if self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
             nombre, texto = self.guion_cura[self.indice_cura]
+            texto_visible = texto_progresivo(texto, self.tiempo_linea)
             hablante_key = "CURA" if nombre == "CURA" else "LEDIAGO"
             m = 20
             alto_caja = 150
@@ -1055,8 +1136,9 @@ class GameView(arcade.View):
             arcade.draw_rect_outline(arcade.LRBT(m, m + 170, alto_caja - 4, alto_caja + 26), color, border_width=2)
             etiqueta = "CURA DE LA ESTANCIA" if nombre == "CURA" else "LEDIAGO WALEDO"
             arcade.draw_text(etiqueta, m + 14, alto_caja + 3, color, font_size=12, bold=True, anchor_y="center")
-            arcade.draw_text(texto, m + 20, alto_caja - 30, arcade.color.WHITE, font_size=15, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
+            arcade.draw_text(texto_visible, m + 20, alto_caja - 30, arcade.color.WHITE, font_size=15, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
             arcade.draw_text("[Espacio] Continuar...", ANCHO - m - 10, m + 8, arcade.color.GRAY, font_size=11, anchor_x="right")
+            self._rect_saltar = dibujar_boton_saltar()
 
         elif self.estado == ESTADO_TRIVIA:
             self._dibujar_trivia()
@@ -1128,7 +1210,9 @@ class GameView(arcade.View):
             self._mover_player()
 
         elif self.estado in (ESTADO_INTRO_CURA,):
-            if key in (arcade.key.SPACE, arcade.key.ENTER):
+            if key == arcade.key.TAB:
+                self._saltar_dialogo_cura()
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
                 self._avanzar_intro()
 
         elif self.estado == ESTADO_TRIVIA:
@@ -1141,7 +1225,9 @@ class GameView(arcade.View):
                 self._siguiente_pregunta()
 
         elif self.estado == ESTADO_CIERRE_CURA:
-            if key in (arcade.key.SPACE, arcade.key.ENTER):
+            if key == arcade.key.TAB:
+                self._saltar_dialogo_cura()
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
                 self._avanzar_cierre()
 
         elif self.estado == ESTADO_FIN_DEMO:
@@ -1172,6 +1258,9 @@ class GameView(arcade.View):
                     break
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA) and self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            self._saltar_dialogo_cura()
+            return
         if self.estado == ESTADO_JUGANDO and self._cerca_cura():
             self._iniciar_intro_cura()
         elif self.estado == ESTADO_INTRO_CURA:
@@ -1198,6 +1287,8 @@ class GameView(arcade.View):
             self.player.center_x = max(mw, min(ANCHO - mw, nueva_x))
             self.player.center_y = max(mh, min(ALTO - mh, nueva_y))
             self.player.update_animation(delta_time)
+        elif self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
+            self.tiempo_linea += delta_time
 
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView
