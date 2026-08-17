@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import math
+import random
 from pathlib import Path
 import edge_tts
 
@@ -52,6 +53,12 @@ VITRINA_FONDO = str(BASE_DIR / "assets_juicio" / "vitrina_fondo.jpeg")
 VITRINA_ABIERTA = str(BASE_DIR / "assets_juicio" / "vitrina_abierta.jpeg")
 CRONOSCOPIO_IMG = str(BASE_DIR / "assets_juicio" / "cronoscopio.png")
 
+# Nivel 2: "Senderos de Paravachasca" (dialogo con el Indio + esquivar lanzas)
+FONDO_SUBNIVEL1 = str(BASE_DIR / "assets_paravachasca" / "fondo_subnivel1.jpg")
+INDIO_IDLE_IMG = str(BASE_DIR / "assets_paravachasca" / "indio_idle.png")
+INDIO_DIALOGO_IMG = str(BASE_DIR / "assets_paravachasca" / "indio_dialogo.png")
+LANZA_IMG = str(BASE_DIR / "assets_paravachasca" / "lanza_proyectil.png")
+
 SAVE_FILE = str(BASE_DIR / "partida_guardada.json")
 
 FRENTE = 0
@@ -74,6 +81,19 @@ FONDO_CERRADO = "cerrado"
 MEDALLA_HISTORIADOR = "Historiador de la Estancia"
 XP_RECOMPENSA_TRIVIA = 100
 PREGUNTAS_MINIMAS_PARA_GANAR = 5
+
+# --- Nivel 2: "Senderos de Paravachasca" ---
+TITULO_NIVEL2 = "NIVEL 2 - SENDEROS DE PARAVACHASCA"
+MEDALLA_PARAVACHASCA = "Guardian de Paravachasca"
+XP_RECOMPENSA_NIVEL2 = 100
+NIVEL2_DURACION_SEGUNDOS = 120.0   # 2 minutos para ganar el nivel
+NIVEL2_VIDAS = 3                   # golpes de lanza permitidos antes de perder
+NIVEL2_ESCALA_LANZA = 0.18
+NIVEL2_VELOCIDAD_LANZA_MIN = 220   # px/seg al arrancar el nivel
+NIVEL2_VELOCIDAD_LANZA_MAX = 400   # px/seg cerca del final (mas dificil)
+NIVEL2_INTERVALO_SPAWN_INICIAL = 1.15  # segundos entre lanzas al arrancar
+NIVEL2_INTERVALO_SPAWN_MINIMO = 0.45   # segundos entre lanzas en lo mas dificil
+NIVEL2_TIEMPO_INVULNERABLE = 1.2   # segundos de "respiro" despues de un golpe
 
 DURACION_LOGO_FUTURISTA = 2.5
 DURACION_TRANSICION = 0.4
@@ -101,6 +121,7 @@ VOCES_PERSONAJE = {
     "NARRADOR"  : "es-ES-XabierNeural",
     "CURA"      : "es-CR-JuanNeural",
     "WALEDO"    : "es-CL-LorenzoNeural",
+    "INDIO"     : "es-EC-LuisNeural",
 }
 VOZ_POR_DEFECTO = "es-AR-ElenaNeural"
 
@@ -114,6 +135,8 @@ HABLANTES = {
     "LEDIAGO": {"nombre": "LEDIAGO WALEDO", "color_nombre": arcade.color.LIGHT_PASTEL_PURPLE, "color_borde": arcade.color.LIGHT_PASTEL_PURPLE},
     "CIUDADANOS": {"nombre": "CIUDADANOS", "color_nombre": arcade.color.LIGHT_GRAY, "color_borde": arcade.color.LIGHT_GRAY},
     "NARRADOR": {"nombre": "", "color_nombre": arcade.color.WHITE, "color_borde": arcade.color.WHITE},
+    "WALEDO": {"nombre": "LEDIAGO WALEDO", "color_nombre": arcade.color.LIGHT_PASTEL_PURPLE, "color_borde": arcade.color.LIGHT_PASTEL_PURPLE},
+    "INDIO": {"nombre": "SABIO COMECHINGON", "color_nombre": arcade.color.ORANGE, "color_borde": arcade.color.ORANGE},
 }
 
 # A partir de acá: guiones de diálogo (listas de tuplas "quién habla" + "qué dice")
@@ -253,6 +276,17 @@ GUION_HOTEL = [
     ("LEDO", "Ninguna."),
     ("WALTER", "Preparate, viajero."),
     ("LEDO", "Tu primera parada te espera hace cientos de anios."),
+]
+
+# Dialogo del Nivel 2 ("Senderos de Paravachasca"): Waledo habla con el Indio
+# antes de enfrentar el desafio de esquivar las lanzas.
+GUION_INDIO_NIVEL2 = [
+    ("WALEDO", "Saludos, sabio del monte. Dime, como era este valle de Paravachasca mucho antes de que la ciudad de Alta Gracia fuera lo que conocemos hoy?"),
+    ("INDIO", "Ah, Waledo... Escucha el murmullo del viento entre los algarrobos. Antes de que existieran las murallas de piedra, los caminos trazados y las luces de la ciudad, esta tierra nos pertenecia a nosotros, los comechingones. Viviamos en casas semisubterraneas para protegernos del frio y del calor, alimentandonos de los frutos del monte y cazando con respeto. Para nosotros, los cerros y los rios de agua clara no eran solo paisaje, eran vida y espiritu sagrado."),
+    ("WALEDO", "He leido sobre su pueblo y sobre como la llegada de los conquistadores y la posterior instalacion de las estancias jesuitas transformaron por completo la region. Como vivieron esa transicion?"),
+    ("INDIO", "Fue un cambio profundo y doloroso, Waledo. Con la llegada de los jesuitas en el siglo XVII, el valle cambio su rostro para siempre. Ellos levantaron la gran Estancia de Alta Gracia, construyeron el Tajamar para canalizar el agua, fundaron la iglesia y trajeron nuevos oficios y culturas. Aunque transformaron el valle en un centro productivo y de fe, la huella de nuestros antepasados jamas se borro. La piedra, el mortero tallado en la roca y la tierra misma conservan nuestro legado."),
+    ("WALEDO", "Es una historia de transformacion increible. Caminar por Alta Gracia hoy me hace sentir que el pasado y el presente conviven en cada rincon. Siento que apenas estoy empezando a entender los misterios de este lugar."),
+    ("INDIO", "Y no te equivocas, Waledo. Tu travesia por estas tierras recien comienza. Si de verdad deseas descifrar los antiguos secretos de Paravachasca y estar preparado para avanzar al Nivel 3, aun debes completar 2 niveles mas. No apresures tu marcha; observa con atencion, escucha al monte y supera las pruebas que te aguardan. Solo asi seras digno del conocimiento ancestral."),
 ]
 
 
@@ -443,7 +477,7 @@ def _lineas_de_guion(guion):
 
 
 def _todas_las_lineas_de_dialogo():
-    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL]
+    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2]
     lineas = {}
     for guion in guiones:
         for hablante, texto in _lineas_de_guion(guion):
@@ -1190,8 +1224,8 @@ class GameView(arcade.View):
             arcade.draw_text("Podras intentarlo de nuevo...", ANCHO // 2, 430, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
 
         arcade.draw_text("FIN DE LA DEMO", ANCHO // 2, 280, arcade.color.WHITE, font_size=32, bold=True, anchor_x="center")
-        arcade.draw_text("Gracias por jugar Reminiscence of Gracia", ANCHO // 2, 235, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
-        arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+        arcade.draw_text("El Cronoscopio ya detecta tu proximo destino...", ANCHO // 2, 235, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Continuar tu viaje", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if self.estado == ESTADO_JUGANDO:
@@ -1232,7 +1266,8 @@ class GameView(arcade.View):
 
         elif self.estado == ESTADO_FIN_DEMO:
             if key == arcade.key.SPACE:
-                arcade.exit()
+                siguiente_vista = Nivel2View(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario)
+                self.window.show_view(siguiente_vista)
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.W:
@@ -1289,6 +1324,264 @@ class GameView(arcade.View):
             self.player.update_animation(delta_time)
         elif self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
             self.tiempo_linea += delta_time
+
+
+# Nivel 2 - "Senderos de Paravachasca": primero Waledo conversa con el Indio
+# (dialogo con voz, igual que las demas escenas) y despues tiene que esquivar,
+# durante 2 minutos, las lanzas que van cayendo desde arriba de la pantalla.
+# Si una lanza lo toca pierde una vida; si se queda sin vidas, pierde el nivel.
+# Si aguanta los 2 minutos completos, gana la Piedra de Moler.
+class Nivel2View(arcade.View):
+    FASE_DIALOGO = 0
+    FASE_JUEGO = 1
+    FASE_VICTORIA = 2
+    FASE_DERROTA = 3
+
+    JUGADOR_Y = 90  # altura fija donde se mueve el jugador (solo izquierda/derecha)
+
+    def __init__(self, musica_fondo=None, reproductor_musica=None, inventario=None):
+        super().__init__()
+        self.inventario = inventario or Inventario()
+        self.musica_fondo = musica_fondo
+        self.reproductor_musica = reproductor_musica
+        if self.musica_fondo is None:
+            self.musica_fondo = arcade.Sound(MUSICA_FONDO, streaming=False)
+            self.reproductor_musica = self.musica_fondo.play(volume=VOLUMEN_MUSICA_FONDO, loop=True)
+
+        self.fondo = arcade.load_texture(FONDO_SUBNIVEL1)
+        self.tex_indio_dlg = arcade.load_texture(INDIO_DIALOGO_IMG)
+        self.tex_indio_idle = arcade.load_texture(INDIO_IDLE_IMG)
+        self.tex_lanza = arcade.load_texture(LANZA_IMG)
+
+        # --- fase de dialogo ---
+        self.fase = Nivel2View.FASE_DIALOGO
+        self.indice_dialogo = 0
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
+        reproducir_voz(*GUION_INDIO_NIVEL2[0])
+
+        # --- jugador ---
+        self.player = Lediago(escala=ESCALA_PERSONAJE)
+        self.player.center_x = ANCHO // 2
+        self.player.center_y = Nivel2View.JUGADOR_Y
+        self.player_list = arcade.SpriteList()
+        self.player_list.append(self.player)
+        self.a_ap = self.d_ap = False
+
+        # --- minijuego de esquivar lanzas ---
+        self.lanza_list = arcade.SpriteList()
+        self.tiempo_restante = NIVEL2_DURACION_SEGUNDOS
+        self.vidas = NIVEL2_VIDAS
+        self.tiempo_spawn = 0.0
+        self.invulnerable_seg = 0.0
+        self.mostro_recompensa = False
+
+    # ---------------- fase de dialogo ----------------
+    def _avanzar_dialogo(self):
+        self.indice_dialogo += 1
+        self.tiempo_linea = 0.0
+        if self.indice_dialogo >= len(GUION_INDIO_NIVEL2):
+            self._iniciar_juego()
+        else:
+            reproducir_voz(*GUION_INDIO_NIVEL2[self.indice_dialogo])
+
+    def _iniciar_juego(self):
+        self.fase = Nivel2View.FASE_JUEGO
+        self.player.center_x = ANCHO // 2
+        self.player.center_y = Nivel2View.JUGADOR_Y
+        self.player.change_x = 0
+        self.player.change_y = 0
+
+    # ---------------- fase del minijuego ----------------
+    def _spawn_lanza(self):
+        lanza = arcade.Sprite(scale=NIVEL2_ESCALA_LANZA)
+        lanza.texture = self.tex_lanza
+        lanza.center_x = random.randint(40, ANCHO - 40)
+        lanza.bottom = ALTO + 10
+        progreso = 1.0 - (self.tiempo_restante / NIVEL2_DURACION_SEGUNDOS)
+        velocidad = NIVEL2_VELOCIDAD_LANZA_MIN + (NIVEL2_VELOCIDAD_LANZA_MAX - NIVEL2_VELOCIDAD_LANZA_MIN) * progreso
+        lanza.change_y = -velocidad
+        self.lanza_list.append(lanza)
+
+    def _intervalo_spawn_actual(self):
+        progreso = 1.0 - (self.tiempo_restante / NIVEL2_DURACION_SEGUNDOS)
+        intervalo = NIVEL2_INTERVALO_SPAWN_INICIAL - (NIVEL2_INTERVALO_SPAWN_INICIAL - NIVEL2_INTERVALO_SPAWN_MINIMO) * progreso
+        return max(NIVEL2_INTERVALO_SPAWN_MINIMO, intervalo)
+
+    def _mover_player_horizontal(self):
+        velocidad = VELOCIDAD_CORRER
+        self.player.change_x = 0
+        if self.a_ap and not self.d_ap:
+            self.player.change_x = -velocidad
+        elif self.d_ap and not self.a_ap:
+            self.player.change_x = velocidad
+        self.player.actualizar_direccion()
+
+    def _actualizar_juego(self, delta_time):
+        self._mover_player_horizontal()
+        mw = self.player.width / 2
+        nueva_x = self.player.center_x + self.player.change_x
+        self.player.center_x = max(mw, min(ANCHO - mw, nueva_x))
+        self.player.update_animation(delta_time)
+
+        if self.invulnerable_seg > 0:
+            self.invulnerable_seg = max(0.0, self.invulnerable_seg - delta_time)
+        self.player.alpha = 130 if (self.invulnerable_seg > 0 and int(self.invulnerable_seg * 12) % 2 == 0) else 255
+
+        self.tiempo_restante -= delta_time
+        if self.tiempo_restante <= 0:
+            self.tiempo_restante = 0
+            self._ganar()
+            return
+
+        self.tiempo_spawn += delta_time
+        if self.tiempo_spawn >= self._intervalo_spawn_actual():
+            self.tiempo_spawn = 0.0
+            self._spawn_lanza()
+
+        for lanza in self.lanza_list:
+            lanza.center_y += lanza.change_y * delta_time
+        for lanza in list(self.lanza_list):
+            if lanza.top < 0:
+                lanza.remove_from_sprite_lists()
+
+        if self.invulnerable_seg <= 0:
+            golpes = arcade.check_for_collision_with_list(self.player, self.lanza_list)
+            if golpes:
+                for l in golpes:
+                    l.remove_from_sprite_lists()
+                self.vidas -= 1
+                self.invulnerable_seg = NIVEL2_TIEMPO_INVULNERABLE
+                if self.vidas <= 0:
+                    self._perder()
+
+    def _ganar(self):
+        self.fase = Nivel2View.FASE_VICTORIA
+        self.lanza_list.clear()
+        ya_tenia = self.inventario.tiene("Piedra de Moler")
+        self.inventario.agregar("Piedra de Moler")
+        self.inventario.sumar_experiencia(XP_RECOMPENSA_NIVEL2)
+        self.inventario.otorgar_medalla(MEDALLA_PARAVACHASCA)
+        self.inventario.guardar()
+        self.mostro_recompensa = not ya_tenia
+
+    def _perder(self):
+        self.fase = Nivel2View.FASE_DERROTA
+        self.lanza_list.clear()
+
+    def _reintentar_juego(self):
+        self.fase = Nivel2View.FASE_JUEGO
+        self.tiempo_restante = NIVEL2_DURACION_SEGUNDOS
+        self.vidas = NIVEL2_VIDAS
+        self.tiempo_spawn = 0.0
+        self.invulnerable_seg = 0.0
+        self.lanza_list.clear()
+        self.player.alpha = 255
+        self.player.center_x = ANCHO // 2
+        self.player.center_y = Nivel2View.JUGADOR_Y
+
+    # ---------------- dibujado ----------------
+    def on_draw(self):
+        self.clear()
+        arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, ANCHO, ALTO))
+        arcade.draw_text(TITULO_NIVEL2, 14, ALTO - 22, arcade.color.WHITE, font_size=11, bold=True)
+
+        if self.fase == Nivel2View.FASE_DIALOGO:
+            self._dibujar_dialogo()
+        elif self.fase == Nivel2View.FASE_JUEGO:
+            self._dibujar_indio_espectador()
+            self.lanza_list.draw()
+            self.player_list.draw()
+            self._dibujar_hud_juego()
+        elif self.fase == Nivel2View.FASE_VICTORIA:
+            self._dibujar_victoria()
+        elif self.fase == Nivel2View.FASE_DERROTA:
+            self._dibujar_derrota()
+
+    def _dibujar_dialogo(self):
+        iw = int(self.tex_indio_dlg.width * 0.48)
+        ih = int(self.tex_indio_dlg.height * 0.48)
+        arcade.draw_texture_rect(self.tex_indio_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
+
+        hablante, texto = GUION_INDIO_NIVEL2[self.indice_dialogo]
+        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        es_ultima = self.indice_dialogo == len(GUION_INDIO_NIVEL2) - 1
+        fin = es_ultima and texto_visible == texto
+        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_INDIO_NIVEL2), fin=fin)
+        self._rect_saltar = dibujar_boton_saltar()
+
+    def _dibujar_indio_espectador(self):
+        """El Indio observa la prueba desde un costado (solo decorativo)."""
+        iw = int(self.tex_indio_idle.width * 0.35)
+        ih = int(self.tex_indio_idle.height * 0.35)
+        arcade.draw_texture_rect(self.tex_indio_idle, arcade.LBWH(20, Nivel2View.JUGADOR_Y - ih // 2, iw, ih))
+
+    def _dibujar_hud_juego(self):
+        m = 14
+        segundos = max(0, int(self.tiempo_restante))
+        mm, ss = divmod(segundos, 60)
+        arcade.draw_text(f"Tiempo: {mm:01d}:{ss:02d}", ANCHO - m, ALTO - 22, arcade.color.WHITE, font_size=13, bold=True, anchor_x="right")
+        arcade.draw_text(f"Vidas: {'*' * self.vidas}{'.' * (NIVEL2_VIDAS - self.vidas)}", ANCHO - m, ALTO - 44, arcade.color.RED_DEVIL, font_size=13, bold=True, anchor_x="right")
+        arcade.draw_text("[A] [D] para moverte - Esquiva las lanzas!", ANCHO // 2, 20, arcade.color.LIGHT_GRAY, font_size=11, anchor_x="center")
+
+    def _dibujar_victoria(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
+        if self.mostro_recompensa:
+            arcade.draw_text("*** SUPERASTE EL NIVEL 2 ***", ANCHO // 2, 430, arcade.color.GOLD, font_size=18, bold=True, anchor_x="center")
+            arcade.draw_text("Piedra de Moler agregada a tu inventario", ANCHO // 2, 400, arcade.color.WHITE, font_size=13, anchor_x="center")
+            arcade.draw_text(f"+{XP_RECOMPENSA_NIVEL2} Experiencia   |   Medalla: \"{MEDALLA_PARAVACHASCA}\"", ANCHO // 2, 375, arcade.color.LIGHT_PASTEL_PURPLE, font_size=12, anchor_x="center")
+        else:
+            arcade.draw_text("Resististe la prueba del monte una vez mas.", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
+        arcade.draw_text("SENDEROS DE PARAVACHASCA SUPERADO", ANCHO // 2, 300, arcade.color.WHITE, font_size=24, bold=True, anchor_x="center")
+        arcade.draw_text("El Nivel 3 todavia esta por llegar...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    def _dibujar_derrota(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
+        arcade.draw_text("Una lanza te alcanzo...", ANCHO // 2, 340, arcade.color.RED_DEVIL, font_size=18, bold=True, anchor_x="center")
+        arcade.draw_text("El sabio del monte todavia no te considera listo.", ANCHO // 2, 300, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Reintentar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    # ---------------- input ----------------
+    def on_key_press(self, key, modifiers):
+        if self.fase == Nivel2View.FASE_DIALOGO:
+            if key == arcade.key.TAB:
+                self._iniciar_juego()
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_dialogo()
+
+        elif self.fase == Nivel2View.FASE_JUEGO:
+            if key == arcade.key.A:
+                self.a_ap = True
+            elif key == arcade.key.D:
+                self.d_ap = True
+
+        elif self.fase == Nivel2View.FASE_VICTORIA:
+            if key == arcade.key.SPACE:
+                arcade.exit()
+
+        elif self.fase == Nivel2View.FASE_DERROTA:
+            if key == arcade.key.SPACE:
+                self._reintentar_juego()
+
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.A:
+            self.a_ap = False
+        elif key == arcade.key.D:
+            self.d_ap = False
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if self.fase == Nivel2View.FASE_DIALOGO:
+            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+                self._iniciar_juego()
+                return
+            self._avanzar_dialogo()
+
+    def on_update(self, delta_time):
+        if self.fase == Nivel2View.FASE_DIALOGO:
+            self.tiempo_linea += delta_time
+        elif self.fase == Nivel2View.FASE_JUEGO:
+            self._actualizar_juego(delta_time)
 
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView
