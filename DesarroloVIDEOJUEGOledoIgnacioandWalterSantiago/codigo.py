@@ -59,6 +59,16 @@ INDIO_IDLE_IMG = str(BASE_DIR / "assets_paravachasca" / "indio_idle.png")
 INDIO_DIALOGO_IMG = str(BASE_DIR / "assets_paravachasca" / "indio_dialogo.png")
 LANZA_IMG = str(BASE_DIR / "assets_paravachasca" / "lanza_proyectil.png")
 
+# Nivel 3: "La Guardiana del Museo" (dialogo con Gabriel Dubois + duelo con el angel)
+FONDO_MUSEO = str(BASE_DIR / "assets_dubois" / "fondo_museo.jpg")
+DUBOIS_IDLE_IMG = str(BASE_DIR / "assets_dubois" / "dubois_idle.png")
+DUBOIS_DIALOGO_IMG = str(BASE_DIR / "assets_dubois" / "dubois_dialogo.png")
+ANGEL_IDLE_IMG = str(BASE_DIR / "assets_dubois" / "angel_idle.png")
+ANGEL_CARGA_IMG = str(BASE_DIR / "assets_dubois" / "angel_carga.png")
+ANGEL_LANZA_IMG = str(BASE_DIR / "assets_dubois" / "angel_lanza.png")
+BOLA_FUEGO_ATAQUE_IMG = str(BASE_DIR / "assets_dubois" / "bola_fuego_ataque.png")
+BOLA_FUEGO_DEFENSA_IMG = str(BASE_DIR / "assets_dubois" / "bola_fuego_defensa.png")
+
 SAVE_FILE = str(BASE_DIR / "partida_guardada.json")
 
 FRENTE = 0
@@ -95,6 +105,26 @@ NIVEL2_INTERVALO_SPAWN_INICIAL = 1.15  # segundos entre lanzas al arrancar
 NIVEL2_INTERVALO_SPAWN_MINIMO = 0.45   # segundos entre lanzas en lo mas dificil
 NIVEL2_TIEMPO_INVULNERABLE = 1.2   # segundos de "respiro" despues de un golpe
 
+# --- Nivel 3: "La Guardiana del Museo" ---
+TITULO_NIVEL3 = "NIVEL 3 - LA GUARDIANA DEL MUSEO"
+MEDALLA_MUSEO = "Guardian del Museo"
+XP_RECOMPENSA_NIVEL3 = 120
+NIVEL3_VIDAS_JUGADOR = 5
+NIVEL3_VIDA_ANGEL = 5               # golpes de bola azul necesarios para vencerlo
+NIVEL3_FUEGOS_RONDA_BASE = 3        # cantidad de bolas de fuego en la primera ronda
+NIVEL3_FUEGOS_RONDA_MAX = 7         # tope de bolas de fuego por ronda
+NIVEL3_VELOCIDAD_FUEGO_MIN = 190
+NIVEL3_VELOCIDAD_FUEGO_MAX = 340
+NIVEL3_INTERVALO_FUEGO = 0.85       # segundos entre cada bola de fuego dentro de una ronda
+NIVEL3_VELOCIDAD_BOLA_AZUL = 420
+NIVEL3_TIEMPO_INVULNERABLE = 1.1
+NIVEL3_ESCALA_ATAQUE = 0.12
+NIVEL3_ESCALA_DEFENSA = 0.10
+NIVEL3_ESCALA_ANGEL = 0.68
+NIVEL3_ANGEL_X = 640                # posicion fija del angel (pedestal vacio del museo)
+NIVEL3_ANGEL_Y = 370
+NIVEL3_TIEMPO_CARGA = 0.6           # segundos que el angel se queda "cargando" antes de tirar
+
 DURACION_LOGO_FUTURISTA = 2.5
 DURACION_TRANSICION = 0.4
 DURACION_LOGO_ANTIGUO = 2.5
@@ -122,6 +152,7 @@ VOCES_PERSONAJE = {
     "CURA"      : "es-CR-JuanNeural",
     "WALEDO"    : "es-CL-LorenzoNeural",
     "INDIO"     : "es-EC-LuisNeural",
+    "GABRIEL"   : "es-VE-SebastianNeural",
 }
 VOZ_POR_DEFECTO = "es-AR-ElenaNeural"
 
@@ -137,6 +168,7 @@ HABLANTES = {
     "NARRADOR": {"nombre": "", "color_nombre": arcade.color.WHITE, "color_borde": arcade.color.WHITE},
     "WALEDO": {"nombre": "LEDIAGO WALEDO", "color_nombre": arcade.color.LIGHT_PASTEL_PURPLE, "color_borde": arcade.color.LIGHT_PASTEL_PURPLE},
     "INDIO": {"nombre": "SABIO COMECHINGON", "color_nombre": arcade.color.ORANGE, "color_borde": arcade.color.ORANGE},
+    "GABRIEL": {"nombre": "GABRIEL DUBOIS", "color_nombre": arcade.color.AO, "color_borde": arcade.color.AO},
 }
 
 # A partir de acá: guiones de diálogo (listas de tuplas "quién habla" + "qué dice")
@@ -287,6 +319,35 @@ GUION_INDIO_NIVEL2 = [
     ("INDIO", "Fue un cambio profundo y doloroso, Waledo. Con la llegada de los jesuitas en el siglo XVII, el valle cambio su rostro para siempre. Ellos levantaron la gran Estancia de Alta Gracia, construyeron el Tajamar para canalizar el agua, fundaron la iglesia y trajeron nuevos oficios y culturas. Aunque transformaron el valle en un centro productivo y de fe, la huella de nuestros antepasados jamas se borro. La piedra, el mortero tallado en la roca y la tierra misma conservan nuestro legado."),
     ("WALEDO", "Es una historia de transformacion increible. Caminar por Alta Gracia hoy me hace sentir que el pasado y el presente conviven en cada rincon. Siento que apenas estoy empezando a entender los misterios de este lugar."),
     ("INDIO", "Y no te equivocas, Waledo. Tu travesia por estas tierras recien comienza. Si de verdad deseas descifrar los antiguos secretos de Paravachasca y estar preparado para avanzar al Nivel 3, aun debes completar 2 niveles mas. No apresures tu marcha; observa con atencion, escucha al monte y supera las pruebas que te aguardan. Solo asi seras digno del conocimiento ancestral."),
+]
+
+# Dialogo del Nivel 3 ("La Guardiana del Museo"): Waledo se reencuentra con
+# Gabriel Dubois y le explica el duelo contra el angel de piedra.
+GUION_DUBOIS_NIVEL3 = [
+    ("NARRADOR", "Los pasos de Gabriel Dubois resuenan por el patio del museo. Waledo lo espera de pie junto a las viejas reliquias, bajo la sombra del gran arbol."),
+    ("WALEDO", "Al fin llegas, Gabriel. Pense que las sombras de los pasillos te habrian desviado del camino."),
+    ("NARRADOR", "(Gabriel se ajusta los punios de la chaqueta y da un paso al frente, alzando una ceja.)"),
+    ("GABRIEL", "Sabes perfectamente que no soy de los que se pierden facilmente, Waledo. Pero dejate de rodeos. Me mandaste a llamar con urgencia y no creo que haya sido solo para disfrutar de tu compania. Que esta pasando?"),
+    ("NARRADOR", "(Waledo baja la mirada y suspira suavemente.)"),
+    ("WALEDO", "Lo que pasa, Gabriel, es que la historia que nos contaron a todos sobre este lugar es una mentira piadosa. Y ha llegado el momento de que conozcas la verdad antes de que sea demasiado tarde."),
+    ("GABRIEL", "Soy todo oidos. Habla."),
+    ("WALEDO", "Hace tres siglos, este valle no estaba gobernado por reyes ni senores feudales, sino por los Guardianes del Umbral. Eran tres artefactos antiguos capaces de mantener en equilibrio la magia pura y la realidad. Durante anios, la paz reino porque los guardianes permanecian escondidos, conectados solo por sellos mistico-elementales."),
+    ("GABRIEL", "Y supones que alguien decidio jugar a ser Dios y romper el sello?"),
+    ("WALEDO", "Exactamente. Un traidor dentro de la propia orden rompio el equilibrio para reclamar el poder del Umbral para si mismo. La magia comenzo a colapsar. Para evitar el fin absoluto, los sabios supervivientes no destruyeron el poder... lo fragmentaron y lo encerraron tras un complejo mecanismo de pruebas."),
+    ("NARRADOR", "(Gabriel se senala a si mismo con una sonrisa amarga.)"),
+    ("GABRIEL", "Y por la forma en que me estas mirando, me huelo que ese alguien no vas a ser tu."),
+    ("WALEDO", "Mis dias de campo quedaron atras, Gabriel. El equilibrio se esta debilitando de nuevo y las sombras estan despertando. Vos sos el unico que posee la habilidad necesaria para atravesar esta barrera."),
+    ("NARRADOR", "(Gabriel se cruza de brazos.)"),
+    ("GABRIEL", "Bien. Iluminame. A que me enfrento exactamente?"),
+    ("WALEDO", "En este salon duerme una guardiana de piedra: un angel que protege la Espatula de Dubois desde hace generaciones. Solo despierta cuando alguien intenta acercarse a la reliquia."),
+    ("GABRIEL", "Un angel de piedra que despierta... Como se supone que la enfrente?"),
+    ("WALEDO", "En cuanto despierte te va a lanzar bolas de fuego, una tras otra. Vas a tener que esquivarlas moviendote sin parar. Cuando se quede sin aliento al final de cada ronda, vas a tener un instante para responder con esta energia."),
+    ("NARRADOR", "(Waledo le entrega un glifo que brilla con una luz azul.)"),
+    ("GABRIEL", "Y si el fuego me alcanza?"),
+    ("WALEDO", "Vas a perder parte de tus fuerzas. Si te quedas sin ellas antes de vencerla, la guardiana va a volver a dormir y vamos a tener que empezar de nuevo. Pero si logras apagar su fuego las veces necesarias, la Espatula va a ser tuya."),
+    ("NARRADOR", "(Gabriel pierde la sonrisa progresivamente, adoptando una postura seria.)"),
+    ("GABRIEL", "Entendido. Esquivar, resistir y atacar en el momento justo. Como en los viejos tiempos."),
+    ("WALEDO", "Cuando estes listo, acercate a la guardiana."),
 ]
 
 
@@ -477,7 +538,7 @@ def _lineas_de_guion(guion):
 
 
 def _todas_las_lineas_de_dialogo():
-    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2]
+    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2, GUION_DUBOIS_NIVEL3]
     lineas = {}
     for guion in guiones:
         for hablante, texto in _lineas_de_guion(guion):
@@ -1533,8 +1594,8 @@ class Nivel2View(arcade.View):
         else:
             arcade.draw_text("Resististe la prueba del monte una vez mas.", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
         arcade.draw_text("SENDEROS DE PARAVACHASCA SUPERADO", ANCHO // 2, 300, arcade.color.WHITE, font_size=24, bold=True, anchor_x="center")
-        arcade.draw_text("El Nivel 3 todavia esta por llegar...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
-        arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+        arcade.draw_text("Gabriel Dubois te espera en el museo...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Continuar tu viaje", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
     def _dibujar_derrota(self):
         arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
@@ -1558,7 +1619,8 @@ class Nivel2View(arcade.View):
 
         elif self.fase == Nivel2View.FASE_VICTORIA:
             if key == arcade.key.SPACE:
-                arcade.exit()
+                siguiente_vista = Nivel3View(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario)
+                self.window.show_view(siguiente_vista)
 
         elif self.fase == Nivel2View.FASE_DERROTA:
             if key == arcade.key.SPACE:
@@ -1582,6 +1644,344 @@ class Nivel2View(arcade.View):
             self.tiempo_linea += delta_time
         elif self.fase == Nivel2View.FASE_JUEGO:
             self._actualizar_juego(delta_time)
+
+
+# Nivel 3 - "La Guardiana del Museo": Waledo se reencuentra con Gabriel Dubois
+# (dialogo con voz) y despues Dubois se enfrenta al angel de piedra que
+# custodia la Espatula de Dubois: primero hay que esquivar sus bolas de
+# fuego y despues, cuando el angel se queda sin aliento, hay una ventana
+# para responder con una bola de energia azul. Se repite por rondas hasta
+# vaciar la vida del angel.
+class Nivel3View(arcade.View):
+    FASE_DIALOGO = 0
+    FASE_ESQUIVAR = 1
+    FASE_ATAQUE = 2
+    FASE_VICTORIA = 3
+    FASE_DERROTA = 4
+
+    JUGADOR_Y = 90
+
+    def __init__(self, musica_fondo=None, reproductor_musica=None, inventario=None):
+        super().__init__()
+        self.inventario = inventario or Inventario()
+        self.musica_fondo = musica_fondo
+        self.reproductor_musica = reproductor_musica
+        if self.musica_fondo is None:
+            self.musica_fondo = arcade.Sound(MUSICA_FONDO, streaming=False)
+            self.reproductor_musica = self.musica_fondo.play(volume=VOLUMEN_MUSICA_FONDO, loop=True)
+
+        self.fondo = arcade.load_texture(FONDO_MUSEO)
+        self.tex_dubois_dlg = arcade.load_texture(DUBOIS_DIALOGO_IMG)
+        self.tex_angel_idle = arcade.load_texture(ANGEL_IDLE_IMG)
+        self.tex_angel_carga = arcade.load_texture(ANGEL_CARGA_IMG)
+        self.tex_angel_lanza = arcade.load_texture(ANGEL_LANZA_IMG)
+        self.tex_fuego_ataque = arcade.load_texture(BOLA_FUEGO_ATAQUE_IMG)
+        self.tex_fuego_defensa = arcade.load_texture(BOLA_FUEGO_DEFENSA_IMG)
+
+        # --- fase de dialogo ---
+        self.fase = Nivel3View.FASE_DIALOGO
+        self.indice_dialogo = 0
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
+        reproducir_voz(*GUION_DUBOIS_NIVEL3[0])
+
+        # --- jugador (Gabriel Dubois entra en accion) ---
+        self.player = Lediago(escala=ESCALA_PERSONAJE)
+        self.player.center_x = ANCHO // 2
+        self.player.center_y = Nivel3View.JUGADOR_Y
+        self.player_list = arcade.SpriteList()
+        self.player_list.append(self.player)
+        self.a_ap = self.d_ap = False
+
+        # --- el angel (guardiana) ---
+        self.angel = arcade.Sprite(scale=NIVEL3_ESCALA_ANGEL)
+        self.angel.texture = self.tex_angel_idle
+        self.angel.center_x = NIVEL3_ANGEL_X
+        self.angel.center_y = NIVEL3_ANGEL_Y
+        self.angel_list = arcade.SpriteList()
+        self.angel_list.append(self.angel)
+        self.angel_vida = NIVEL3_VIDA_ANGEL
+        self.angel_invulnerable_seg = 0.0
+
+        # --- proyectiles ---
+        self.fuegos_list = arcade.SpriteList()
+        self.bolas_azules_list = arcade.SpriteList()
+
+        # --- estado de rondas ---
+        self.ronda = 1
+        self.tiempo_carga_restante = 0.0
+        self.fuegos_por_lanzar = 0
+        self.tiempo_spawn = 0.0
+        self.vidas = NIVEL3_VIDAS_JUGADOR
+        self.invulnerable_seg = 0.0
+        self.mostro_recompensa = False
+
+    # ---------------- fase de dialogo ----------------
+    def _avanzar_dialogo(self):
+        self.indice_dialogo += 1
+        self.tiempo_linea = 0.0
+        if self.indice_dialogo >= len(GUION_DUBOIS_NIVEL3):
+            self._iniciar_ronda()
+        else:
+            reproducir_voz(*GUION_DUBOIS_NIVEL3[self.indice_dialogo])
+
+    # ---------------- rondas del duelo ----------------
+    def _iniciar_ronda(self):
+        self.fase = Nivel3View.FASE_ESQUIVAR
+        self.player.center_x = ANCHO // 2
+        self.player.center_y = Nivel3View.JUGADOR_Y
+        self.angel.texture = self.tex_angel_carga
+        self.tiempo_carga_restante = NIVEL3_TIEMPO_CARGA
+        self.fuegos_por_lanzar = min(NIVEL3_FUEGOS_RONDA_MAX, NIVEL3_FUEGOS_RONDA_BASE + (self.ronda - 1))
+        self.tiempo_spawn = 0.0
+
+    def _spawn_fuego(self):
+        progreso = min(1.0, (self.ronda - 1) / 5.0)
+        velocidad = NIVEL3_VELOCIDAD_FUEGO_MIN + (NIVEL3_VELOCIDAD_FUEGO_MAX - NIVEL3_VELOCIDAD_FUEGO_MIN) * progreso
+        objetivo_x = random.randint(40, ANCHO - 40)
+        dx = objetivo_x - self.angel.center_x
+        dy = Nivel3View.JUGADOR_Y - self.angel.center_y
+        dist = max(1.0, math.hypot(dx, dy))
+        fuego = arcade.Sprite(scale=NIVEL3_ESCALA_ATAQUE)
+        fuego.texture = self.tex_fuego_ataque
+        fuego.center_x = self.angel.center_x
+        fuego.center_y = self.angel.center_y
+        fuego.change_x = dx / dist * velocidad
+        fuego.change_y = dy / dist * velocidad
+        self.fuegos_list.append(fuego)
+
+    def _lanzar_bola_azul(self):
+        bola = arcade.Sprite(scale=NIVEL3_ESCALA_DEFENSA)
+        bola.texture = self.tex_fuego_defensa
+        bola.center_x = self.player.center_x
+        bola.center_y = self.player.center_y + 20
+        dx = self.angel.center_x - bola.center_x
+        dy = self.angel.center_y - bola.center_y
+        dist = max(1.0, math.hypot(dx, dy))
+        bola.change_x = dx / dist * NIVEL3_VELOCIDAD_BOLA_AZUL
+        bola.change_y = dy / dist * NIVEL3_VELOCIDAD_BOLA_AZUL
+        self.bolas_azules_list.append(bola)
+
+    def _mover_player_horizontal(self):
+        velocidad = VELOCIDAD_CORRER
+        self.player.change_x = 0
+        if self.a_ap and not self.d_ap:
+            self.player.change_x = -velocidad
+        elif self.d_ap and not self.a_ap:
+            self.player.change_x = velocidad
+        self.player.actualizar_direccion()
+
+    def _actualizar_esquivar(self, delta_time):
+        self._mover_player_horizontal()
+        mw = self.player.width / 2
+        nueva_x = self.player.center_x + self.player.change_x
+        self.player.center_x = max(mw, min(ANCHO - mw, nueva_x))
+        self.player.update_animation(delta_time)
+
+        if self.invulnerable_seg > 0:
+            self.invulnerable_seg = max(0.0, self.invulnerable_seg - delta_time)
+        self.player.alpha = 130 if (self.invulnerable_seg > 0 and int(self.invulnerable_seg * 12) % 2 == 0) else 255
+
+        if self.tiempo_carga_restante > 0:
+            self.tiempo_carga_restante -= delta_time
+            if self.tiempo_carga_restante <= 0:
+                self.angel.texture = self.tex_angel_lanza
+        else:
+            self.tiempo_spawn += delta_time
+            if self.fuegos_por_lanzar > 0 and self.tiempo_spawn >= NIVEL3_INTERVALO_FUEGO:
+                self.tiempo_spawn = 0.0
+                self.fuegos_por_lanzar -= 1
+                self._spawn_fuego()
+
+        for fuego in self.fuegos_list:
+            fuego.center_x += fuego.change_x * delta_time
+            fuego.center_y += fuego.change_y * delta_time
+        for fuego in list(self.fuegos_list):
+            if fuego.top < 0 or fuego.right < 0 or fuego.left > ANCHO:
+                fuego.remove_from_sprite_lists()
+
+        if self.invulnerable_seg <= 0:
+            golpes = arcade.check_for_collision_with_list(self.player, self.fuegos_list)
+            if golpes:
+                for f in golpes:
+                    f.remove_from_sprite_lists()
+                self.vidas -= 1
+                self.invulnerable_seg = NIVEL3_TIEMPO_INVULNERABLE
+                if self.vidas <= 0:
+                    self._perder()
+                    return
+
+        # la ronda termina cuando ya no quedan fuegos por lanzar ni en vuelo
+        if self.tiempo_carga_restante <= 0 and self.fuegos_por_lanzar <= 0 and len(self.fuegos_list) == 0:
+            self._iniciar_ataque()
+
+    def _iniciar_ataque(self):
+        self.fase = Nivel3View.FASE_ATAQUE
+        self.angel.texture = self.tex_angel_idle
+
+    def _actualizar_ataque(self, delta_time):
+        self.player.update_animation(delta_time)
+        if self.angel_invulnerable_seg > 0:
+            self.angel_invulnerable_seg = max(0.0, self.angel_invulnerable_seg - delta_time)
+            self.angel.alpha = 130 if int(self.angel_invulnerable_seg * 12) % 2 == 0 else 255
+        else:
+            self.angel.alpha = 255
+
+        for bola in self.bolas_azules_list:
+            bola.center_x += bola.change_x * delta_time
+            bola.center_y += bola.change_y * delta_time
+        for bola in list(self.bolas_azules_list):
+            if bola.bottom > ALTO or bola.right < 0 or bola.left > ANCHO:
+                bola.remove_from_sprite_lists()
+
+        impactos = arcade.check_for_collision_with_list(self.angel, self.bolas_azules_list)
+        if impactos:
+            for b in impactos:
+                b.remove_from_sprite_lists()
+            self.angel_vida -= 1
+            self.angel_invulnerable_seg = 0.5
+            if self.angel_vida <= 0:
+                self._ganar()
+            else:
+                self.ronda += 1
+                self._iniciar_ronda()
+
+    def _ganar(self):
+        self.fase = Nivel3View.FASE_VICTORIA
+        self.fuegos_list.clear()
+        self.bolas_azules_list.clear()
+        ya_tenia = self.inventario.tiene("Espatula de Dubois")
+        self.inventario.agregar("Espatula de Dubois")
+        self.inventario.sumar_experiencia(XP_RECOMPENSA_NIVEL3)
+        self.inventario.otorgar_medalla(MEDALLA_MUSEO)
+        self.inventario.guardar()
+        self.mostro_recompensa = not ya_tenia
+
+    def _perder(self):
+        self.fase = Nivel3View.FASE_DERROTA
+        self.fuegos_list.clear()
+        self.bolas_azules_list.clear()
+
+    def _reintentar_duelo(self):
+        self.fase = Nivel3View.FASE_ESQUIVAR
+        self.vidas = NIVEL3_VIDAS_JUGADOR
+        self.angel_vida = NIVEL3_VIDA_ANGEL
+        self.ronda = 1
+        self.invulnerable_seg = 0.0
+        self.angel_invulnerable_seg = 0.0
+        self.player.alpha = 255
+        self.angel.alpha = 255
+        self.fuegos_list.clear()
+        self.bolas_azules_list.clear()
+        self._iniciar_ronda()
+
+    # ---------------- dibujado ----------------
+    def on_draw(self):
+        self.clear()
+        arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, ANCHO, ALTO))
+        arcade.draw_text(TITULO_NIVEL3, 14, ALTO - 22, arcade.color.WHITE, font_size=11, bold=True)
+
+        if self.fase == Nivel3View.FASE_DIALOGO:
+            self._dibujar_dialogo()
+        elif self.fase in (Nivel3View.FASE_ESQUIVAR, Nivel3View.FASE_ATAQUE):
+            self.angel_list.draw()
+            self.fuegos_list.draw()
+            self.bolas_azules_list.draw()
+            self.player_list.draw()
+            self._dibujar_hud_duelo()
+        elif self.fase == Nivel3View.FASE_VICTORIA:
+            self._dibujar_victoria()
+        elif self.fase == Nivel3View.FASE_DERROTA:
+            self._dibujar_derrota()
+
+    def _dibujar_dialogo(self):
+        iw = int(self.tex_dubois_dlg.width * 0.85)
+        ih = int(self.tex_dubois_dlg.height * 0.85)
+        arcade.draw_texture_rect(self.tex_dubois_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
+
+        hablante, texto = GUION_DUBOIS_NIVEL3[self.indice_dialogo]
+        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        es_ultima = self.indice_dialogo == len(GUION_DUBOIS_NIVEL3) - 1
+        fin = es_ultima and texto_visible == texto
+        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_DUBOIS_NIVEL3), fin=fin)
+        self._rect_saltar = dibujar_boton_saltar()
+
+    def _dibujar_hud_duelo(self):
+        m = 14
+        arcade.draw_text(f"Tus fuerzas: {'*' * self.vidas}{'.' * (NIVEL3_VIDAS_JUGADOR - self.vidas)}", ANCHO - m, ALTO - 22, arcade.color.RED_DEVIL, font_size=13, bold=True, anchor_x="right")
+        arcade.draw_text(f"Guardiana: {'#' * self.angel_vida}{'.' * (NIVEL3_VIDA_ANGEL - self.angel_vida)}", ANCHO - m, ALTO - 44, arcade.color.LIGHT_BLUE, font_size=13, bold=True, anchor_x="right")
+        arcade.draw_text(f"Ronda {self.ronda}", ANCHO - m, ALTO - 66, arcade.color.LIGHT_GRAY, font_size=11, anchor_x="right")
+
+        if self.fase == Nivel3View.FASE_ESQUIVAR:
+            arcade.draw_text("[A] [D] para moverte - Esquiva el fuego!", ANCHO // 2, 20, arcade.color.LIGHT_GRAY, font_size=11, anchor_x="center")
+        elif self.fase == Nivel3View.FASE_ATAQUE:
+            arcade.draw_text("La guardiana se quedo sin aliento...", ANCHO // 2, 44, arcade.color.LIGHT_BLUE, font_size=12, anchor_x="center")
+            arcade.draw_text("[Espacio] Atacar con la energia azul!", ANCHO // 2, 20, arcade.color.WHITE, font_size=12, bold=True, anchor_x="center")
+
+    def _dibujar_victoria(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
+        if self.mostro_recompensa:
+            arcade.draw_text("*** SUPERASTE EL NIVEL 3 ***", ANCHO // 2, 430, arcade.color.GOLD, font_size=18, bold=True, anchor_x="center")
+            arcade.draw_text("Espatula de Dubois agregada a tu inventario", ANCHO // 2, 400, arcade.color.WHITE, font_size=13, anchor_x="center")
+            arcade.draw_text(f"+{XP_RECOMPENSA_NIVEL3} Experiencia   |   Medalla: \"{MEDALLA_MUSEO}\"", ANCHO // 2, 375, arcade.color.LIGHT_BLUE, font_size=12, anchor_x="center")
+        else:
+            arcade.draw_text("La guardiana vuelve a dormir, en paz.", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
+        arcade.draw_text("LA GUARDIANA DEL MUSEO SUPERADA", ANCHO // 2, 300, arcade.color.WHITE, font_size=22, bold=True, anchor_x="center")
+        arcade.draw_text("El resto de los objetos todavia te esperan...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    def _dibujar_derrota(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
+        arcade.draw_text("El fuego de la guardiana te alcanzo...", ANCHO // 2, 340, arcade.color.RED_DEVIL, font_size=18, bold=True, anchor_x="center")
+        arcade.draw_text("Gabriel respira hondo y se prepara para volver a intentarlo.", ANCHO // 2, 300, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Reintentar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    # ---------------- input ----------------
+    def on_key_press(self, key, modifiers):
+        if self.fase == Nivel3View.FASE_DIALOGO:
+            if key == arcade.key.TAB:
+                self._iniciar_ronda()
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_dialogo()
+
+        elif self.fase == Nivel3View.FASE_ESQUIVAR:
+            if key == arcade.key.A:
+                self.a_ap = True
+            elif key == arcade.key.D:
+                self.d_ap = True
+
+        elif self.fase == Nivel3View.FASE_ATAQUE:
+            if key == arcade.key.SPACE and len(self.bolas_azules_list) == 0:
+                self._lanzar_bola_azul()
+
+        elif self.fase == Nivel3View.FASE_VICTORIA:
+            if key == arcade.key.SPACE:
+                arcade.exit()
+
+        elif self.fase == Nivel3View.FASE_DERROTA:
+            if key == arcade.key.SPACE:
+                self._reintentar_duelo()
+
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.A:
+            self.a_ap = False
+        elif key == arcade.key.D:
+            self.d_ap = False
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if self.fase == Nivel3View.FASE_DIALOGO:
+            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+                self._iniciar_ronda()
+                return
+            self._avanzar_dialogo()
+
+    def on_update(self, delta_time):
+        if self.fase == Nivel3View.FASE_DIALOGO:
+            self.tiempo_linea += delta_time
+        elif self.fase == Nivel3View.FASE_ESQUIVAR:
+            self._actualizar_esquivar(delta_time)
+        elif self.fase == Nivel3View.FASE_ATAQUE:
+            self._actualizar_ataque(delta_time)
 
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView

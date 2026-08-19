@@ -10,13 +10,14 @@
     "Quijote": false,
     "Metronomo": false,
     "Cantimplora": false,
-    "Espatula de Dubois": false,
+    "Espatula de Dubois": true,
     "Cronoscopio": true,
     "Cruz de la Estancia": true
   },
-  "experiencia": 200,
+  "experiencia": 440,
   "medallas": [
-    "Guardian de Paravachasca",
-    "Historiador de la Estancia"
+    "Guardian del Museo",
+    "Historiador de la Estancia",
+    "Guardian de Paravachasca"
   ]
 }
