@@ -8,16 +8,17 @@
     "Sello Real": false,
     "Cincel del Cantero": false,
     "Quijote": false,
-    "Metronomo": false,
+    "Metronomo": true,
     "Cantimplora": false,
     "Espatula de Dubois": true,
     "Cronoscopio": true,
     "Cruz de la Estancia": true
   },
-  "experiencia": 440,
+  "experiencia": 420,
   "medallas": [
-    "Guardian del Museo",
+    "Amigo del Compositor",
     "Historiador de la Estancia",
-    "Guardian de Paravachasca"
+    "Guardian de Paravachasca",
+    "Guardian del Museo"
   ]
 }

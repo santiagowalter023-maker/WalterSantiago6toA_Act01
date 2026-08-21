@@ -69,6 +69,17 @@ ANGEL_LANZA_IMG = str(BASE_DIR / "assets_dubois" / "angel_lanza.png")
 BOLA_FUEGO_ATAQUE_IMG = str(BASE_DIR / "assets_dubois" / "bola_fuego_ataque.png")
 BOLA_FUEGO_DEFENSA_IMG = str(BASE_DIR / "assets_dubois" / "bola_fuego_defensa.png")
 
+# Nivel 4: "El Cuestionario de Falla" (3 salas con pistas + quiz de opcion multiple)
+FONDO_HUB_FALLA = str(BASE_DIR / "assets_falla" / "fondo_hub_falla.jpg")
+FONDO_SALA_PIANO = str(BASE_DIR / "assets_falla" / "fondo_sala_piano.jpg")
+FONDO_SALA_DORMITORIO = str(BASE_DIR / "assets_falla" / "fondo_sala_dormitorio.jpg")
+FONDO_SALA_COMEDOR = str(BASE_DIR / "assets_falla" / "fondo_sala_comedor.jpg")
+FALLA_IDLE_IMG = str(BASE_DIR / "assets_falla" / "falla_idle.png")
+FALLA_DIALOGO_IMG = str(BASE_DIR / "assets_falla" / "falla_dialogo.png")
+LIBRO_ROJO_IMG = str(BASE_DIR / "assets_falla" / "libro_rojo.png")
+LIBRO_AZUL_IMG = str(BASE_DIR / "assets_falla" / "libro_azul.png")
+LIBRO_VERDE_IMG = str(BASE_DIR / "assets_falla" / "libro_verde.png")
+
 SAVE_FILE = str(BASE_DIR / "partida_guardada.json")
 
 FRENTE = 0
@@ -118,12 +129,22 @@ NIVEL3_VELOCIDAD_FUEGO_MAX = 340
 NIVEL3_INTERVALO_FUEGO = 0.85       # segundos entre cada bola de fuego dentro de una ronda
 NIVEL3_VELOCIDAD_BOLA_AZUL = 420
 NIVEL3_TIEMPO_INVULNERABLE = 1.1
-NIVEL3_ESCALA_ATAQUE = 0.12
-NIVEL3_ESCALA_DEFENSA = 0.10
-NIVEL3_ESCALA_ANGEL = 0.68
-NIVEL3_ANGEL_X = 640                # posicion fija del angel (pedestal vacio del museo)
+NIVEL3_ESCALA_ATAQUE = 0.07
+NIVEL3_ESCALA_DEFENSA = 0.06
+NIVEL3_ESCALA_ANGEL = 0.40
+NIVEL3_ANGEL_X = 640                # posicion inicial del angel (pedestal vacio del museo)
 NIVEL3_ANGEL_Y = 370
+NIVEL3_ANGEL_X_MIN = 220            # rango donde se puede reubicar el angel tras recibir danio
+NIVEL3_ANGEL_X_MAX = 700
+NIVEL3_ANGEL_Y_MIN = 330
+NIVEL3_ANGEL_Y_MAX = 430
 NIVEL3_TIEMPO_CARGA = 0.6           # segundos que el angel se queda "cargando" antes de tirar
+
+# --- Nivel 4: "El Cuestionario de Falla" ---
+TITULO_NIVEL4 = "NIVEL 4 - EL CUESTIONARIO DE FALLA"
+MEDALLA_FALLA = "Amigo del Compositor"
+XP_RECOMPENSA_NIVEL4 = 100
+NIVEL4_PREGUNTAS_MINIMAS_PARA_GANAR = 4  # de 6
 
 DURACION_LOGO_FUTURISTA = 2.5
 DURACION_TRANSICION = 0.4
@@ -153,6 +174,7 @@ VOCES_PERSONAJE = {
     "WALEDO"    : "es-CL-LorenzoNeural",
     "INDIO"     : "es-EC-LuisNeural",
     "GABRIEL"   : "es-VE-SebastianNeural",
+    "FALLA"     : "es-ES-DarioNeural",
 }
 VOZ_POR_DEFECTO = "es-AR-ElenaNeural"
 
@@ -169,6 +191,7 @@ HABLANTES = {
     "WALEDO": {"nombre": "LEDIAGO WALEDO", "color_nombre": arcade.color.LIGHT_PASTEL_PURPLE, "color_borde": arcade.color.LIGHT_PASTEL_PURPLE},
     "INDIO": {"nombre": "SABIO COMECHINGON", "color_nombre": arcade.color.ORANGE, "color_borde": arcade.color.ORANGE},
     "GABRIEL": {"nombre": "GABRIEL DUBOIS", "color_nombre": arcade.color.AO, "color_borde": arcade.color.AO},
+    "FALLA": {"nombre": "MANUEL DE FALLA", "color_nombre": arcade.color.BRONZE, "color_borde": arcade.color.BRONZE},
 }
 
 # A partir de acá: guiones de diálogo (listas de tuplas "quién habla" + "qué dice")
@@ -348,6 +371,44 @@ GUION_DUBOIS_NIVEL3 = [
     ("NARRADOR", "(Gabriel pierde la sonrisa progresivamente, adoptando una postura seria.)"),
     ("GABRIEL", "Entendido. Esquivar, resistir y atacar en el momento justo. Como en los viejos tiempos."),
     ("WALEDO", "Cuando estes listo, acercate a la guardiana."),
+]
+
+# Dialogo del Nivel 4 ("El Cuestionario de Falla"): Waledo conoce a Manuel de
+# Falla en su estudio musical, antes de leer las pistas y responder el quiz.
+GUION_FALLA_NIVEL4 = [
+    ("NARRADOR", "Un estudio musical iluminado por la calida luz del atardecer en Alta Gracia. Hay un gran piano de cola, partituras esparcidas por toda la habitacion y tres libros misteriosos: uno rojo, uno azul y uno verde."),
+    ("NARRADOR", "(Waledo entra cautelosamente, mirando a su alrededor.)"),
+    ("WALEDO", "Maestro Falla? He recorrido el mundo y el tiempo buscando los secretos de su musica."),
+    ("NARRADOR", "(Falla gira lentamente desde su banqueta frente al piano.)"),
+    ("FALLA", "Ah, Waledo... Te estaba esperando. La musica no solo se escucha; se vive, se respira y se comprende. Mi vida ha sido un largo viaje desde las luminosas costas de Espania hasta la paz de estas sierras en Argentina."),
+    ("WALEDO", "Quiero conocer su historia! Me han dicho que usted es el alma de la musica espaniola y que sus notas esconden magia."),
+    ("FALLA", "Es cierto. Pero para conocer mi historia y avanzar en tu aventura, deberas superar una pequenia prueba de intelecto. Por esta casa hay tres libros. Cada uno contiene pistas sobre diferentes etapas de mi vida. Si los lees con atencion, podras responder a mis 6 preguntas."),
+    ("NARRADOR", "(Waledo asiente, decidido.)"),
+    ("WALEDO", "Un libro rojo, uno azul y uno verde... Acepto el reto, maestro! Leere las pistas y resolvere el cuestionario."),
+]
+
+# Pistas de cada libro: (titulo de la sala, [parrafo 1, parrafo 2])
+LIBRO_ROJO_TEXTO = [
+    "Mi historia comenzo en 1876, donde el mar abraza al sur de Espania, en la antigua y brillante ciudad de Cadiz.",
+    "Escribi una historia de gitanos, amor, magia y espectros. Para alejar a los malos espiritus, compuse mi pieza mas internacional, la 'Danza ritual del fuego', que es el corazon de mi gran ballet titulado 'El amor brujo'.",
+]
+LIBRO_AZUL_TEXTO = [
+    "En mi vida, la amistad fue tan importante como la musica. Mi gran companiero del alma fue el poeta y dramaturgo mas brillante de nuestra epoca, Federico Garcia Lorca. Juntos compartiamos el amor por el folclore.",
+    "Para proteger la esencia pura del flamenco, mi amigo Federico y yo organizamos el historico Concurso de Cante Jondo en el anio 1922. Lo hicimos en la ciudad mas magica de todas: Granada, bajo la mirada atenta de la Alhambra.",
+]
+LIBRO_VERDE_TEXTO = [
+    "La profunda tristeza de la guerra me obligo a dejar mi tierra y cruzar el oceano en 1939. Busque refugio y encontre un nuevo hogar en un pais hermano y generoso: Argentina.",
+    "Pase mis ultimos anios de vida respirando el aire puro de las sierras. Mi ultimo refugio no fue una ruidosa capital, sino la hermosa y tranquila ciudad de Alta Gracia, en Cordoba, donde finalmente descanse en 1946.",
+]
+
+# Preguntas del Nivel 4: (enunciado, [opciones], indice de la opcion correcta)
+PREGUNTAS_FALLA = [
+    ("En que ciudad espaniola nacio el maestro Manuel de Falla?", ["Madrid", "Cadiz", "Sevilla"], 1),
+    ("Como se llama el famoso ballet compuesto por Falla que incluye la 'Danza ritual del fuego'?", ["El sombrero de tres picos", "La vida breve", "El amor brujo"], 2),
+    ("Que gran poeta espaniol fue un amigo intimo de Manuel de Falla y lo ayudo en sus proyectos culturales?", ["Federico Garcia Lorca", "Antonio Machado", "Pablo Neruda"], 0),
+    ("En que hermosa ciudad organizaron Falla y su amigo el Concurso de Cante Jondo en 1922?", ["Granada", "Barcelona", "Valencia"], 0),
+    ("A que pais sudamericano emigro Manuel de Falla, exiliandose en 1939?", ["Mexico", "Cuba", "Argentina"], 2),
+    ("En que tranquila ciudad de ese pais paso Manuel de Falla los ultimos anios de su vida?", ["Buenos Aires", "Alta Gracia", "Rosario"], 1),
 ]
 
 
@@ -538,7 +599,7 @@ def _lineas_de_guion(guion):
 
 
 def _todas_las_lineas_de_dialogo():
-    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2, GUION_DUBOIS_NIVEL3]
+    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2, GUION_DUBOIS_NIVEL3, GUION_FALLA_NIVEL4]
     lineas = {}
     for guion in guiones:
         for hablante, texto in _lineas_de_guion(guion):
@@ -1843,8 +1904,20 @@ class Nivel3View(arcade.View):
             if self.angel_vida <= 0:
                 self._ganar()
             else:
+                self._reposicionar_angel()
                 self.ronda += 1
                 self._iniciar_ronda()
+
+    def _reposicionar_angel(self):
+        """Mueve al angel a un nuevo lugar del salon tras recibir un golpe."""
+        nueva_x = self.angel.center_x
+        nueva_y = self.angel.center_y
+        # evita que vuelva a aparecer practicamente en el mismo lugar
+        while abs(nueva_x - self.angel.center_x) < 80 and abs(nueva_y - self.angel.center_y) < 40:
+            nueva_x = random.randint(NIVEL3_ANGEL_X_MIN, NIVEL3_ANGEL_X_MAX)
+            nueva_y = random.randint(NIVEL3_ANGEL_Y_MIN, NIVEL3_ANGEL_Y_MAX)
+        self.angel.center_x = nueva_x
+        self.angel.center_y = nueva_y
 
     def _ganar(self):
         self.fase = Nivel3View.FASE_VICTORIA
@@ -1871,6 +1944,8 @@ class Nivel3View(arcade.View):
         self.angel_invulnerable_seg = 0.0
         self.player.alpha = 255
         self.angel.alpha = 255
+        self.angel.center_x = NIVEL3_ANGEL_X
+        self.angel.center_y = NIVEL3_ANGEL_Y
         self.fuegos_list.clear()
         self.bolas_azules_list.clear()
         self._iniciar_ronda()
@@ -1927,8 +2002,8 @@ class Nivel3View(arcade.View):
         else:
             arcade.draw_text("La guardiana vuelve a dormir, en paz.", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
         arcade.draw_text("LA GUARDIANA DEL MUSEO SUPERADA", ANCHO // 2, 300, arcade.color.WHITE, font_size=22, bold=True, anchor_x="center")
-        arcade.draw_text("El resto de los objetos todavia te esperan...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
-        arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+        arcade.draw_text("Manuel de Falla te espera con un ultimo desafio...", ANCHO // 2, 255, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
+        arcade.draw_text("[Espacio] Continuar tu viaje", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
     def _dibujar_derrota(self):
         arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
@@ -1956,7 +2031,8 @@ class Nivel3View(arcade.View):
 
         elif self.fase == Nivel3View.FASE_VICTORIA:
             if key == arcade.key.SPACE:
-                arcade.exit()
+                siguiente_vista = Nivel4View(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario)
+                self.window.show_view(siguiente_vista)
 
         elif self.fase == Nivel3View.FASE_DERROTA:
             if key == arcade.key.SPACE:
@@ -1982,6 +2058,362 @@ class Nivel3View(arcade.View):
             self._actualizar_esquivar(delta_time)
         elif self.fase == Nivel3View.FASE_ATAQUE:
             self._actualizar_ataque(delta_time)
+
+
+# Nivel 4 - "El Cuestionario de Falla": Waledo conoce a Manuel de Falla en su
+# estudio musical. Por la casa hay tres salas, cada una con un libro de un
+# color distinto que revela dos pistas sobre la vida del compositor. Recien
+# despues de leer los tres libros se desbloquea el cuestionario de opcion
+# multiple (2 preguntas por libro, 6 en total). No hace falta que Waledo ni
+# Falla aparezcan en las salas: es solo navegar y hacer click en el libro.
+class Nivel4View(arcade.View):
+    FASE_DIALOGO = 0
+    FASE_HUB = 1
+    FASE_SALA = 2
+    FASE_QUIZ = 3
+    FASE_FIN = 4
+
+    def __init__(self, musica_fondo=None, reproductor_musica=None, inventario=None):
+        super().__init__()
+        self.inventario = inventario or Inventario()
+        self.musica_fondo = musica_fondo
+        self.reproductor_musica = reproductor_musica
+        if self.musica_fondo is None:
+            self.musica_fondo = arcade.Sound(MUSICA_FONDO, streaming=False)
+            self.reproductor_musica = self.musica_fondo.play(volume=VOLUMEN_MUSICA_FONDO, loop=True)
+
+        self.tex_hub = arcade.load_texture(FONDO_HUB_FALLA)
+        self.tex_falla_dlg = arcade.load_texture(FALLA_DIALOGO_IMG)
+
+        self.SALAS = [
+            {"nombre": "Estudio del piano", "etiqueta": "Libro Rojo",
+             "fondo": arcade.load_texture(FONDO_SALA_PIANO), "libro": arcade.load_texture(LIBRO_ROJO_IMG),
+             "texto": LIBRO_ROJO_TEXTO},
+            {"nombre": "Dormitorio", "etiqueta": "Libro Azul",
+             "fondo": arcade.load_texture(FONDO_SALA_DORMITORIO), "libro": arcade.load_texture(LIBRO_AZUL_IMG),
+             "texto": LIBRO_AZUL_TEXTO},
+            {"nombre": "Comedor", "etiqueta": "Libro Verde",
+             "fondo": arcade.load_texture(FONDO_SALA_COMEDOR), "libro": arcade.load_texture(LIBRO_VERDE_IMG),
+             "texto": LIBRO_VERDE_TEXTO},
+        ]
+        self.leidos = [False, False, False]
+
+        self.fase = Nivel4View.FASE_DIALOGO
+        self.indice_dialogo = 0
+        self.tiempo_linea = 0.0
+        self._rect_saltar = None
+        reproducir_voz(*GUION_FALLA_NIVEL4[0])
+
+        self.sala_actual = 0
+        self.libro_abierto = False
+
+        self.indice_pregunta = 0
+        self.respuestas_ok = 0
+        self.feedback_visible = False
+        self.feedback_correcta = False
+        self.ultima_opcion = -1
+        self.opcion_hover = None
+        self.mostro_recompensa = False
+        self.gano_quiz = False
+
+    # ---------------- dialogo ----------------
+    def _avanzar_dialogo(self):
+        self.indice_dialogo += 1
+        self.tiempo_linea = 0.0
+        if self.indice_dialogo >= len(GUION_FALLA_NIVEL4):
+            self.fase = Nivel4View.FASE_HUB
+        else:
+            reproducir_voz(*GUION_FALLA_NIVEL4[self.indice_dialogo])
+
+    # ---------------- hub ----------------
+    def _rect_boton_sala(self, i):
+        m = 90
+        alto = 70
+        espacio = 16
+        y_top = ALTO - 190
+        y2 = y_top - i * (alto + espacio)
+        y1 = y2 - alto
+        return (m, y1, ANCHO - m, y2)
+
+    def _rect_boton_quiz(self):
+        m = 90
+        y1 = 60
+        y2 = y1 + 56
+        return (m, y1, ANCHO - m, y2)
+
+    def _entrar_sala(self, i):
+        self.sala_actual = i
+        self.libro_abierto = False
+        self.fase = Nivel4View.FASE_SALA
+
+    def _rect_libro(self):
+        w, h = 150, 165
+        return (ANCHO // 2 - w // 2, 150, ANCHO // 2 + w // 2, 150 + h)
+
+    def _rect_volver(self):
+        return (24, ALTO - 60, 190, ALTO - 20)
+
+    def _abrir_libro(self):
+        self.libro_abierto = True
+        self.leidos[self.sala_actual] = True
+
+    def _volver_al_hub(self):
+        self.fase = Nivel4View.FASE_HUB
+
+    def _iniciar_quiz(self):
+        if not all(self.leidos):
+            return
+        self.fase = Nivel4View.FASE_QUIZ
+        self.indice_pregunta = 0
+        self.respuestas_ok = 0
+        self.feedback_visible = False
+
+    # ---------------- quiz ----------------
+    def _rect_opcion(self, i):
+        m = 70
+        alto = 46
+        espacio = 10
+        y_top = ALTO - 220
+        y2 = y_top - i * (alto + espacio)
+        y1 = y2 - alto
+        return (m, y1, ANCHO - m, y2)
+
+    def _responder(self, opcion):
+        if self.feedback_visible:
+            return
+        _, opciones, correcta = PREGUNTAS_FALLA[self.indice_pregunta]
+        if opcion < 0 or opcion >= len(opciones):
+            return
+        self.feedback_correcta = (opcion == correcta)
+        if self.feedback_correcta:
+            self.respuestas_ok += 1
+        self.ultima_opcion = opcion
+        self.feedback_visible = True
+
+    def _siguiente_pregunta(self):
+        self.indice_pregunta += 1
+        self.feedback_visible = False
+        if self.indice_pregunta >= len(PREGUNTAS_FALLA):
+            self._terminar_quiz()
+
+    def _terminar_quiz(self):
+        self.fase = Nivel4View.FASE_FIN
+        self.gano_quiz = self.respuestas_ok >= NIVEL4_PREGUNTAS_MINIMAS_PARA_GANAR
+        if self.gano_quiz:
+            ya_tenia = self.inventario.tiene("Metronomo")
+            self.inventario.agregar("Metronomo")
+            self.inventario.sumar_experiencia(XP_RECOMPENSA_NIVEL4)
+            self.inventario.otorgar_medalla(MEDALLA_FALLA)
+            self.inventario.guardar()
+            self.mostro_recompensa = not ya_tenia
+        else:
+            self.mostro_recompensa = False
+
+    def _reintentar_quiz(self):
+        self.fase = Nivel4View.FASE_QUIZ
+        self.indice_pregunta = 0
+        self.respuestas_ok = 0
+        self.feedback_visible = False
+
+    # ---------------- dibujado ----------------
+    def on_draw(self):
+        self.clear()
+
+        if self.fase == Nivel4View.FASE_DIALOGO:
+            arcade.draw_texture_rect(self.tex_hub, arcade.LBWH(0, 0, ANCHO, ALTO))
+            self._dibujar_dialogo()
+        elif self.fase == Nivel4View.FASE_HUB:
+            arcade.draw_texture_rect(self.tex_hub, arcade.LBWH(0, 0, ANCHO, ALTO))
+            self._dibujar_hub()
+        elif self.fase == Nivel4View.FASE_SALA:
+            sala = self.SALAS[self.sala_actual]
+            arcade.draw_texture_rect(sala["fondo"], arcade.LBWH(0, 0, ANCHO, ALTO))
+            self._dibujar_sala()
+        elif self.fase == Nivel4View.FASE_QUIZ:
+            arcade.draw_texture_rect(self.tex_hub, arcade.LBWH(0, 0, ANCHO, ALTO))
+            arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 130))
+            self._dibujar_quiz()
+        elif self.fase == Nivel4View.FASE_FIN:
+            arcade.draw_texture_rect(self.tex_hub, arcade.LBWH(0, 0, ANCHO, ALTO))
+            self._dibujar_fin()
+
+        arcade.draw_text(TITULO_NIVEL4, 14, ALTO - 22, arcade.color.WHITE, font_size=11, bold=True)
+
+    def _dibujar_dialogo(self):
+        iw = int(self.tex_falla_dlg.width * 0.75)
+        ih = int(self.tex_falla_dlg.height * 0.75)
+        arcade.draw_texture_rect(self.tex_falla_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
+        hablante, texto = GUION_FALLA_NIVEL4[self.indice_dialogo]
+        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        es_ultima = self.indice_dialogo == len(GUION_FALLA_NIVEL4) - 1
+        fin = es_ultima and texto_visible == texto
+        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_FALLA_NIVEL4), fin=fin)
+        self._rect_saltar = dibujar_boton_saltar()
+
+    def _dibujar_hub(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 90))
+        arcade.draw_text("La casa de Manuel de Falla", ANCHO // 2, ALTO - 60, arcade.color.WHITE, font_size=18, bold=True, anchor_x="center")
+        arcade.draw_text("Recorre las salas y lee los tres libros antes del cuestionario.", ANCHO // 2, ALTO - 90, arcade.color.LIGHT_GRAY, font_size=12, anchor_x="center")
+
+        for i, sala in enumerate(self.SALAS):
+            x1, y1, x2, y2 = self._rect_boton_sala(i)
+            leido = self.leidos[i]
+            color = arcade.color.GOLD if leido else arcade.color.WHITE
+            fondo = (30, 70, 30, 210) if leido else (25, 25, 45, 210)
+            arcade.draw_rect_filled(arcade.LRBT(x1, x2, y1, y2), fondo)
+            arcade.draw_rect_outline(arcade.LRBT(x1, x2, y1, y2), color, border_width=2)
+            estado = "[Leido]" if leido else "[Sin leer]"
+            arcade.draw_text(f"{sala['nombre']}  -  {sala['etiqueta']}   {estado}", (x1 + x2) // 2, (y1 + y2) // 2,
+                              color, font_size=13, bold=True, anchor_x="center", anchor_y="center")
+
+        x1, y1, x2, y2 = self._rect_boton_quiz()
+        listo = all(self.leidos)
+        color = arcade.color.GOLD if listo else arcade.color.GRAY
+        fondo = (60, 45, 10, 220) if listo else (35, 35, 35, 180)
+        arcade.draw_rect_filled(arcade.LRBT(x1, x2, y1, y2), fondo)
+        arcade.draw_rect_outline(arcade.LRBT(x1, x2, y1, y2), color, border_width=2)
+        texto_boton = "Comenzar el cuestionario" if listo else "Lee los 3 libros para desbloquear el cuestionario"
+        arcade.draw_text(texto_boton, (x1 + x2) // 2, (y1 + y2) // 2, color, font_size=13, bold=True, anchor_x="center", anchor_y="center")
+
+    def _dibujar_sala(self):
+        sala = self.SALAS[self.sala_actual]
+        vx1, vy1, vx2, vy2 = self._rect_volver()
+        arcade.draw_rect_filled(arcade.LRBT(vx1, vx2, vy1, vy2), (0, 0, 0, 200))
+        arcade.draw_rect_outline(arcade.LRBT(vx1, vx2, vy1, vy2), arcade.color.WHITE, border_width=2)
+        arcade.draw_text("< Volver", (vx1 + vx2) // 2, (vy1 + vy2) // 2, arcade.color.WHITE, font_size=12, bold=True, anchor_x="center", anchor_y="center")
+
+        arcade.draw_text(sala["nombre"], ANCHO // 2, ALTO - 30, arcade.color.WHITE, font_size=15, bold=True, anchor_x="center")
+
+        lx1, ly1, lx2, ly2 = self._rect_libro()
+        arcade.draw_texture_rect(sala["libro"], arcade.LBWH(lx1, ly1, lx2 - lx1, ly2 - ly1))
+
+        if not self.libro_abierto:
+            arcade.draw_text(f"[Click] Leer el {sala['etiqueta']}", ANCHO // 2, 110, arcade.color.YELLOW, font_size=13, bold=True, anchor_x="center")
+        else:
+            m = 40
+            alto_caja = 220
+            arcade.draw_rect_filled(arcade.LRBT(m, ANCHO - m, 40, alto_caja), (10, 10, 25, 235))
+            arcade.draw_rect_outline(arcade.LRBT(m, ANCHO - m, 40, alto_caja), arcade.color.GOLD, border_width=2)
+            texto_completo = sala["texto"][0] + "\n\n" + sala["texto"][1]
+            arcade.draw_text(texto_completo, m + 18, alto_caja - 16, arcade.color.WHITE, font_size=12,
+                              width=ANCHO - (m * 2) - 36, multiline=True, anchor_y="top")
+
+    def _dibujar_quiz(self):
+        texto, opciones, correcta = PREGUNTAS_FALLA[self.indice_pregunta]
+        m = 50
+        y_top = ALTO - 60
+        arcade.draw_rect_filled(arcade.LRBT(m, ANCHO - m, ALTO - 180, y_top + 20), (10, 10, 30, 235))
+        arcade.draw_rect_outline(arcade.LRBT(m, ANCHO - m, ALTO - 180, y_top + 20), arcade.color.GOLD, border_width=2)
+        arcade.draw_text(f"Pregunta {self.indice_pregunta + 1}/{len(PREGUNTAS_FALLA)}", ANCHO // 2, y_top, arcade.color.GOLD, font_size=12, bold=True, anchor_x="center")
+        arcade.draw_text(texto, m + 20, y_top - 26, arcade.color.WHITE, font_size=14, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
+
+        letras = ["A", "B", "C"]
+        for i, op in enumerate(opciones):
+            x1, y1, x2, y2 = self._rect_opcion(i)
+            if self.feedback_visible:
+                if i == correcta:
+                    color_fondo = (40, 130, 40, 235)
+                elif i == self.ultima_opcion and not self.feedback_correcta:
+                    color_fondo = (150, 30, 30, 235)
+                else:
+                    color_fondo = (25, 25, 45, 200)
+            else:
+                color_fondo = (60, 50, 20, 235) if self.opcion_hover == i else (25, 25, 45, 200)
+            arcade.draw_rect_filled(arcade.LRBT(x1, x2, y1, y2), color_fondo)
+            arcade.draw_rect_outline(arcade.LRBT(x1, x2, y1, y2), arcade.color.GOLD, border_width=1)
+            arcade.draw_text(f"{letras[i]}) {op}", x1 + 14, (y1 + y2) // 2, arcade.color.WHITE, font_size=13,
+                              anchor_y="center", width=x2 - x1 - 24, multiline=True)
+
+        if self.feedback_visible:
+            msg = "Correcto!" if self.feedback_correcta else "Incorrecto."
+            col = arcade.color.GREEN_YELLOW if self.feedback_correcta else arcade.color.RED_DEVIL
+            arcade.draw_text(msg, ANCHO // 2, 22, col, font_size=14, bold=True, anchor_x="center")
+        else:
+            arcade.draw_text("[1-3] o [Click] para responder", ANCHO // 2, 22, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    def _dibujar_fin(self):
+        arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 215))
+        arcade.draw_text(f"Respuestas correctas: {self.respuestas_ok}/{len(PREGUNTAS_FALLA)}", ANCHO // 2, 440, arcade.color.WHITE, font_size=15, bold=True, anchor_x="center")
+
+        if self.gano_quiz:
+            if self.mostro_recompensa:
+                arcade.draw_text("*** SUPERASTE EL NIVEL 4 ***", ANCHO // 2, 400, arcade.color.GOLD, font_size=18, bold=True, anchor_x="center")
+                arcade.draw_text("Metronomo agregado a tu inventario", ANCHO // 2, 370, arcade.color.WHITE, font_size=13, anchor_x="center")
+                arcade.draw_text(f"+{XP_RECOMPENSA_NIVEL4} Experiencia   |   Medalla: \"{MEDALLA_FALLA}\"", ANCHO // 2, 345, arcade.color.LIGHT_BLUE, font_size=12, anchor_x="center")
+            else:
+                arcade.draw_text("Manuel de Falla asiente satisfecho.", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
+            arcade.draw_text("EL CUESTIONARIO DE FALLA SUPERADO", ANCHO // 2, 300, arcade.color.WHITE, font_size=20, bold=True, anchor_x="center")
+            arcade.draw_text("[Espacio] Cerrar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+        else:
+            arcade.draw_text("Te faltaron algunas respuestas...", ANCHO // 2, 400, arcade.color.LIGHT_GRAY, font_size=14, anchor_x="center")
+            arcade.draw_text(f"Necesitas al menos {NIVEL4_PREGUNTAS_MINIMAS_PARA_GANAR} respuestas correctas.", ANCHO // 2, 370, arcade.color.LIGHT_GRAY, font_size=12, anchor_x="center")
+            arcade.draw_text("[Espacio] Reintentar el cuestionario", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
+
+    # ---------------- input ----------------
+    def on_key_press(self, key, modifiers):
+        if self.fase == Nivel4View.FASE_DIALOGO:
+            if key == arcade.key.TAB:
+                self.fase = Nivel4View.FASE_HUB
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._avanzar_dialogo()
+
+        elif self.fase == Nivel4View.FASE_QUIZ:
+            if not self.feedback_visible:
+                mapa = {arcade.key.KEY_1: 0, arcade.key.KEY_2: 1, arcade.key.KEY_3: 2}
+                if key in mapa:
+                    self._responder(mapa[key])
+            elif key in (arcade.key.SPACE, arcade.key.ENTER):
+                self._siguiente_pregunta()
+
+        elif self.fase == Nivel4View.FASE_FIN:
+            if key == arcade.key.SPACE:
+                if self.gano_quiz:
+                    arcade.exit()
+                else:
+                    self._reintentar_quiz()
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        if self.fase == Nivel4View.FASE_QUIZ and not self.feedback_visible:
+            self.opcion_hover = None
+            for i in range(len(PREGUNTAS_FALLA[self.indice_pregunta][1])):
+                if click_en_rect(x, y, self._rect_opcion(i)):
+                    self.opcion_hover = i
+                    break
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        if self.fase == Nivel4View.FASE_DIALOGO:
+            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+                self.fase = Nivel4View.FASE_HUB
+                return
+            self._avanzar_dialogo()
+
+        elif self.fase == Nivel4View.FASE_HUB:
+            for i in range(len(self.SALAS)):
+                if click_en_rect(x, y, self._rect_boton_sala(i)):
+                    self._entrar_sala(i)
+                    return
+            if click_en_rect(x, y, self._rect_boton_quiz()):
+                self._iniciar_quiz()
+
+        elif self.fase == Nivel4View.FASE_SALA:
+            if click_en_rect(x, y, self._rect_volver()):
+                self._volver_al_hub()
+                return
+            if not self.libro_abierto and click_en_rect(x, y, self._rect_libro()):
+                self._abrir_libro()
+
+        elif self.fase == Nivel4View.FASE_QUIZ:
+            if not self.feedback_visible:
+                for i in range(len(PREGUNTAS_FALLA[self.indice_pregunta][1])):
+                    if click_en_rect(x, y, self._rect_opcion(i)):
+                        self._responder(i)
+                        break
+            else:
+                self._siguiente_pregunta()
+
+    def on_update(self, delta_time):
+        if self.fase == Nivel4View.FASE_DIALOGO:
+            self.tiempo_linea += delta_time
 
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView
