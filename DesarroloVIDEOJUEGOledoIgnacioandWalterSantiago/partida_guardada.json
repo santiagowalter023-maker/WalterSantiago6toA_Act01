@@ -1,8 +1,8 @@
 {
   "nombre_jugador": "Lediago Waledo",
-  "turno_viaje": 1,
+  "turno_viaje": 2,
   "objetos": {
-    "Piedra de Moler": true,
+    "Piedra de Moler": false,
     "Herramienta Jesuita": false,
     "Llave Maestra": false,
     "Sello Real": false,
@@ -10,15 +10,12 @@
     "Quijote": false,
     "Metronomo": true,
     "Cantimplora": false,
-    "Espatula de Dubois": true,
+    "Espatula de Dubois": false,
     "Cronoscopio": true,
-    "Cruz de la Estancia": true
+    "Cruz de la Estancia": false
   },
-  "experiencia": 420,
+  "experiencia": 100,
   "medallas": [
-    "Amigo del Compositor",
-    "Historiador de la Estancia",
-    "Guardian de Paravachasca",
-    "Guardian del Museo"
+    "Amigo del Compositor"
   ]
 }

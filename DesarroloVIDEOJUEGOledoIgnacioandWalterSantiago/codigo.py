@@ -103,7 +103,6 @@ MEDALLA_HISTORIADOR = "Historiador de la Estancia"
 XP_RECOMPENSA_TRIVIA = 100
 PREGUNTAS_MINIMAS_PARA_GANAR = 5
 
-# --- Nivel 2: "Senderos de Paravachasca" ---
 TITULO_NIVEL2 = "NIVEL 2 - SENDEROS DE PARAVACHASCA"
 MEDALLA_PARAVACHASCA = "Guardian de Paravachasca"
 XP_RECOMPENSA_NIVEL2 = 100
@@ -116,7 +115,6 @@ NIVEL2_INTERVALO_SPAWN_INICIAL = 1.15  # segundos entre lanzas al arrancar
 NIVEL2_INTERVALO_SPAWN_MINIMO = 0.45   # segundos entre lanzas en lo mas dificil
 NIVEL2_TIEMPO_INVULNERABLE = 1.2   # segundos de "respiro" despues de un golpe
 
-# --- Nivel 3: "La Guardiana del Museo" ---
 TITULO_NIVEL3 = "NIVEL 3 - LA GUARDIANA DEL MUSEO"
 MEDALLA_MUSEO = "Guardian del Museo"
 XP_RECOMPENSA_NIVEL3 = 120
@@ -140,7 +138,6 @@ NIVEL3_ANGEL_Y_MIN = 330
 NIVEL3_ANGEL_Y_MAX = 430
 NIVEL3_TIEMPO_CARGA = 0.6           # segundos que el angel se queda "cargando" antes de tirar
 
-# --- Nivel 4: "El Cuestionario de Falla" ---
 TITULO_NIVEL4 = "NIVEL 4 - EL CUESTIONARIO DE FALLA"
 MEDALLA_FALLA = "Amigo del Compositor"
 XP_RECOMPENSA_NIVEL4 = 100
@@ -150,8 +147,7 @@ DURACION_LOGO_FUTURISTA = 2.5
 DURACION_TRANSICION = 0.4
 DURACION_LOGO_ANTIGUO = 2.5
 
-# Tiempo (en segundos) que tarda en terminar de "escribirse" cada línea de
-# diálogo en pantalla, efecto cinemática.
+# Segundos que tarda en "escribirse" cada linea de dialogo
 DURACION_TEXTO_DIALOGO = 8.0
 
 ETAPA_LOGO_FUTURISTA = 0
@@ -159,9 +155,7 @@ ETAPA_TRANSICION = 1
 ETAPA_LOGO_ANTIGUO = 2
 ETAPA_MENU = 3
 
-# Voz de Edge TTS asignada a cada personaje (usada por generar_voces.py
-# para generar los audios). El nombre de la voz tiene que terminar en
-# "Neural" -- podés listar las disponibles con: edge-tts --list-voices
+# Voz de Edge TTS para cada personaje
 VOCES_PERSONAJE = {
     "JUEZ"      : "es-ES-AlvaroNeural",
     "ABOGADO"   : "es-US-AlonsoNeural",
@@ -194,8 +188,7 @@ HABLANTES = {
     "FALLA": {"nombre": "MANUEL DE FALLA", "color_nombre": arcade.color.BRONZE, "color_borde": arcade.color.BRONZE},
 }
 
-# A partir de acá: guiones de diálogo (listas de tuplas "quién habla" + "qué dice")
-# usados en las distintas escenas del juego
+# Guiones de dialogo de cada escena
 GUION_INTRO_CURA = [
     ("CURA", "La paz sea contigo, hijo! Veo curiosidad en tus ojos... No todos los dias alguien se detiene a observar la historia de este lugar."),
     ("WALEDO", "Estoy recorriendo Alta Gracia y tratando de descubrir los secretos que esconde cada epoca."),
@@ -333,8 +326,7 @@ GUION_HOTEL = [
     ("LEDO", "Tu primera parada te espera hace cientos de anios."),
 ]
 
-# Dialogo del Nivel 2 ("Senderos de Paravachasca"): Waledo habla con el Indio
-# antes de enfrentar el desafio de esquivar las lanzas.
+# Dialogo del Nivel 2: Waledo y el Indio
 GUION_INDIO_NIVEL2 = [
     ("WALEDO", "Saludos, sabio del monte. Dime, como era este valle de Paravachasca mucho antes de que la ciudad de Alta Gracia fuera lo que conocemos hoy?"),
     ("INDIO", "Ah, Waledo... Escucha el murmullo del viento entre los algarrobos. Antes de que existieran las murallas de piedra, los caminos trazados y las luces de la ciudad, esta tierra nos pertenecia a nosotros, los comechingones. Viviamos en casas semisubterraneas para protegernos del frio y del calor, alimentandonos de los frutos del monte y cazando con respeto. Para nosotros, los cerros y los rios de agua clara no eran solo paisaje, eran vida y espiritu sagrado."),
@@ -344,8 +336,7 @@ GUION_INDIO_NIVEL2 = [
     ("INDIO", "Y no te equivocas, Waledo. Tu travesia por estas tierras recien comienza. Si de verdad deseas descifrar los antiguos secretos de Paravachasca y estar preparado para avanzar al Nivel 3, aun debes completar 2 niveles mas. No apresures tu marcha; observa con atencion, escucha al monte y supera las pruebas que te aguardan. Solo asi seras digno del conocimiento ancestral."),
 ]
 
-# Dialogo del Nivel 3 ("La Guardiana del Museo"): Waledo se reencuentra con
-# Gabriel Dubois y le explica el duelo contra el angel de piedra.
+# Dialogo del Nivel 3: Waledo y Gabriel Dubois
 GUION_DUBOIS_NIVEL3 = [
     ("NARRADOR", "Los pasos de Gabriel Dubois resuenan por el patio del museo. Waledo lo espera de pie junto a las viejas reliquias, bajo la sombra del gran arbol."),
     ("WALEDO", "Al fin llegas, Gabriel. Pense que las sombras de los pasillos te habrian desviado del camino."),
@@ -373,8 +364,7 @@ GUION_DUBOIS_NIVEL3 = [
     ("WALEDO", "Cuando estes listo, acercate a la guardiana."),
 ]
 
-# Dialogo del Nivel 4 ("El Cuestionario de Falla"): Waledo conoce a Manuel de
-# Falla en su estudio musical, antes de leer las pistas y responder el quiz.
+# Dialogo del Nivel 4: Waledo y Manuel de Falla
 GUION_FALLA_NIVEL4 = [
     ("NARRADOR", "Un estudio musical iluminado por la calida luz del atardecer en Alta Gracia. Hay un gran piano de cola, partituras esparcidas por toda la habitacion y tres libros misteriosos: uno rojo, uno azul y uno verde."),
     ("NARRADOR", "(Waledo entra cautelosamente, mirando a su alrededor.)"),
@@ -412,8 +402,7 @@ PREGUNTAS_FALLA = [
 ]
 
 
-# Guarda qué objetos juntó el jugador, su experiencia y medallas.
-# También sabe guardar/cargar esos datos en un archivo JSON (el "save").
+# Objetos, experiencia y medallas del jugador; se guarda en JSON
 class Inventario:
     OBJETOS_POSIBLES = {
         "Piedra de Moler": "Herramienta indigena anterior a la colonizacion.",
@@ -430,7 +419,9 @@ class Inventario:
     }
 
     def __init__(self):
-        self.objetos = {nombre: False for nombre in self.OBJETOS_POSIBLES}
+        self.objetos = {}
+        for nombre in self.OBJETOS_POSIBLES:
+            self.objetos[nombre] = False
         self.turno_viaje = 0
         self.nombre_jugador = "Lediago Waledo"
         self.experiencia = 0
@@ -446,7 +437,11 @@ class Inventario:
         return self.objetos.get(nombre, False)
 
     def recolectados(self):
-        return [n for n, v in self.objetos.items() if v]
+        lista = []
+        for nombre, obtenido in self.objetos.items():
+            if obtenido:
+                lista.append(nombre)
+        return lista
 
     def sumar_experiencia(self, puntos):
         self.experiencia += puntos
@@ -472,28 +467,27 @@ class Inventario:
         except OSError:
             return False
 
-    @classmethod
-    def cargar(cls):
+    def cargar(self):
+        # Lee el archivo guardado y actualiza los datos de esta misma instancia.
+        # Si no hay archivo o esta corrupto, no cambia nada y devuelve False.
         if not os.path.exists(SAVE_FILE):
-            return None
+            return False
         try:
             with open(SAVE_FILE, "r", encoding="utf-8") as f:
                 datos = json.load(f)
-            inv = cls()
-            inv.nombre_jugador = datos.get("nombre_jugador", "Lediago Waledo")
-            inv.turno_viaje = datos.get("turno_viaje", 0)
-            inv.experiencia = datos.get("experiencia", 0)
-            inv.medallas = datos.get("medallas", [])
+            self.nombre_jugador = datos.get("nombre_jugador", "Lediago Waledo")
+            self.turno_viaje = datos.get("turno_viaje", 0)
+            self.experiencia = datos.get("experiencia", 0)
+            self.medallas = datos.get("medallas", [])
             for nombre, valor in datos.get("objetos", {}).items():
-                if nombre in inv.objetos:
-                    inv.objetos[nombre] = valor
-            return inv
+                if nombre in self.objetos:
+                    self.objetos[nombre] = valor
+            return True
         except (OSError, json.JSONDecodeError):
-            return None
+            return False
 
 
-# El personaje jugable. Carga el sprite sheet y elige qué cuadro de animación
-# mostrar según hacia dónde se mueve (frente/espalda/izquierda/derecha).
+# Personaje jugable: elige el cuadro de animacion segun su direccion
 class Lediago(arcade.Sprite):
     def __init__(self, escala=0.35):
         super().__init__(scale=escala)
@@ -510,7 +504,9 @@ class Lediago(arcade.Sprite):
         self._frames_frente = todos[0:4]
         self._frames_lado = todos[4:8]
         self._frames_espalda = todos[8:12]
-        self._frames_izquierda = [t.flip_left_right() for t in self._frames_lado]
+        self._frames_izquierda = []
+        for t in self._frames_lado:
+            self._frames_izquierda.append(t.flip_left_right())
 
         self.texture = self._frames_frente[0]
         self._anim_frame = 0
@@ -552,173 +548,161 @@ class Lediago(arcade.Sprite):
             self.texture = frames[self._anim_frame]
 
 
-# Funciones sueltas que usan varias pantallas: calcular distancia (para saber si
-# el jugador está cerca de un NPC) y mover al personaje según las teclas W/A/S/D.
-def distancia(x1, y1, x2, y2):
-    return math.hypot(x1 - x2, y1 - y2)
-
-
-def mover_personaje(player, w_ap, s_ap, a_ap, d_ap, shift_ap):
-    velocidad = VELOCIDAD_CORRER if shift_ap else VELOCIDAD_CAMINAR
-    player.esta_corriendo = shift_ap
-    player.change_x = 0
-    player.change_y = 0
-    if w_ap and not s_ap:
-        player.change_y = velocidad
-    elif s_ap and not w_ap:
-        player.change_y = -velocidad
-    if a_ap and not d_ap:
-        player.change_x = -velocidad
-    elif d_ap and not a_ap:
-        player.change_x = velocidad
-    player.actualizar_direccion()
-
-
-# Dibuja el cajón de diálogo (nombre + texto + "siguiente") que reutilizan varias escenas
-# --- Sistema de voces (edge-tts) -------------------------------------------
-# Todo vive en este mismo archivo: la generación (con edge_tts, necesita
-# internet) corre una sola vez al arrancar el juego -normalmente instantánea,
-# porque solo genera lo que falta- y deja los audios en la carpeta voces/.
-# La reproducción después solo busca esos archivos y los pasa por arcade.Sound.
+# Distancia entre dos puntos y movimiento del personaje con W/A/S/D
 CARPETA_VOCES = BASE_DIR / "voces"
 VOLUMEN_VOCES = 1.0
-
 _cache_sonidos_voz = {}
 _reproductor_voz_actual = None
 
 
-def _clave_voz(hablante, texto):
-    contenido = f"{hablante}|{texto}".encode("utf-8")
-    return hashlib.md5(contenido).hexdigest()[:12]
+class Herramientas:
+    def distancia(self, x1, y1, x2, y2):
+        return math.hypot(x1 - x2, y1 - y2)
 
+    def mover_personaje(self, player, w_ap, s_ap, a_ap, d_ap, shift_ap):
+        velocidad = VELOCIDAD_CORRER if shift_ap else VELOCIDAD_CAMINAR
+        player.esta_corriendo = shift_ap
+        player.change_x = 0
+        player.change_y = 0
+        if w_ap and not s_ap:
+            player.change_y = velocidad
+        elif s_ap and not w_ap:
+            player.change_y = -velocidad
+        if a_ap and not d_ap:
+            player.change_x = -velocidad
+        elif d_ap and not a_ap:
+            player.change_x = velocidad
+        player.actualizar_direccion()
 
-def _lineas_de_guion(guion):
-    """(hablante, texto) de un guion, sin importar si trae un 3er campo (fondo)."""
-    for fila in guion:
-        yield fila[0], fila[1]
+    def _clave_voz(self, hablante, texto):
+        contenido = f"{hablante}|{texto}".encode("utf-8")
+        return hashlib.md5(contenido).hexdigest()[:12]
 
+    def _lineas_de_guion(self, guion):
+        """(hablante, texto) de un guion, sin importar si trae un 3er campo (fondo)."""
+        for fila in guion:
+            yield fila[0], fila[1]
 
-def _todas_las_lineas_de_dialogo():
-    guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2, GUION_DUBOIS_NIVEL3, GUION_FALLA_NIVEL4]
-    lineas = {}
-    for guion in guiones:
-        for hablante, texto in _lineas_de_guion(guion):
-            lineas[_clave_voz(hablante, texto)] = (hablante, texto)
-    return lineas
+    def _todas_las_lineas_de_dialogo(self):
+        guiones = [GUION_INTRO_CURA, GUION_CIERRE_CURA_EXITO, GUION_CIERRE_CURA_FALLO, GUION_JUICIO, GUION_HOTEL, GUION_INDIO_NIVEL2, GUION_DUBOIS_NIVEL3, GUION_FALLA_NIVEL4]
+        lineas = {}
+        for guion in guiones:
+            for hablante, texto in self._lineas_de_guion(guion):
+                lineas[self._clave_voz(hablante, texto)] = (hablante, texto)
+        return lineas
 
+    async def _generar_una_voz(self, clave, hablante, texto):
+        destino = CARPETA_VOCES / f"{clave}.mp3"
+        if destino.exists():
+            return
+        voz = VOCES_PERSONAJE.get(hablante, VOZ_POR_DEFECTO)
+        comunicador = edge_tts.Communicate(texto, voz)
+        await comunicador.save(str(destino))
 
-async def _generar_una_voz(clave, hablante, texto):
-    destino = CARPETA_VOCES / f"{clave}.mp3"
-    if destino.exists():
-        return
-    voz = VOCES_PERSONAJE.get(hablante, VOZ_POR_DEFECTO)
-    comunicador = edge_tts.Communicate(texto, voz)
-    await comunicador.save(str(destino))
+    async def _generar_voces_faltantes_async(self):
+        CARPETA_VOCES.mkdir(exist_ok=True)
+        lineas = self._todas_las_lineas_de_dialogo()
+        faltantes = {}
+        for clave, hablante_texto in lineas.items():
+            archivo_mp3 = CARPETA_VOCES / f"{clave}.mp3"
+            archivo_wav = CARPETA_VOCES / f"{clave}.wav"
+            if not archivo_mp3.exists() and not archivo_wav.exists():
+                faltantes[clave] = hablante_texto
+        if not faltantes:
+            return
+        print(f"Generando voces ({len(faltantes)} lineas nuevas, puede tardar un momento)...")
+        for clave, (hablante, texto) in faltantes.items():
+            try:
+                await self._generar_una_voz(clave, hablante, texto)
+            except Exception as e:
+                print(f"  No se pudo generar la voz de {hablante!r}: {e}")
+        print("Voces listas.")
 
-
-async def _generar_voces_faltantes_async():
-    CARPETA_VOCES.mkdir(exist_ok=True)
-    lineas = _todas_las_lineas_de_dialogo()
-    faltantes = {c: ht for c, ht in lineas.items() if not (CARPETA_VOCES / f"{c}.mp3").exists() and not (CARPETA_VOCES / f"{c}.wav").exists()}
-    if not faltantes:
-        return
-    print(f"Generando voces ({len(faltantes)} lineas nuevas, puede tardar un momento)...")
-    for clave, (hablante, texto) in faltantes.items():
+    def generar_voces_faltantes(self):
+        """Se llama una vez al arrancar el juego (ver main()). Necesita internet
+        la primera vez; después no vuelve a tocar los archivos que ya existen."""
         try:
-            await _generar_una_voz(clave, hablante, texto)
+            asyncio.run(self._generar_voces_faltantes_async())
         except Exception as e:
-            print(f"  No se pudo generar la voz de {hablante!r}: {e}")
-    print("Voces listas.")
+            print(f"No se pudieron generar las voces (¿sin internet?): {e}")
+            print("El juego va a seguir funcionando, solo que sin voz en las lineas que falten.")
+
+    def _sonido_voz(self, hablante, texto):
+        clave = self._clave_voz(hablante, texto)
+        ruta = CARPETA_VOCES / f"{clave}.wav"
+        if not ruta.exists():
+            ruta = CARPETA_VOCES / f"{clave}.mp3"
+        if not ruta.exists():
+            return None
+        if ruta not in _cache_sonidos_voz:
+            try:
+                _cache_sonidos_voz[ruta] = arcade.Sound(str(ruta), streaming=False)
+            except Exception:
+                _cache_sonidos_voz[ruta] = None
+        return _cache_sonidos_voz[ruta]
+
+    def reproducir_voz(self, hablante, texto):
+        """Corta la voz que esté sonando y reproduce la de la línea actual.
+        Si todavía no se generó el audio de esa línea, no hace nada
+        (el juego sigue funcionando igual, solo sin voz en esa línea)."""
+        global _reproductor_voz_actual
+        if _reproductor_voz_actual is not None:
+            try:
+                _reproductor_voz_actual.pause()
+            except Exception:
+                pass
+            _reproductor_voz_actual = None
+        sonido = self._sonido_voz(hablante, texto)
+        if sonido is not None:
+            _reproductor_voz_actual = sonido.play(volume=VOLUMEN_VOCES)
+
+    def texto_progresivo(self, texto, tiempo_transcurrido, duracion=DURACION_TEXTO_DIALOGO):
+        """Corta el texto según cuánto tiempo pasó, para el efecto de cinemática
+        donde las letras van apareciendo de a poco hasta completarse en
+        `duracion` segundos."""
+        if duracion <= 0 or tiempo_transcurrido >= duracion:
+            return texto
+        progreso = max(0.0, tiempo_transcurrido / duracion)
+        return texto[:int(len(texto) * progreso)]
+
+    def dibujar_boton_saltar(self, x=ANCHO - 160, y=ALTO - 34, w=140, h=26):
+        """Botón simple de 'Saltar escena'. Devuelve su rectángulo (x1, y1, x2, y2)
+        para poder detectar el click sobre él."""
+        arcade.draw_rect_filled(arcade.LRBT(x, x + w, y, y + h), (20, 20, 20, 215))
+        arcade.draw_rect_outline(arcade.LRBT(x, x + w, y, y + h), arcade.color.LIGHT_GRAY, border_width=1)
+        arcade.draw_text("Saltar escena >>", x + w / 2, y + h / 2, arcade.color.WHITE,
+                          font_size=10, anchor_x="center", anchor_y="center", bold=True)
+        return (x, y, x + w, y + h)
+
+    def click_en_rect(self, x, y, rect):
+        x1, y1, x2, y2 = rect
+        return x1 <= x <= x2 and y1 <= y <= y2
+
+    def dibujar_cuadro_dialogo_generico(self, hablante_clave, texto, indice, total, fin=False):
+        info = HABLANTES[hablante_clave]
+        m = 20
+        alto_caja = 150
+        arcade.draw_rect_filled(arcade.LRBT(m, ANCHO - m, m, alto_caja), (0, 0, 0, 210))
+        arcade.draw_rect_outline(arcade.LRBT(m, ANCHO - m, m, alto_caja), info["color_borde"], border_width=3)
+        if hablante_clave != "NARRADOR":
+            arcade.draw_rect_filled(arcade.LRBT(m, m + 230, alto_caja - 4, alto_caja + 26), (0, 0, 0, 230))
+            arcade.draw_rect_outline(arcade.LRBT(m, m + 230, alto_caja - 4, alto_caja + 26), info["color_borde"], border_width=2)
+            arcade.draw_text(info["nombre"], m + 14, alto_caja + 3, info["color_nombre"], font_size=13, bold=True, anchor_y="center")
+        color_texto = arcade.color.LIGHT_GRAY if hablante_clave == "NARRADOR" else arcade.color.WHITE
+        arcade.draw_text(texto, m + 20, alto_caja - 30, color_texto, font_size=15, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
+        if fin:
+            pista = "- FIN -  [Espacio] Continuar..."
+        else:
+            pista = f"{indice + 1}/{total}   [Espacio] Siguiente..."
+        arcade.draw_text(pista, ANCHO - m - 10, m + 8, arcade.color.GRAY, font_size=11, anchor_x="right")
 
 
-def generar_voces_faltantes():
-    """Se llama una vez al arrancar el juego (ver main()). Necesita internet
-    la primera vez; después no vuelve a tocar los archivos que ya existen."""
-    try:
-        asyncio.run(_generar_voces_faltantes_async())
-    except Exception as e:
-        print(f"No se pudieron generar las voces (¿sin internet?): {e}")
-        print("El juego va a seguir funcionando, solo que sin voz en las lineas que falten.")
 
+# Pantalla inicial: logos y menu
 
-def _sonido_voz(hablante, texto):
-    clave = _clave_voz(hablante, texto)
-    ruta = CARPETA_VOCES / f"{clave}.wav"
-    if not ruta.exists():
-        ruta = CARPETA_VOCES / f"{clave}.mp3"
-    if not ruta.exists():
-        return None
-    if ruta not in _cache_sonidos_voz:
-        try:
-            _cache_sonidos_voz[ruta] = arcade.Sound(str(ruta), streaming=False)
-        except Exception:
-            _cache_sonidos_voz[ruta] = None
-    return _cache_sonidos_voz[ruta]
+# Instancia unica de Herramientas para usar en todo el juego
+herramientas = Herramientas()
 
-
-def reproducir_voz(hablante, texto):
-    """Corta la voz que esté sonando y reproduce la de la línea actual.
-    Si todavía no se generó el audio de esa línea, no hace nada
-    (el juego sigue funcionando igual, solo sin voz en esa línea)."""
-    global _reproductor_voz_actual
-    if _reproductor_voz_actual is not None:
-        try:
-            _reproductor_voz_actual.pause()
-        except Exception:
-            pass
-        _reproductor_voz_actual = None
-    sonido = _sonido_voz(hablante, texto)
-    if sonido is not None:
-        _reproductor_voz_actual = sonido.play(volume=VOLUMEN_VOCES)
-# -----------------------------------------------------------------------------
-
-
-def texto_progresivo(texto, tiempo_transcurrido, duracion=DURACION_TEXTO_DIALOGO):
-    """Corta el texto según cuánto tiempo pasó, para el efecto de cinemática
-    donde las letras van apareciendo de a poco hasta completarse en
-    `duracion` segundos."""
-    if duracion <= 0 or tiempo_transcurrido >= duracion:
-        return texto
-    progreso = max(0.0, tiempo_transcurrido / duracion)
-    return texto[:int(len(texto) * progreso)]
-
-
-def dibujar_boton_saltar(x=ANCHO - 160, y=ALTO - 34, w=140, h=26):
-    """Botón simple de 'Saltar escena'. Devuelve su rectángulo (x1, y1, x2, y2)
-    para poder detectar el click sobre él."""
-    arcade.draw_rect_filled(arcade.LRBT(x, x + w, y, y + h), (20, 20, 20, 215))
-    arcade.draw_rect_outline(arcade.LRBT(x, x + w, y, y + h), arcade.color.LIGHT_GRAY, border_width=1)
-    arcade.draw_text("Saltar escena >>", x + w / 2, y + h / 2, arcade.color.WHITE,
-                      font_size=10, anchor_x="center", anchor_y="center", bold=True)
-    return (x, y, x + w, y + h)
-
-
-def click_en_rect(x, y, rect):
-    x1, y1, x2, y2 = rect
-    return x1 <= x <= x2 and y1 <= y <= y2
-
-
-def dibujar_cuadro_dialogo_generico(hablante_clave, texto, indice, total, fin=False):
-    info = HABLANTES[hablante_clave]
-    m = 20
-    alto_caja = 150
-    arcade.draw_rect_filled(arcade.LRBT(m, ANCHO - m, m, alto_caja), (0, 0, 0, 210))
-    arcade.draw_rect_outline(arcade.LRBT(m, ANCHO - m, m, alto_caja), info["color_borde"], border_width=3)
-    if hablante_clave != "NARRADOR":
-        arcade.draw_rect_filled(arcade.LRBT(m, m + 230, alto_caja - 4, alto_caja + 26), (0, 0, 0, 230))
-        arcade.draw_rect_outline(arcade.LRBT(m, m + 230, alto_caja - 4, alto_caja + 26), info["color_borde"], border_width=2)
-        arcade.draw_text(info["nombre"], m + 14, alto_caja + 3, info["color_nombre"], font_size=13, bold=True, anchor_y="center")
-    color_texto = arcade.color.LIGHT_GRAY if hablante_clave == "NARRADOR" else arcade.color.WHITE
-    arcade.draw_text(texto, m + 20, alto_caja - 30, color_texto, font_size=15, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
-    if fin:
-        pista = "- FIN -  [Espacio] Continuar..."
-    else:
-        pista = f"{indice + 1}/{total}   [Espacio] Siguiente..."
-    arcade.draw_text(pista, ANCHO - m - 10, m + 8, arcade.color.GRAY, font_size=11, anchor_x="right")
-
-
-# Pantalla inicial: logos animados y después el menú de "presiona cualquier tecla".
-# Al arrancar, revisa si hay una partida guardada.
 class IntroView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -730,9 +714,9 @@ class IntroView(arcade.View):
         self.tiempo = 0.0
         self.musica = arcade.Sound(MUSICA_FONDO, streaming=False)
         self.reproductor = self.musica.play(volume=VOLUMEN_MUSICA_FONDO, loop=True)
-        inv_guardado = Inventario.cargar()
-        self._partida_guardada = inv_guardado is not None
-        self._inventario = inv_guardado if inv_guardado else Inventario()
+        # Creamos un inventario vacio y probamos cargarle la partida guardada encima
+        self._inventario = Inventario()
+        self._partida_guardada = self._inventario.cargar()
 
     def on_draw(self):
         self.clear()
@@ -775,8 +759,7 @@ class IntroView(arcade.View):
         self.window.show_view(juicio)
 
 
-# Escena del juicio: solo va mostrando el GUION_JUICIO línea por línea
-# y cambia el fondo según en qué parte del guion estemos.
+# Escena del juicio: avanza el GUION_JUICIO linea por linea
 class JuicioView(arcade.View):
     def __init__(self, musica_fondo=None, reproductor_musica=None, inventario=None):
         super().__init__()
@@ -792,17 +775,17 @@ class JuicioView(arcade.View):
         self.terminado = False
         self.tiempo_linea = 0.0
         self._rect_saltar = None
-        reproducir_voz(*GUION_JUICIO[0][:2])
+        herramientas.reproducir_voz(*GUION_JUICIO[0][:2])
 
     def on_draw(self):
         self.clear()
         hablante, texto, fondo = GUION_JUICIO[self.indice]
         arcade.draw_texture_rect(self.texturas_fondo[fondo], arcade.LBWH(0, 0, ANCHO, ALTO))
-        texto_visible = texto_progresivo(texto, self.tiempo_linea)
-        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice, len(GUION_JUICIO), fin=self.terminado)
+        texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
+        herramientas.dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice, len(GUION_JUICIO), fin=self.terminado)
         if self.terminado:
             arcade.draw_text("FIN DE LA ESCENA", ANCHO // 2, ALTO - 30, arcade.color.WHITE, font_size=14, bold=True, anchor_x="center")
-        self._rect_saltar = dibujar_boton_saltar()
+        self._rect_saltar = herramientas.dibujar_boton_saltar()
 
     def on_update(self, delta_time):
         self.tiempo_linea += delta_time
@@ -817,7 +800,7 @@ class JuicioView(arcade.View):
             self.indice = len(GUION_JUICIO) - 1
             self.terminado = True
         self.tiempo_linea = 0.0
-        reproducir_voz(*GUION_JUICIO[self.indice][:2])
+        herramientas.reproducir_voz(*GUION_JUICIO[self.indice][:2])
 
     def _saltar_escena(self):
         siguiente_vista = HotelSierrasView(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario)
@@ -830,14 +813,13 @@ class JuicioView(arcade.View):
             self.avanzar()
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+        if self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
             self._saltar_escena()
             return
         self.avanzar()
 
 
-# Escena del hotel: el jugador camina libremente y, al acercarse al NPC (Walter/Ledo),
-# se abre el diálogo del GUION_HOTEL.
+# Escena del hotel: caminar y hablar con el NPC
 class HotelSierrasView(arcade.View):
     FASE_GAMEPLAY = 0
     FASE_DIALOGO = 1
@@ -878,10 +860,10 @@ class HotelSierrasView(arcade.View):
         self._rect_saltar = None
 
     def _mover_player(self):
-        mover_personaje(self.player, self.w_ap, self.s_ap, self.a_ap, self.d_ap, self.shift_ap)
+        herramientas.mover_personaje(self.player, self.w_ap, self.s_ap, self.a_ap, self.d_ap, self.shift_ap)
 
     def _cerca_npc(self):
-        d = distancia(self.player.center_x, self.player.center_y, self.npc_cx, self.npc_cy)
+        d = herramientas.distancia(self.player.center_x, self.player.center_y, self.npc_cx, self.npc_cy)
         return d < 180
 
     def _iniciar_dialogo(self):
@@ -891,7 +873,7 @@ class HotelSierrasView(arcade.View):
         self.player.change_x = 0
         self.player.change_y = 0
         self.tiempo_linea = 0.0
-        reproducir_voz(*GUION_HOTEL[0])
+        herramientas.reproducir_voz(*GUION_HOTEL[0])
 
     def _avanzar_dialogo(self):
         if self.dialogo_fin:
@@ -902,7 +884,7 @@ class HotelSierrasView(arcade.View):
             self.dialogo_idx = len(GUION_HOTEL) - 1
             self.dialogo_fin = True
         self.tiempo_linea = 0.0
-        reproducir_voz(*GUION_HOTEL[self.dialogo_idx])
+        herramientas.reproducir_voz(*GUION_HOTEL[self.dialogo_idx])
 
     def _saltar_dialogo(self):
         self.window.show_view(VitrinaView(musica_fondo=self.musica_fondo, reproductor_musica=self.reproductor_musica, inventario=self.inventario))
@@ -926,9 +908,9 @@ class HotelSierrasView(arcade.View):
         self._rect_saltar = None
         if self.fase == HotelSierrasView.FASE_DIALOGO:
             hablante, texto = GUION_HOTEL[self.dialogo_idx]
-            texto_visible = texto_progresivo(texto, self.tiempo_linea)
-            dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.dialogo_idx, len(GUION_HOTEL), fin=self.dialogo_fin)
-            self._rect_saltar = dibujar_boton_saltar()
+            texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
+            herramientas.dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.dialogo_idx, len(GUION_HOTEL), fin=self.dialogo_fin)
+            self._rect_saltar = herramientas.dibujar_boton_saltar()
 
     def on_key_press(self, key, modifiers):
         if self.fase == HotelSierrasView.FASE_GAMEPLAY:
@@ -965,7 +947,7 @@ class HotelSierrasView(arcade.View):
         self._mover_player()
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if self.fase == HotelSierrasView.FASE_DIALOGO and self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+        if self.fase == HotelSierrasView.FASE_DIALOGO and self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
             self._saltar_dialogo()
             return
         if self.fase == HotelSierrasView.FASE_GAMEPLAY and self._cerca_npc():
@@ -990,8 +972,7 @@ class HotelSierrasView(arcade.View):
             self.tiempo_linea += delta_time
 
 
-# Escena de la vitrina: permite abrir/cerrar la vitrina, guardar la partida
-# y usar el Cronoscopio para pasar a la escena de la Estancia (GameView).
+# Escena de la vitrina: guardar partida y usar el Cronoscopio
 class VitrinaView(arcade.View):
     FASE_CERRADA = "cerrada"
     FASE_ABIERTA = "abierta"
@@ -1128,8 +1109,7 @@ class VitrinaView(arcade.View):
             self.msg_timer = max(0, self.msg_timer - delta_time)
 
 
-# Escena de la Estancia: caminar, hablar con el Cura, responder la trivia
-# de 7 preguntas y, si aprueba, recibir la Cruz de la Estancia (fin de la demo).
+# Escena de la Estancia: caminar, hablar con el Cura y la trivia
 class GameView(arcade.View):
     CURA_CX = 150
     CURA_CY = 230
@@ -1172,11 +1152,11 @@ class GameView(arcade.View):
         self._rect_saltar = None
 
     def _cerca_cura(self):
-        d = distancia(self.player.center_x, self.player.center_y, self.CURA_CX, self.CURA_CY)
+        d = herramientas.distancia(self.player.center_x, self.player.center_y, self.CURA_CX, self.CURA_CY)
         return d < 110
 
     def _mover_player(self):
-        mover_personaje(self.player, self.w_ap, self.s_ap, self.a_ap, self.d_ap, self.shift_ap)
+        herramientas.mover_personaje(self.player, self.w_ap, self.s_ap, self.a_ap, self.d_ap, self.shift_ap)
 
     def _iniciar_intro_cura(self):
         self.guion_cura = GUION_INTRO_CURA
@@ -1185,7 +1165,7 @@ class GameView(arcade.View):
         self.player.change_x = 0
         self.player.change_y = 0
         self.tiempo_linea = 0.0
-        reproducir_voz(*self.guion_cura[0])
+        herramientas.reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_intro(self):
         self.indice_cura += 1
@@ -1196,7 +1176,7 @@ class GameView(arcade.View):
             self.respuestas_ok = 0
             self.feedback_visible = False
         else:
-            reproducir_voz(*self.guion_cura[self.indice_cura])
+            herramientas.reproducir_voz(*self.guion_cura[self.indice_cura])
 
     def _saltar_dialogo_cura(self):
         """Salta el resto del diálogo actual del Cura (intro o cierre)."""
@@ -1240,7 +1220,7 @@ class GameView(arcade.View):
             self.indice_cura = 0
             self.estado = ESTADO_CIERRE_CURA
             self.tiempo_linea = 0.0
-            reproducir_voz(*self.guion_cura[0])
+            herramientas.reproducir_voz(*self.guion_cura[0])
 
     def _avanzar_cierre(self):
         self.indice_cura += 1
@@ -1248,7 +1228,7 @@ class GameView(arcade.View):
         if self.indice_cura >= len(self.guion_cura):
             self.estado = ESTADO_FIN_DEMO
         else:
-            reproducir_voz(*self.guion_cura[self.indice_cura])
+            herramientas.reproducir_voz(*self.guion_cura[self.indice_cura])
 
     def _rect_opcion(self, i):
         m = 60
@@ -1281,7 +1261,7 @@ class GameView(arcade.View):
         self._rect_saltar = None
         if self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA):
             nombre, texto = self.guion_cura[self.indice_cura]
-            texto_visible = texto_progresivo(texto, self.tiempo_linea)
+            texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
             hablante_key = "CURA" if nombre == "CURA" else "LEDIAGO"
             m = 20
             alto_caja = 150
@@ -1294,7 +1274,7 @@ class GameView(arcade.View):
             arcade.draw_text(etiqueta, m + 14, alto_caja + 3, color, font_size=12, bold=True, anchor_y="center")
             arcade.draw_text(texto_visible, m + 20, alto_caja - 30, arcade.color.WHITE, font_size=15, width=ANCHO - (m * 2) - 40, multiline=True, anchor_y="top")
             arcade.draw_text("[Espacio] Continuar...", ANCHO - m - 10, m + 8, arcade.color.GRAY, font_size=11, anchor_x="right")
-            self._rect_saltar = dibujar_boton_saltar()
+            self._rect_saltar = herramientas.dibujar_boton_saltar()
 
         elif self.estado == ESTADO_TRIVIA:
             self._dibujar_trivia()
@@ -1415,7 +1395,7 @@ class GameView(arcade.View):
                     break
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA) and self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+        if self.estado in (ESTADO_INTRO_CURA, ESTADO_CIERRE_CURA) and self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
             self._saltar_dialogo_cura()
             return
         if self.estado == ESTADO_JUGANDO and self._cerca_cura():
@@ -1448,11 +1428,7 @@ class GameView(arcade.View):
             self.tiempo_linea += delta_time
 
 
-# Nivel 2 - "Senderos de Paravachasca": primero Waledo conversa con el Indio
-# (dialogo con voz, igual que las demas escenas) y despues tiene que esquivar,
-# durante 2 minutos, las lanzas que van cayendo desde arriba de la pantalla.
-# Si una lanza lo toca pierde una vida; si se queda sin vidas, pierde el nivel.
-# Si aguanta los 2 minutos completos, gana la Piedra de Moler.
+# Nivel 2: dialogo con el Indio y esquivar lanzas durante 2 minutos
 class Nivel2View(arcade.View):
     FASE_DIALOGO = 0
     FASE_JUEGO = 1
@@ -1475,14 +1451,12 @@ class Nivel2View(arcade.View):
         self.tex_indio_idle = arcade.load_texture(INDIO_IDLE_IMG)
         self.tex_lanza = arcade.load_texture(LANZA_IMG)
 
-        # --- fase de dialogo ---
         self.fase = Nivel2View.FASE_DIALOGO
         self.indice_dialogo = 0
         self.tiempo_linea = 0.0
         self._rect_saltar = None
-        reproducir_voz(*GUION_INDIO_NIVEL2[0])
+        herramientas.reproducir_voz(*GUION_INDIO_NIVEL2[0])
 
-        # --- jugador ---
         self.player = Lediago(escala=ESCALA_PERSONAJE)
         self.player.center_x = ANCHO // 2
         self.player.center_y = Nivel2View.JUGADOR_Y
@@ -1490,7 +1464,6 @@ class Nivel2View(arcade.View):
         self.player_list.append(self.player)
         self.a_ap = self.d_ap = False
 
-        # --- minijuego de esquivar lanzas ---
         self.lanza_list = arcade.SpriteList()
         self.tiempo_restante = NIVEL2_DURACION_SEGUNDOS
         self.vidas = NIVEL2_VIDAS
@@ -1498,14 +1471,13 @@ class Nivel2View(arcade.View):
         self.invulnerable_seg = 0.0
         self.mostro_recompensa = False
 
-    # ---------------- fase de dialogo ----------------
     def _avanzar_dialogo(self):
         self.indice_dialogo += 1
         self.tiempo_linea = 0.0
         if self.indice_dialogo >= len(GUION_INDIO_NIVEL2):
             self._iniciar_juego()
         else:
-            reproducir_voz(*GUION_INDIO_NIVEL2[self.indice_dialogo])
+            herramientas.reproducir_voz(*GUION_INDIO_NIVEL2[self.indice_dialogo])
 
     def _iniciar_juego(self):
         self.fase = Nivel2View.FASE_JUEGO
@@ -1514,7 +1486,6 @@ class Nivel2View(arcade.View):
         self.player.change_x = 0
         self.player.change_y = 0
 
-    # ---------------- fase del minijuego ----------------
     def _spawn_lanza(self):
         lanza = arcade.Sprite(scale=NIVEL2_ESCALA_LANZA)
         lanza.texture = self.tex_lanza
@@ -1602,7 +1573,6 @@ class Nivel2View(arcade.View):
         self.player.center_x = ANCHO // 2
         self.player.center_y = Nivel2View.JUGADOR_Y
 
-    # ---------------- dibujado ----------------
     def on_draw(self):
         self.clear()
         arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, ANCHO, ALTO))
@@ -1626,11 +1596,11 @@ class Nivel2View(arcade.View):
         arcade.draw_texture_rect(self.tex_indio_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
 
         hablante, texto = GUION_INDIO_NIVEL2[self.indice_dialogo]
-        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
         es_ultima = self.indice_dialogo == len(GUION_INDIO_NIVEL2) - 1
         fin = es_ultima and texto_visible == texto
-        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_INDIO_NIVEL2), fin=fin)
-        self._rect_saltar = dibujar_boton_saltar()
+        herramientas.dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_INDIO_NIVEL2), fin=fin)
+        self._rect_saltar = herramientas.dibujar_boton_saltar()
 
     def _dibujar_indio_espectador(self):
         """El Indio observa la prueba desde un costado (solo decorativo)."""
@@ -1664,7 +1634,6 @@ class Nivel2View(arcade.View):
         arcade.draw_text("El sabio del monte todavia no te considera listo.", ANCHO // 2, 300, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
         arcade.draw_text("[Espacio] Reintentar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
-    # ---------------- input ----------------
     def on_key_press(self, key, modifiers):
         if self.fase == Nivel2View.FASE_DIALOGO:
             if key == arcade.key.TAB:
@@ -1695,7 +1664,7 @@ class Nivel2View(arcade.View):
 
     def on_mouse_press(self, x, y, button, modifiers):
         if self.fase == Nivel2View.FASE_DIALOGO:
-            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            if self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
                 self._iniciar_juego()
                 return
             self._avanzar_dialogo()
@@ -1707,12 +1676,7 @@ class Nivel2View(arcade.View):
             self._actualizar_juego(delta_time)
 
 
-# Nivel 3 - "La Guardiana del Museo": Waledo se reencuentra con Gabriel Dubois
-# (dialogo con voz) y despues Dubois se enfrenta al angel de piedra que
-# custodia la Espatula de Dubois: primero hay que esquivar sus bolas de
-# fuego y despues, cuando el angel se queda sin aliento, hay una ventana
-# para responder con una bola de energia azul. Se repite por rondas hasta
-# vaciar la vida del angel.
+# Nivel 3: dialogo con Dubois y duelo por rondas contra el angel
 class Nivel3View(arcade.View):
     FASE_DIALOGO = 0
     FASE_ESQUIVAR = 1
@@ -1739,14 +1703,12 @@ class Nivel3View(arcade.View):
         self.tex_fuego_ataque = arcade.load_texture(BOLA_FUEGO_ATAQUE_IMG)
         self.tex_fuego_defensa = arcade.load_texture(BOLA_FUEGO_DEFENSA_IMG)
 
-        # --- fase de dialogo ---
         self.fase = Nivel3View.FASE_DIALOGO
         self.indice_dialogo = 0
         self.tiempo_linea = 0.0
         self._rect_saltar = None
-        reproducir_voz(*GUION_DUBOIS_NIVEL3[0])
+        herramientas.reproducir_voz(*GUION_DUBOIS_NIVEL3[0])
 
-        # --- jugador (Gabriel Dubois entra en accion) ---
         self.player = Lediago(escala=ESCALA_PERSONAJE)
         self.player.center_x = ANCHO // 2
         self.player.center_y = Nivel3View.JUGADOR_Y
@@ -1754,7 +1716,6 @@ class Nivel3View(arcade.View):
         self.player_list.append(self.player)
         self.a_ap = self.d_ap = False
 
-        # --- el angel (guardiana) ---
         self.angel = arcade.Sprite(scale=NIVEL3_ESCALA_ANGEL)
         self.angel.texture = self.tex_angel_idle
         self.angel.center_x = NIVEL3_ANGEL_X
@@ -1764,11 +1725,9 @@ class Nivel3View(arcade.View):
         self.angel_vida = NIVEL3_VIDA_ANGEL
         self.angel_invulnerable_seg = 0.0
 
-        # --- proyectiles ---
         self.fuegos_list = arcade.SpriteList()
         self.bolas_azules_list = arcade.SpriteList()
 
-        # --- estado de rondas ---
         self.ronda = 1
         self.tiempo_carga_restante = 0.0
         self.fuegos_por_lanzar = 0
@@ -1777,16 +1736,14 @@ class Nivel3View(arcade.View):
         self.invulnerable_seg = 0.0
         self.mostro_recompensa = False
 
-    # ---------------- fase de dialogo ----------------
     def _avanzar_dialogo(self):
         self.indice_dialogo += 1
         self.tiempo_linea = 0.0
         if self.indice_dialogo >= len(GUION_DUBOIS_NIVEL3):
             self._iniciar_ronda()
         else:
-            reproducir_voz(*GUION_DUBOIS_NIVEL3[self.indice_dialogo])
+            herramientas.reproducir_voz(*GUION_DUBOIS_NIVEL3[self.indice_dialogo])
 
-    # ---------------- rondas del duelo ----------------
     def _iniciar_ronda(self):
         self.fase = Nivel3View.FASE_ESQUIVAR
         self.player.center_x = ANCHO // 2
@@ -1950,7 +1907,6 @@ class Nivel3View(arcade.View):
         self.bolas_azules_list.clear()
         self._iniciar_ronda()
 
-    # ---------------- dibujado ----------------
     def on_draw(self):
         self.clear()
         arcade.draw_texture_rect(self.fondo, arcade.LBWH(0, 0, ANCHO, ALTO))
@@ -1975,11 +1931,11 @@ class Nivel3View(arcade.View):
         arcade.draw_texture_rect(self.tex_dubois_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
 
         hablante, texto = GUION_DUBOIS_NIVEL3[self.indice_dialogo]
-        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
         es_ultima = self.indice_dialogo == len(GUION_DUBOIS_NIVEL3) - 1
         fin = es_ultima and texto_visible == texto
-        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_DUBOIS_NIVEL3), fin=fin)
-        self._rect_saltar = dibujar_boton_saltar()
+        herramientas.dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_DUBOIS_NIVEL3), fin=fin)
+        self._rect_saltar = herramientas.dibujar_boton_saltar()
 
     def _dibujar_hud_duelo(self):
         m = 14
@@ -2011,7 +1967,6 @@ class Nivel3View(arcade.View):
         arcade.draw_text("Gabriel respira hondo y se prepara para volver a intentarlo.", ANCHO // 2, 300, arcade.color.LIGHT_GRAY, font_size=13, anchor_x="center")
         arcade.draw_text("[Espacio] Reintentar", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
-    # ---------------- input ----------------
     def on_key_press(self, key, modifiers):
         if self.fase == Nivel3View.FASE_DIALOGO:
             if key == arcade.key.TAB:
@@ -2046,7 +2001,7 @@ class Nivel3View(arcade.View):
 
     def on_mouse_press(self, x, y, button, modifiers):
         if self.fase == Nivel3View.FASE_DIALOGO:
-            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            if self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
                 self._iniciar_ronda()
                 return
             self._avanzar_dialogo()
@@ -2060,12 +2015,7 @@ class Nivel3View(arcade.View):
             self._actualizar_ataque(delta_time)
 
 
-# Nivel 4 - "El Cuestionario de Falla": Waledo conoce a Manuel de Falla en su
-# estudio musical. Por la casa hay tres salas, cada una con un libro de un
-# color distinto que revela dos pistas sobre la vida del compositor. Recien
-# despues de leer los tres libros se desbloquea el cuestionario de opcion
-# multiple (2 preguntas por libro, 6 en total). No hace falta que Waledo ni
-# Falla aparezcan en las salas: es solo navegar y hacer click en el libro.
+# Nivel 4: dialogo con Falla, leer 3 libros y responder el quiz
 class Nivel4View(arcade.View):
     FASE_DIALOGO = 0
     FASE_HUB = 1
@@ -2102,7 +2052,7 @@ class Nivel4View(arcade.View):
         self.indice_dialogo = 0
         self.tiempo_linea = 0.0
         self._rect_saltar = None
-        reproducir_voz(*GUION_FALLA_NIVEL4[0])
+        herramientas.reproducir_voz(*GUION_FALLA_NIVEL4[0])
 
         self.sala_actual = 0
         self.libro_abierto = False
@@ -2116,16 +2066,14 @@ class Nivel4View(arcade.View):
         self.mostro_recompensa = False
         self.gano_quiz = False
 
-    # ---------------- dialogo ----------------
     def _avanzar_dialogo(self):
         self.indice_dialogo += 1
         self.tiempo_linea = 0.0
         if self.indice_dialogo >= len(GUION_FALLA_NIVEL4):
             self.fase = Nivel4View.FASE_HUB
         else:
-            reproducir_voz(*GUION_FALLA_NIVEL4[self.indice_dialogo])
+            herramientas.reproducir_voz(*GUION_FALLA_NIVEL4[self.indice_dialogo])
 
-    # ---------------- hub ----------------
     def _rect_boton_sala(self, i):
         m = 90
         alto = 70
@@ -2160,15 +2108,22 @@ class Nivel4View(arcade.View):
     def _volver_al_hub(self):
         self.fase = Nivel4View.FASE_HUB
 
+    def _todos_los_libros_leidos(self):
+        i = 0
+        while i < len(self.leidos):
+            if not self.leidos[i]:
+                return False
+            i += 1
+        return True
+
     def _iniciar_quiz(self):
-        if not all(self.leidos):
+        if not self._todos_los_libros_leidos():
             return
         self.fase = Nivel4View.FASE_QUIZ
         self.indice_pregunta = 0
         self.respuestas_ok = 0
         self.feedback_visible = False
 
-    # ---------------- quiz ----------------
     def _rect_opcion(self, i):
         m = 70
         alto = 46
@@ -2215,7 +2170,6 @@ class Nivel4View(arcade.View):
         self.respuestas_ok = 0
         self.feedback_visible = False
 
-    # ---------------- dibujado ----------------
     def on_draw(self):
         self.clear()
 
@@ -2244,11 +2198,11 @@ class Nivel4View(arcade.View):
         ih = int(self.tex_falla_dlg.height * 0.75)
         arcade.draw_texture_rect(self.tex_falla_dlg, arcade.LBWH(ANCHO - iw - 30, 165, iw, ih))
         hablante, texto = GUION_FALLA_NIVEL4[self.indice_dialogo]
-        texto_visible = texto_progresivo(texto, self.tiempo_linea)
+        texto_visible = herramientas.texto_progresivo(texto, self.tiempo_linea)
         es_ultima = self.indice_dialogo == len(GUION_FALLA_NIVEL4) - 1
         fin = es_ultima and texto_visible == texto
-        dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_FALLA_NIVEL4), fin=fin)
-        self._rect_saltar = dibujar_boton_saltar()
+        herramientas.dibujar_cuadro_dialogo_generico(hablante, texto_visible, self.indice_dialogo, len(GUION_FALLA_NIVEL4), fin=fin)
+        self._rect_saltar = herramientas.dibujar_boton_saltar()
 
     def _dibujar_hub(self):
         arcade.draw_rect_filled(arcade.LRBT(0, ANCHO, 0, ALTO), (0, 0, 0, 90))
@@ -2267,7 +2221,7 @@ class Nivel4View(arcade.View):
                               color, font_size=13, bold=True, anchor_x="center", anchor_y="center")
 
         x1, y1, x2, y2 = self._rect_boton_quiz()
-        listo = all(self.leidos)
+        listo = self._todos_los_libros_leidos()
         color = arcade.color.GOLD if listo else arcade.color.GRAY
         fondo = (60, 45, 10, 220) if listo else (35, 35, 35, 180)
         arcade.draw_rect_filled(arcade.LRBT(x1, x2, y1, y2), fondo)
@@ -2349,7 +2303,6 @@ class Nivel4View(arcade.View):
             arcade.draw_text(f"Necesitas al menos {NIVEL4_PREGUNTAS_MINIMAS_PARA_GANAR} respuestas correctas.", ANCHO // 2, 370, arcade.color.LIGHT_GRAY, font_size=12, anchor_x="center")
             arcade.draw_text("[Espacio] Reintentar el cuestionario", ANCHO // 2, 60, arcade.color.GRAY, font_size=11, anchor_x="center")
 
-    # ---------------- input ----------------
     def on_key_press(self, key, modifiers):
         if self.fase == Nivel4View.FASE_DIALOGO:
             if key == arcade.key.TAB:
@@ -2376,36 +2329,36 @@ class Nivel4View(arcade.View):
         if self.fase == Nivel4View.FASE_QUIZ and not self.feedback_visible:
             self.opcion_hover = None
             for i in range(len(PREGUNTAS_FALLA[self.indice_pregunta][1])):
-                if click_en_rect(x, y, self._rect_opcion(i)):
+                if herramientas.click_en_rect(x, y, self._rect_opcion(i)):
                     self.opcion_hover = i
                     break
 
     def on_mouse_press(self, x, y, button, modifiers):
         if self.fase == Nivel4View.FASE_DIALOGO:
-            if self._rect_saltar and click_en_rect(x, y, self._rect_saltar):
+            if self._rect_saltar and herramientas.click_en_rect(x, y, self._rect_saltar):
                 self.fase = Nivel4View.FASE_HUB
                 return
             self._avanzar_dialogo()
 
         elif self.fase == Nivel4View.FASE_HUB:
             for i in range(len(self.SALAS)):
-                if click_en_rect(x, y, self._rect_boton_sala(i)):
+                if herramientas.click_en_rect(x, y, self._rect_boton_sala(i)):
                     self._entrar_sala(i)
                     return
-            if click_en_rect(x, y, self._rect_boton_quiz()):
+            if herramientas.click_en_rect(x, y, self._rect_boton_quiz()):
                 self._iniciar_quiz()
 
         elif self.fase == Nivel4View.FASE_SALA:
-            if click_en_rect(x, y, self._rect_volver()):
+            if herramientas.click_en_rect(x, y, self._rect_volver()):
                 self._volver_al_hub()
                 return
-            if not self.libro_abierto and click_en_rect(x, y, self._rect_libro()):
+            if not self.libro_abierto and herramientas.click_en_rect(x, y, self._rect_libro()):
                 self._abrir_libro()
 
         elif self.fase == Nivel4View.FASE_QUIZ:
             if not self.feedback_visible:
                 for i in range(len(PREGUNTAS_FALLA[self.indice_pregunta][1])):
-                    if click_en_rect(x, y, self._rect_opcion(i)):
+                    if herramientas.click_en_rect(x, y, self._rect_opcion(i)):
                         self._responder(i)
                         break
             else:
@@ -2418,7 +2371,7 @@ class Nivel4View(arcade.View):
 
 # Punto de entrada: crea la ventana y arranca mostrando la IntroView
 def main():
-    generar_voces_faltantes()
+    herramientas.generar_voces_faltantes()
     window = arcade.Window(ANCHO, ALTO, TITULO)
     window.center_window()
     window.show_view(IntroView())
