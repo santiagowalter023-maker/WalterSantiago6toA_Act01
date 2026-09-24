@@ -1,12 +1,12 @@
-import arcade
-import asyncio
-import hashlib
-import json
-import os
-import math
-import random
-from pathlib import Path
-import edge_tts
+import arcade #Libreria para crear videojuegos 2d
+import asyncio #Libreria para eventos(audio)
+import hashlib #Libreria para claves
+import json #Liberia para gurdar
+import os #Libreria para archivos
+import math #Libreria para calculos
+import random #Libreria aleatoria
+from pathlib import Path #Libreria para rutas
+import edge_tts #Libreria para voces
 
 BASE_DIR = Path(__file__).resolve().parent
 
