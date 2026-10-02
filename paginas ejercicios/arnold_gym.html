@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arnold Schwarzenegger Gym - Elite Fitness</title>
+  <link rel="stylesheet" href="styles_arnold.css">
+</head>
+<body>
+
+  <!-- HEADER CON NAV -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">
+        <h1>ARNOLD</h1>
+        <p>SCHWARZENEGGER GYM</p>
+      </div>
+      
+      <nav class="navbar">
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#clases">Clases</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#reservar">Reservar</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION CON IMAGEN -->
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <h2>CONSIGUE EL CUERPO DE UN CAMPEÓN</h2>
+      <p>Entrena como Arnold. Sé una máquina de músculos.</p>
+      <button class="cta-btn">EMPEZAR AHORA</button>
+    </div>
+    <div class="hero-image">
+      <img src="hero-gym.png" alt="Arnold Schwarzenegger">
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- SECTION: CLASES -->
+    <section class="section" id="clases">
+      <h2>NUESTRAS CLASES</h2>
+      <p class="section-intro">Entrenamientos intensos diseñados para resultados máximos</p>
+      
+      <div class="classes-grid">
+        
+        <article class="class-card">
+          <div class="class-image">
+            <img src="class-crossfit.png" alt="Crossfit">
+          </div>
+          <h3>CROSSFIT</h3>
+          <p>Entrenamientos funcionales de máxima intensidad. Fortalecimiento completo del cuerpo.</p>
+        </article>
+
+        <article class="class-card">
+          <div class="class-image">
+            <img src="class-musculacion.png" alt="Strength">
+          </div>
+          <h3>STRENGTH</h3>
+          <p>Levantamiento de pesas y ganancia muscular. Desarrollo de fuerza pura.</p>
+        </article>
+
+        <article class="class-card">
+          <div class="class-image">
+            <img src="class-yoga.png" alt="Cardio">
+          </div>
+          <h3>CARDIO BOXING</h3>
+          <p>Boxeo y cardio intenso. Quema calorías y mejora resistencia.</p>
+        </article>
+
+        <article class="class-card">
+          <div class="class-image">
+            <img src="legend.png" alt="HIIT">
+          </div>
+          <h3>HIIT</h3>
+          <p>Entrenamiento de alta intensidad por intervalos. Máxima eficiencia.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECTION: PLANES DE MEMBRESÍA -->
+    <section class="section" id="planes">
+      <h2>PLANES DE MEMBRESÍA</h2>
+      <p class="section-intro">Elige tu camino hacia el éxito</p>
+      
+      <div class="plans-grid">
+        
+        <article class="plan-card">
+          <h3>CHALLENGER</h3>
+          <p class="plan-price">$199/mes</p>
+          <ul>
+            <li>Acceso a máquinas</li>
+            <li>Pesas libres</li>
+            <li>Vestuarios</li>
+          </ul>
+          <button class="plan-btn">SELECCIONAR</button>
+        </article>
+
+        <article class="plan-card featured">
+          <div class="badge">RECOMENDADO</div>
+          <h3>CHAMPION</h3>
+          <p class="plan-price">$349/mes</p>
+          <ul>
+            <li>Acceso completo</li>
+            <li>Todas las clases</li>
+            <li>Entrenador personal</li>
+            <li>Nutricionista</li>
+          </ul>
+          <button class="plan-btn champion-btn">SELECCIONAR</button>
+        </article>
+
+        <article class="plan-card">
+          <h3>TERMINATOR</h3>
+          <p class="plan-price">$599/mes</p>
+          <ul>
+            <li>Acceso 24/7</li>
+            <li>Todas las clases</li>
+            <li>Entrenador dedicado</li>
+            <li>Plan nutricional</li>
+            <li>Sesiones privadas</li>
+          </ul>
+          <button class="plan-btn">SELECCIONAR</button>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECTION: TABLA Y FORMULARIO DE RESERVA -->
+    <section class="section" id="reservar">
+      <h2>RESERVA TU CLASE</h2>
+      
+      <div class="booking-container">
+        <div class="schedule-wrapper">
+          <h3>Horarios Disponibles</h3>
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th>Clase</th>
+                <th>Lunes</th>
+                <th>Miércoles</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Reservar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Crossfit</td>
+                <td>6:00 - 7:00</td>
+                <td>6:00 - 7:00</td>
+                <td>6:00 - 7:00</td>
+                <td>9:00 - 10:00</td>
+                <td><input type="checkbox" name="clase"></td>
+              </tr>
+              <tr>
+                <td>Strength</td>
+                <td>7:30 - 8:30</td>
+                <td>7:30 - 8:30</td>
+                <td>7:30 - 8:30</td>
+                <td>10:30 - 11:30</td>
+                <td><input type="checkbox" name="clase"></td>
+              </tr>
+              <tr>
+                <td>Cardio Boxing</td>
+                <td>18:00 - 19:00</td>
+                <td>18:00 - 19:00</td>
+                <td>18:00 - 19:00</td>
+                <td>15:00 - 16:00</td>
+                <td><input type="checkbox" name="clase"></td>
+              </tr>
+              <tr>
+                <td>HIIT</td>
+                <td>19:30 - 20:30</td>
+                <td>19:30 - 20:30</td>
+                <td>19:30 - 20:30</td>
+                <td>17:00 - 18:00</td>
+                <td><input type="checkbox" name="clase"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="booking-form-wrapper">
+          <form class="booking-form">
+            <h3>Completa tu Reserva</h3>
+            
+            <div class="form-group">
+              <label for="nombre">Nombre Completo</label>
+              <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" name="telefono" required>
+            </div>
+
+            <div class="form-group">
+              <label for="clase-select">Clase Preferida</label>
+              <select id="clase-select" name="clase-select">
+                <option value="">Selecciona una clase</option>
+                <option value="crossfit">Crossfit</option>
+                <option value="strength">Strength</option>
+                <option value="cardio">Cardio Boxing</option>
+                <option value="hiit">HIIT</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="dia">Día Preferido</label>
+              <select id="dia" name="dia">
+                <option value="">Selecciona un día</option>
+                <option value="lunes">Lunes</option>
+                <option value="miercoles">Miércoles</option>
+                <option value="viernes">Viernes</option>
+                <option value="sabado">Sábado</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="comentarios">Comentarios</label>
+              <textarea id="comentarios" name="comentarios" rows="4"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">RESERVAR AHORA</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="footer-content">
+      <h3>ARNOLD SCHWARZENEGGER GYM</h3>
+      <p>Email: info@arnoldgym.com</p>
+      <p>Teléfono: +54 (351) 555-ARNOLD</p>
+      <p>Ubicación: Av. Musculación 777, Alta Gracia, Córdoba</p>
+      <p>&copy; 2024 Arnold Schwarzenegger Gym. Sé una máquina de músculos.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

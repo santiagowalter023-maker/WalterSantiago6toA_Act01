@@ -1,52 +1,198 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gimnasio PowerFit</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Gimnasio FitZone - Tu mejor opción en fitness</title>
+  <link rel="stylesheet" href="styles_gimnasio.css">
 </head>
 <body>
-    <header>
-        <div class="logo">💪 PowerFit Gym</div>
-    </header>
 
-    <nav>
+  <!-- HEADER CON NAV -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo-section">
+        <h1>FitZone</h1>
+      </div>
+      
+      <nav class="navbar">
         <ul>
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#clases">Clases</a></li>
-            <li><a href="#entrenadores">Entrenadores</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#clases">Clases</a></li>
+          <li><a href="#horarios">Horarios</a></li>
+          <li><a href="#membresias">Membresías</a></li>
+          <li><a href="#contacto">Contacto</a></li>
         </ul>
-    </nav>
+      </nav>
+    </div>
+  </header>
 
-    <main>
-        <section id="clases">
-            <h2>Clases Disponibles</h2>
-            <article>
-                <h3>Musculación</h3>
-                <p>Entrenamiento de fuerza con pesas libres y máquinas de última generación.</p>
-            </article>
-            <article>
-                <h3>Crossfit</h3>
-                <p>Ejercicios funcionales de alta intensidad para mejorar tu resistencia global.</p>
-            </article>
-            <article>
-                <h3>Yoga</h3>
-                <p>Clases enfocadas en la flexibilidad, postura y control mental.</p>
-            </article>
-        </section>
+  <!-- HERO SECTION -->
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <h2>Bienvenido a FitZone</h2>
+      <p>Tu mejor opción en fitness. Alcanza tus metas con nosotros.</p>
+      <button class="cta-btn">Comenzar Ahora</button>
+    </div>
+  </section>
 
-        <section id="horarios">
-            <h2>Horarios</h2>
-            <p>Lunes a Viernes: 06:00 - 22:00 hs</p>
-            <p>Sábados: 08:00 - 14:00 hs</p>
-        </section>
-    </main>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
 
-    <footer>
-        <p>Teléfono: 351-5555555</p>
-        <p>Dirección: Bv. Las Heras 456</p>
-    </footer>
+    <!-- SECTION: CLASES -->
+    <section class="section" id="clases">
+      <h2>Nuestras Clases</h2>
+      
+      <div class="classes-grid">
+        
+        <article class="class-card">
+          <h3>Crossfit</h3>
+          <p>Entrenamiento funcional de alta intensidad. Fortalece tu cuerpo de manera integral.</p>
+        </article>
+
+        <article class="class-card">
+          <h3>Yoga</h3>
+          <p>Flexibilidad y relajación. Conecta cuerpo y mente en armonía.</p>
+        </article>
+
+        <article class="class-card">
+          <h3>Pilates</h3>
+          <p>Fortalecimiento del core. Mejora tu postura y flexibilidad.</p>
+        </article>
+
+        <article class="class-card">
+          <h3>Spinning</h3>
+          <p>Cardio intenso en grupo. Quema calorías y diviértete.</p>
+        </article>
+
+        <article class="class-card">
+          <h3>Zumba</h3>
+          <p>Ritmo y energía. Ejercicio que parece diversión.</p>
+        </article>
+
+        <article class="class-card">
+          <h3>Musculación</h3>
+          <p>Ganancia de masa muscular. Entrenamientos personalizados.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECTION: HORARIOS -->
+    <section class="section" id="horarios">
+      <h2>Horarios de Clases</h2>
+      
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Clase</th>
+            <th>Lunes</th>
+            <th>Miércoles</th>
+            <th>Viernes</th>
+            <th>Sábado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Crossfit</td>
+            <td>6:00 - 7:00</td>
+            <td>6:00 - 7:00</td>
+            <td>6:00 - 7:00</td>
+            <td>9:00 - 10:00</td>
+          </tr>
+          <tr>
+            <td>Yoga</td>
+            <td>7:30 - 8:30</td>
+            <td>7:30 - 8:30</td>
+            <td>7:30 - 8:30</td>
+            <td>10:30 - 11:30</td>
+          </tr>
+          <tr>
+            <td>Pilates</td>
+            <td>9:00 - 10:00</td>
+            <td>9:00 - 10:00</td>
+            <td>9:00 - 10:00</td>
+            <td>12:00 - 13:00</td>
+          </tr>
+          <tr>
+            <td>Spinning</td>
+            <td>18:00 - 19:00</td>
+            <td>18:00 - 19:00</td>
+            <td>18:00 - 19:00</td>
+            <td>15:00 - 16:00</td>
+          </tr>
+          <tr>
+            <td>Zumba</td>
+            <td>19:30 - 20:30</td>
+            <td>19:30 - 20:30</td>
+            <td>19:30 - 20:30</td>
+            <td>17:00 - 18:00</td>
+          </tr>
+          <tr>
+            <td>Musculación</td>
+            <td>6:00 - 22:00</td>
+            <td>6:00 - 22:00</td>
+            <td>6:00 - 22:00</td>
+            <td>8:00 - 16:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION: MEMBRESÍAS -->
+    <section class="section" id="membresias">
+      <h2>Nuestras Membresías</h2>
+      
+      <div class="membership-grid">
+        
+        <article class="membership-card">
+          <h3>Básica</h3>
+          <p>Acceso a equipos</p>
+          <p class="price">$150/mes</p>
+          <ul>
+            <li>Acceso a máquinas</li>
+            <li>Pesas libres</li>
+            <li>Vestuarios</li>
+          </ul>
+        </article>
+
+        <article class="membership-card featured">
+          <h3>Premium</h3>
+          <p>Acceso completo + Clases</p>
+          <p class="price">$250/mes</p>
+          <ul>
+            <li>Acceso a máquinas</li>
+            <li>Todas las clases</li>
+            <li>Entrenador personal</li>
+            <li>Vestuarios y duchas</li>
+          </ul>
+        </article>
+
+        <article class="membership-card">
+          <h3>VIP</h3>
+          <p>Acceso ilimitado</p>
+          <p class="price">$400/mes</p>
+          <ul>
+            <li>Acceso 24/7</li>
+            <li>Todas las clases</li>
+            <li>Entrenador dedicado</li>
+            <li>Nutricionista consultas</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="footer-content">
+      <h3>FitZone Gimnasio</h3>
+      <p>Email: info@fitzone.com</p>
+      <p>Teléfono: +54 (351) 555-0123</p>
+      <p>Ubicación: Calle Fitness 789, Alta Gracia, Córdoba</p>
+      <p>&copy; 2024 FitZone. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
 </body>
 </html>
