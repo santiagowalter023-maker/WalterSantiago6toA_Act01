@@ -1,0 +1,19 @@
+PEDIDO RECIBIDO
+==============================
+Fecha y hora: 15/10/2026 08:52:16
+Pagina de origen: Waltex | Tienda de Tecnología (tegnoligiawaltex.html)
+
+DATOS DEL CLIENTE
+------------------------------
+Nombre y apellido: pepito
+Correo electrónico: pepito@gmail.com
+
+PRODUCTOS PEDIDOS
+------------------------------
+- Notebook Waltex Pro 15 | Precio: $ 1.249.999 | Cantidad: 1 | Subtotal: $ 1.249.999
+- Smartphone Nova X5 | Precio: $ 789.999 | Cantidad: 2 | Subtotal: $ 1.579.998
+- Auriculares Pulse ANC | Precio: $ 189.999 | Cantidad: 1 | Subtotal: $ 189.999
+- Teclado Mecánico Volt RGB | Precio: $ 129.999 | Cantidad: 2 | Subtotal: $ 259.998
+- Placa de Video Waltex Titan RTX 16 GB | Precio: $ 1.599.999 | Cantidad: 1 | Subtotal: $ 1.599.999
+
+TOTAL: $ 4.879.993

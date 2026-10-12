@@ -3,238 +3,339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waltex | Tienda de Tecnología</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Portfolio de Walter, Desarrollador Web y Programador de Software.">
+  <title>Walter | Desarrollador Web</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <header>
-    <div class="barra">
-      <div class="contenedor flex">
-        <p>Envíos a todo el país · Hasta 12 cuotas sin interés</p>
-        <ul class="flex">
-          <li><a href="#">Seguí tu compra</a></li>
-          <li><a href="#">Retirá tu compra</a></li>
-          <li><a href="#contacto">Centro de Ayuda</a></li>
-        </ul>
-      </div>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="container navbar__inner">
+      <a href="#inicio" class="brand">Walter Santiago</a>
+      <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">&#9776;</button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#habilidades">Habilidades</a></li>
+        <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <div class="contenedor flex fila">
-      <a href="index.html" class="logo"><span class="w">W</span> WAL<span class="azul">TEX</span></a>
-      <form action="#">
-        <input type="search" placeholder="¿Qué estás buscando hoy?">
-        <button type="submit">Buscar</button>
-      </form>
-      <p>Mi cuenta &nbsp; Carrito <span class="numero">0</span></p>
-    </div>
+  <!-- HERO -->
+  <header class="hero" id="inicio">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Disponible para proyectos &middot; 6to Año A &middot; Programación III</p>
+        <h1 class="hero__title">Hola, soy <span class="text-gradient">Walter</span></h1>
+        <p class="hero__role">Desarrollador Web &amp; Programador de Software</p>
+        <p class="hero__desc">Diseño y construyo sitios, aplicaciones, videojuegos y sistemas que conectan software con hardware.</p>
 
-    <nav>
-      <div class="contenedor flex">
-        <ul class="flex">
-          <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#productos">Productos</a></li>
-          <li><a href="#ofertas">Ofertas</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+        <ul class="lang-badges" aria-label="Idiomas">
+          <li class="lang-badge"><span class="lang-badge__code">ES</span> Español <small>Nativo</small></li>
+          <li class="lang-badge"><span class="lang-badge__code">EN</span> Inglés <small>B2</small></li>
+          <li class="lang-badge"><span class="lang-badge__code">DE</span> Alemán <small>A2</small></li>
         </ul>
-        <ul class="flex categorias">
-          <li><a href="#productos">Notebooks</a></li>
-          <li><a href="#productos">Celulares</a></li>
-          <li><a href="#productos">Periféricos</a></li>
-          <li><a href="#productos">Componentes</a></li>
-        </ul>
+
+        <div class="hero__actions">
+          <a href="#proyectos" class="btn btn--primary">Ver proyectos</a>
+          <a href="#contacto" class="btn btn--ghost">Contactarme</a>
+        </div>
       </div>
-    </nav>
+
+      <aside class="profile-card" aria-label="Resumen del perfil">
+        <div class="profile-card__avatar" aria-hidden="true">W</div>
+        <h2 class="profile-card__name">Walter</h2>
+        <p class="profile-card__role">Desarrollador Web</p>
+        <dl class="profile-card__stats">
+          <div><dt>Proyectos</dt><dd>5</dd></div>
+          <div><dt>Idiomas</dt><dd>3</dd></div>
+          <div><dt>Competencias</dt><dd>3</dd></div>
+        </dl>
+        <pre class="profile-card__code"><code>const walter = {
+  stack: ['HTML', 'CSS', 'JS', 'Python'],
+  pasión: 'crear'
+};</code></pre>
+      </aside>
+    </div>
   </header>
 
   <main>
-    <section id="inicio" class="contenedor">
-      <div class="hero">
-        <div class="hero-texto">
-          <p class="etiqueta cian">Cyber Semana Waltex</p>
-          <h1>Potenciá tu setup con hasta <span class="azul">40% OFF</span></h1>
-          <p class="gris">Notebooks, celulares, periféricos y componentes de las mejores marcas. Precios exclusivos por tiempo limitado.</p>
-          <a href="#ofertas" class="boton">Ver ofertas</a>
-          <a href="#productos" class="boton borde">Explorar productos</a>
+
+    <!-- SOBRE MÍ -->
+    <section class="section" id="sobre-mi">
+      <div class="container">
+        <div class="section__head">
+          <p class="section__eyebrow">01 &mdash; Perfil</p>
+          <h2 class="section__title">Sobre mí</h2>
+        </div>
+
+        <div class="about">
+          <div class="about__text">
+            <p class="lead">Soy Walter, estudiante de <strong>6to Año A</strong> orientado a la programación y apasionado por el desarrollo web y de software.</p>
+            <p>Me gusta transformar ideas en productos reales: desde páginas web responsivas y aplicaciones interactivas hasta videojuegos y sistemas embebidos. Disfruto trabajar en equipo, investigar nuevas tecnologías y resolver problemas con código limpio y bien pensado.</p>
+
+            <h3 class="sub-title">Trayectoria destacada</h3>
+            <ol class="timeline">
+              <li class="timeline__item">
+                <div>
+                  <h4>Copa Robótica</h4>
+                  <p>Desarrollo de un robot competitivo: diseño, lógica de control e integración de sensores y motores.</p>
+                </div>
+              </li>
+              <li class="timeline__item">
+                <div>
+                  <h4>Olimpiadas ONIET &middot; Universidad Blas Pascal</h4>
+                  <p>Proyecto <strong>UpperDron</strong>: app de control y firmware para un mini dron con transmisión de video vía ESP32-CAM.</p>
+                </div>
+              </li>
+              <li class="timeline__item">
+                <div>
+                  <h4>NASA Space Apps Challenge</h4>
+                  <p>Sistema web de monitoreo de salud de astronautas en tiempo real.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="languages">
+            <h3 class="sub-title">Competencias lingüísticas</h3>
+            <ul class="lang-list">
+              <li><span>Español</span><span class="pill">Nativo</span></li>
+              <li><span>Inglés</span><span class="pill">Intermedio alto</span></li>
+              <li><span>Alemán</span><span class="pill">Básico</span></li>
+            </ul>
+          </div>
         </div>
       </div>
-
-      <ul class="beneficios">
-        <li><strong>Envío gratis</strong><br>En compras desde $150.000</li>
-        <li><strong>12 cuotas</strong><br>Sin interés con todas las tarjetas</li>
-        <li><strong>Garantía oficial</strong><br>12 meses en todos los productos</li>
-        <li><strong>Retiro en el día</strong><br>En nuestra sucursal</li>
-      </ul>
     </section>
 
-    <section id="productos" class="contenedor">
-      <p class="etiqueta azul">Catálogo</p>
-      <h2>Productos destacados</h2>
-      <p class="gris">Lo más elegido de la semana, con stock disponible y envío inmediato.</p>
-
-      <div class="grilla">
-        <article class="producto">
-          <img src="images/notebook.png" alt="Notebook Waltex Pro 15">
-          <div class="info">
-            <p class="etiqueta cian">Notebook</p>
-            <h3>Notebook Waltex Pro 15</h3>
-            <p class="gris">Intel Core i7 13ª Gen · 16 GB RAM · SSD 1 TB · Pantalla 15.6" FHD 144 Hz</p>
-            <p class="tachado">$ 1.499.999 <span class="descuento">-17%</span></p>
-            <p class="precio">$ 1.249.999</p>
-            <p class="gris">12 cuotas de $ 104.167</p>
-            <button type="button">Comprar</button>
-          </div>
-        </article>
-
-        <article class="producto">
-          <img src="images/celular.png" alt="Smartphone Nova X5">
-          <div class="info">
-            <p class="etiqueta cian">Celular</p>
-            <h3>Smartphone Nova X5</h3>
-            <p class="gris">Pantalla AMOLED 6.7" · 256 GB · 8 GB RAM · Cámara triple 108 MP · 5G</p>
-            <p class="tachado">$ 899.999 <span class="descuento">-12%</span></p>
-            <p class="precio">$ 789.999</p>
-            <p class="gris">12 cuotas de $ 65.833</p>
-            <button type="button">Comprar</button>
-          </div>
-        </article>
-
-        <article class="producto">
-          <img src="images/auriculares.png" alt="Auriculares Pulse ANC">
-          <div class="info">
-            <p class="etiqueta cian">Auriculares</p>
-            <h3>Auriculares Pulse ANC</h3>
-            <p class="gris">Bluetooth 5.3 · Cancelación activa de ruido · 40 h de batería · Micrófono dual</p>
-            <p class="precio">$ 189.999</p>
-            <p class="gris">12 cuotas de $ 15.833</p>
-            <button type="button">Comprar</button>
-          </div>
-        </article>
-
-        <article class="producto">
-          <img src="images/teclado.png" alt="Teclado Mecánico Volt RGB">
-          <div class="info">
-            <p class="etiqueta cian">Teclado</p>
-            <h3>Teclado Mecánico Volt RGB</h3>
-            <p class="gris">Switches Red lineales · Iluminación RGB por tecla · Formato TKL · USB-C</p>
-            <p class="tachado">$ 149.999 <span class="descuento">-13%</span></p>
-            <p class="precio">$ 129.999</p>
-            <p class="gris">12 cuotas de $ 10.833</p>
-            <button type="button">Comprar</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="ofertas" class="contenedor">
-      <div class="oferta">
-        <div class="oferta-texto">
-          <p class="etiqueta cian">Oferta por tiempo limitado · Producto estrella</p>
-          <h2>Placa de Video Waltex Titan RTX 16 GB</h2>
-          <ul class="specs">
-            <li>16 GB GDDR6X</li>
-            <li>Ray Tracing + DLSS 3</li>
-            <li>Triple ventilador con RGB</li>
-            <li>Garantía oficial 3 años</li>
-          </ul>
-          <p class="tachado">$ 2.199.999 <span class="descuento">-27%</span></p>
-          <p class="precio grande">$ 1.599.999</p>
-          <p class="gris">La oferta termina en:</p>
-          <ul class="contador">
-            <li><strong>02</strong> Días</li>
-            <li><strong>07</strong> Horas</li>
-            <li><strong>00</strong> Min</li>
-            <li><strong>00</strong> Seg</li>
-          </ul>
-          <button type="button">Comprar ahora</button>
-          <a href="#productos" class="boton borde">Ver más ofertas</a>
+    <!-- PROYECTOS -->
+    <section class="section section--tinted" id="proyectos">
+      <div class="container">
+        <div class="section__head">
+          <p class="section__eyebrow">02 &mdash; Portfolio</p>
+          <h2 class="section__title">Proyectos</h2>
+          <p class="section__subtitle">Una selección de trabajos en web, software, videojuegos y hardware.</p>
         </div>
-        <img src="images/destacado.png" alt="Placa de video Waltex Titan RTX con iluminación RGB azul">
+
+        <div class="filters" role="group" aria-label="Filtrar proyectos">
+          <button class="filter is-active" type="button" data-filter="todos">Todos</button>
+          <button class="filter" type="button" data-filter="web">Web</button>
+          <button class="filter" type="button" data-filter="app">Aplicaciones</button>
+          <button class="filter" type="button" data-filter="juego">Videojuegos</button>
+          <button class="filter" type="button" data-filter="hardware">Hardware</button>
+        </div>
+
+        <div class="projects">
+          <article class="project-card" data-category="web">
+            <div class="project-card__media">
+              <img src="proyecto-web.png" alt="Mockup de sitio web institucional responsivo" width="800" height="500">
+              <span class="project-card__type">Página Web</span>
+            </div>
+            <div class="project-card__body">
+              <h3>Sitio Web Institucional</h3>
+              <p>Página web institucional/comercial responsiva, con navegación clara, secciones de servicios y formulario de contacto.</p>
+              <ul class="tags">
+                <li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Responsive</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="app">
+            <div class="project-card__media">
+              <img src="proyecto-app.png" alt="Interfaz de aplicación de escritorio con tarjetas y gráficos" width="800" height="500">
+              <span class="project-card__type">Aplicación</span>
+            </div>
+            <div class="project-card__body">
+              <h3>Aplicación Interactiva</h3>
+              <p>Software de propósito general con interfaz intuitiva, gestión de datos y componentes interactivos.</p>
+              <ul class="tags">
+                <li>Python</li><li>PyQt</li><li>UI/UX</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="juego">
+            <div class="project-card__media">
+              <img src="proyecto-juego.png" alt="Escena pixel art de un videojuego de aventura histórica" width="800" height="500">
+              <span class="project-card__type">Videojuego</span>
+            </div>
+            <div class="project-card__body">
+              <h3>Aventura Histórica</h3>
+              <p>Videojuego de aventura y simulación histórica: exploración, diálogos, niveles y sistema de puntuación.</p>
+              <ul class="tags">
+                <li>JavaScript</li><li>Canvas</li><li>Game Design</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="hardware">
+            <div class="project-card__media">
+              <img src="proyecto-dron.png" alt="Mini dron UpperDron con módulo ESP32-CAM" width="800" height="500">
+              <span class="project-card__type">App + Hardware</span>
+              <span class="project-card__award">ONIET</span>
+            </div>
+            <div class="project-card__body">
+              <h3>UpperDron</h3>
+              <p>Aplicación de control y firmware para un mini dron con transmisión de video en vivo, integrando ESP32-CAM y motores.</p>
+              <ul class="tags">
+                <li>ESP32-CAM</li><li>C++</li><li>Firmware</li><li>Streaming</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project-card" data-category="web">
+            <div class="project-card__media">
+              <img src="proyecto-nasa.png" alt="Dashboard de monitoreo biométrico de astronautas" width="800" height="500">
+              <span class="project-card__type">Web + Software</span>
+              <span class="project-card__award">NASA Space Apps</span>
+            </div>
+            <div class="project-card__body">
+              <h3>Monitor de Salud para Astronautas</h3>
+              <p>Sistema web en tiempo real con dashboard de parámetros biométricos y arquitectura híbrida Python / PyQt / Web.</p>
+              <ul class="tags">
+                <li>Python</li><li>PyQt</li><li>JavaScript</li><li>Dashboard</li>
+              </ul>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section id="pedido" class="contenedor">
-      <p class="etiqueta azul">Lista de precios</p>
-      <h2>Hacé tu pedido</h2>
+    <!-- HABILIDADES -->
+    <section class="section" id="habilidades">
+      <div class="container">
+        <div class="section__head">
+          <p class="section__eyebrow">03 &mdash; Stack</p>
+          <h2 class="section__title">Habilidades</h2>
+          <p class="section__subtitle">Tecnologías con las que trabajo a diario.</p>
+        </div>
 
-      <form action="#" method="post" class="pedido">
-        <label for="nombre">Nombre y apellido</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <div class="skills">
+          <article class="skill-card">
+            <div class="skill-card__head">
+              <h3>HTML</h3>
+              <span class="skill-card__value">90%</span>
+            </div>
+            <div class="bar"><span class="bar__fill" style="width: 90%"></span></div>
+            <p>Estructura semántica, accesibilidad y SEO.</p>
+          </article>
 
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" required>
+          <article class="skill-card">
+            <div class="skill-card__head">
+              <h3>CSS</h3>
+              <span class="skill-card__value">85%</span>
+            </div>
+            <div class="bar"><span class="bar__fill" style="width: 85%"></span></div>
+            <p>Flexbox, Grid, animaciones y diseño responsivo.</p>
+          </article>
 
-        <table>
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-          </tr>
-          <tr>
-            <td>Notebook Waltex Pro 15</td>
-            <td>$ 1.249.999</td>
-            <td><input type="number" name="notebook" min="0" value="0"></td>
-          </tr>
-          <tr>
-            <td>Smartphone Nova X5</td>
-            <td>$ 789.999</td>
-            <td><input type="number" name="celular" min="0" value="0"></td>
-          </tr>
-          <tr>
-            <td>Auriculares Pulse ANC</td>
-            <td>$ 189.999</td>
-            <td><input type="number" name="auriculares" min="0" value="0"></td>
-          </tr>
-          <tr>
-            <td>Teclado Mecánico Volt RGB</td>
-            <td>$ 129.999</td>
-            <td><input type="number" name="teclado" min="0" value="0"></td>
-          </tr>
-          <tr>
-            <td>Placa de Video Waltex Titan RTX 16 GB</td>
-            <td>$ 1.599.999</td>
-            <td><input type="number" name="placa" min="0" value="0"></td>
-          </tr>
-        </table>
+          <article class="skill-card">
+            <div class="skill-card__head">
+              <h3>JavaScript</h3>
+              <span class="skill-card__value">75%</span>
+            </div>
+            <div class="bar"><span class="bar__fill" style="width: 75%"></span></div>
+            <p>DOM, eventos, lógica interactiva y juegos.</p>
+          </article>
 
-        <button type="submit">Enviar pedido</button>
-      </form>
+          <article class="skill-card">
+            <div class="skill-card__head">
+              <h3>Python</h3>
+              <span class="skill-card__value">80%</span>
+            </div>
+            <div class="bar"><span class="bar__fill" style="width: 80%"></span></div>
+            <p>Aplicaciones de escritorio, PyQt y automatización.</p>
+          </article>
+        </div>
+
+        <div class="extra-skills">
+          <h3 class="sub-title">También trabajo con</h3>
+          <ul class="chips">
+            <li>Git &amp; GitHub</li><li>C++ / Arduino</li><li>ESP32</li><li>PyQt</li>
+            <li>Robótica</li><li>Trabajo en equipo</li><li>Resolución de problemas</li>
+          </ul>
+        </div>
+      </div>
     </section>
+
+    <!-- CONTACTO -->
+    <section class="section section--dark" id="contacto">
+      <div class="container">
+        <div class="section__head section__head--center">
+          <p class="section__eyebrow">04 &mdash; Hablemos</p>
+          <h2 class="section__title">Contacto</h2>
+          <p class="section__subtitle">¿Tenés un proyecto o una propuesta? Escribime y lo charlamos.</p>
+        </div>
+
+        <div class="contact">
+          <div class="contact-info">
+            <div class="contact-card">
+              <h3>Correo electrónico</h3>
+              <a href="mailto:santiagowalter023@gmail.com">santiagowalter023@gmail.com</a>
+            </div>
+            <div class="contact-card">
+              <h3>Teléfono / WhatsApp</h3>
+              <a href="tel:+543517894475">351 789 4475</a>
+            </div>
+            <div class="contact-card">
+              <h3>Perfiles profesionales</h3>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="social">LinkedIn</a>
+              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="social">GitHub</a>
+            </div>
+          </div>
+
+          <form class="contact-form" id="form-contacto">
+            <table class="form-table">
+              <tr>
+                <th><label for="nombre">Nombre</label></th>
+                <td><input type="text" id="nombre" name="nombre" required></td>
+              </tr>
+              <tr>
+                <th><label for="email">Email</label></th>
+                <td><input type="email" id="email" name="email" required></td>
+              </tr>
+              <tr>
+                <th><label for="telefono">Teléfono</label></th>
+                <td><input type="tel" id="telefono" name="telefono"></td>
+              </tr>
+              <tr>
+                <th><label for="motivo">Motivo</label></th>
+                <td>
+                  <select id="motivo" name="motivo" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="web">Página web</option>
+                    <option value="app">Aplicación</option>
+                    <option value="juego">Videojuego</option>
+                    <option value="hardware">Hardware</option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th><label for="mensaje">Mensaje</label></th>
+                <td><textarea id="mensaje" name="mensaje" rows="5" required></textarea></td>
+              </tr>
+            </table>
+            <button type="submit" class="btn btn--primary">Enviar mensaje</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <footer id="contacto">
-    <div class="contenedor columnas">
-      <div>
-        <p class="logo"><span class="w">W</span> WAL<span class="azul">TEX</span></p>
-        <p class="gris">Tu tienda de tecnología de confianza. Equipamos tu casa, tu oficina y tu setup gamer.</p>
-      </div>
-      <div>
-        <h3>Horarios de atención</h3>
-        <p class="gris">Lunes a Sábados de 09:00 a 20:00 hs.</p>
-      </div>
-      <div>
-        <h3>Ubicación</h3>
-        <address class="gris">Av. Tecnológica 1947, Córdoba / Alta Gracia, Argentina.</address>
-      </div>
-      <div>
-        <h3>Métodos de pago</h3>
-        <ul class="pagos">
-          <li>Tarjetas de crédito</li>
-          <li>Débito</li>
-          <li>Transferencia</li>
-          <li>Efectivo</li>
-        </ul>
-        <h3>Seguinos</h3>
-        <ul class="redes">
-          <li><a href="#">IG</a></li>
-          <li><a href="#">FB</a></li>
-          <li><a href="#">X</a></li>
-          <li><a href="#">YT</a></li>
-        </ul>
-      </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <a href="#inicio" class="brand brand--footer">Walter Santiago</a>
+      <p>&copy; 2026 Walter &middot; Todos los derechos reservados.</p>
+      <p class="footer__note">Programación III &middot; 6to Año A</p>
     </div>
-    <p class="copy">© 2026 Waltex Tecnología. Todos los derechos reservados.</p>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
