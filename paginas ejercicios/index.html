@@ -45,7 +45,7 @@
       </div>
 
       <aside class="profile-card" aria-label="Resumen del perfil">
-        <div class="profile-card__avatar" aria-hidden="true">W</div>
+        <img class="profile-card__avatar" src="walterf.jpg" alt="Foto de perfil de Walter">
         <h2 class="profile-card__name">Walter</h2>
         <p class="profile-card__role">Desarrollador Web</p>
         <dl class="profile-card__stats">
@@ -327,7 +327,22 @@
 
   </main>
 
-  <!-- FOOTER -->
+    <section class="datos-section">
+    <h2>Base de datos: Proyectos</h2>
+    <table border="1" id="tabla-datos" data-archivo="datos_index.csv">
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Tipo</th>
+          <th>Tecnologías</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+
+<!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <a href="#inicio" class="brand brand--footer">Walter Santiago</a>
@@ -337,5 +352,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="datos.js"></script>
+
 </body>
 </html>

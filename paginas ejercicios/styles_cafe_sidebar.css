@@ -374,3 +374,10 @@ body::before {
     font-size: 36px;
   }
 }
+
+/* Mini base de datos (CSV) */
+.datos-section { padding: 20px; }
+.datos-section h2 { text-align: center; color: #ff8c00; font-size: 28px; margin: 30px 0 10px; }
+#tabla-datos { width: 100%; max-width: 760px; margin: 0 auto; border-collapse: collapse; background-color: #ffffff; color: #222222; font-family: Arial, sans-serif; }
+#tabla-datos th, #tabla-datos td { border: 1px solid #888888; padding: 10px; text-align: left; }
+#tabla-datos th { background-color: #dddddd; }

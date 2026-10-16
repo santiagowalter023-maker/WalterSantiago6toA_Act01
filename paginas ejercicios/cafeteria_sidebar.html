@@ -73,7 +73,7 @@
         </article>
 
         <article class="menu-card">
-          <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=600&auto=format&fit=crop" alt="Latte">
+          <img src="https://images.unsplash.com/photo-1561882468-9110e5c19e78?q=80&w=600&auto=format&fit=crop" alt="Latte">
           <div class="card-content">
             <h3>Latte</h3>
             <p>Espresso con mucha leche espumada. Cremoso y reconfortante.</p>
@@ -193,7 +193,21 @@
 
   </main>
 
-  <!-- FOOTER -->
+    <section class="datos-section">
+    <h2>Base de datos: Bebidas</h2>
+    <table border="1" id="tabla-datos" data-archivo="datos_cafeteria.csv">
+      <thead>
+        <tr>
+          <th>Bebida</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+
+<!-- FOOTER -->
   <footer class="footer" id="contacto">
     <h3>Contacto</h3>
     <p>Email: info@cafeteria.com</p>
@@ -201,6 +215,9 @@
     <p>Ubicación: Calle Principal 456, Alta Gracia, Córdoba</p>
     <p>&copy; 2026 Cafetería. Todos los derechos reservados.</p>
   </footer>
+
+  <script src="cafeteria_sidebar.js"></script>
+  <script src="datos.js"></script>
 
 </body>
 </html>

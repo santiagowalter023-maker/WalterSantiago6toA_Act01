@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>Mundo Viajes - Agencia de Turismo</title>
     <link rel="stylesheet" href="agenciaviajes.css">
 </head>
@@ -22,6 +23,7 @@
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#destinos">Destinos</a></li>
             <li><a href="#promociones">Promociones</a></li>
+            <li><a href="#reservas">Reservar</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
     </nav>
@@ -67,13 +69,74 @@
 
         <!-- SECTION: PROMOCIÓN DEL MES -->
         <section class="promocion-section" id="promociones">
-            <h2>🎉 Promoción del Mes</h2>
+            <h2>Promoción del Mes</h2>
             <p>¡Descuento del 30% en todos nuestros paquetes de viaje! Viaja ahora y paga después con nuestras cuotas sin interés. ¡No pierdas esta oportunidad!</p>
+        </section>
+
+
+        <!-- SECTION: FORMULARIO DE RESERVA -->
+        <section class="reserva-section" id="reservas">
+            <h2>Reservá tu viaje</h2>
+            <form class="reserva-form" id="form-reserva">
+                <table class="form-table">
+                    <tr>
+                        <th><label for="nombre">Nombre</label></th>
+                        <td><input type="text" id="nombre" name="nombre" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="email">Email</label></th>
+                        <td><input type="email" id="email" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="telefono">Teléfono</label></th>
+                        <td><input type="tel" id="telefono" name="telefono"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="destino">Destino</label></th>
+                        <td>
+                            <select id="destino" name="destino" required>
+                                <option value="">Selecciona un destino</option>
+                                <option value="Playa Paraíso">Playa Paraíso</option>
+                                <option value="Montañas Majestosas">Montañas Majestosas</option>
+                                <option value="Ciudades Vibrantes">Ciudades Vibrantes</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="fecha">Fecha de viaje</label></th>
+                        <td><input type="date" id="fecha" name="fecha" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="personas">Personas</label></th>
+                        <td><input type="number" id="personas" name="personas" min="1" value="1" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="comentarios">Comentarios</label></th>
+                        <td><textarea id="comentarios" name="comentarios" rows="4"></textarea></td>
+                    </tr>
+                </table>
+                <button type="submit" class="btn-reserva">Enviar solicitud</button>
+            </form>
         </section>
 
     </main>
 
-    <!-- FOOTER -->
+      <section class="datos-section">
+    <h2>Base de datos: Destinos</h2>
+    <table border="1" id="tabla-datos" data-archivo="datos_agenciaviajes.csv">
+      <thead>
+        <tr>
+          <th>Destino</th>
+          <th>Tipo</th>
+          <th>Mejor época</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+
+<!-- FOOTER -->
     <footer id="contacto">
         <h3>Mundo Viajes - Contáctanos</h3>
 
@@ -84,6 +147,10 @@
         <p>Email: <a href="mailto:info@mundoviajes.com">info@mundoviajes.com</a></p>
         <p>&copy; 2026 Mundo Viajes. Todos los derechos reservados.</p>
     </footer>
+
+    <script src="agenciaviajes.js"></script>
+
+  <script src="datos.js"></script>
 
 </body>
 

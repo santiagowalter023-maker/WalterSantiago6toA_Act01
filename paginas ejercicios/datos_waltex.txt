@@ -1,0 +1,5 @@
+Producto,Categoría,Disponible
+Notebook Waltex Pro 15,Notebooks,Sí
+Smartphone Nova X5,Celulares,Sí
+Auriculares Pulse ANC,Audio,Sí
+Teclado Mecánico Volt RGB,Periféricos,Sí
