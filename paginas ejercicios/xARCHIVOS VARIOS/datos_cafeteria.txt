@@ -1,0 +1,7 @@
+Bebida,Tipo
+Espresso,Café solo
+Cortado,Café con un toque de leche
+Café con Leche,Café con leche
+Latte,Café con leche vaporizada
+Cappuccino,Café con espuma
+Cold Brew,Café frío

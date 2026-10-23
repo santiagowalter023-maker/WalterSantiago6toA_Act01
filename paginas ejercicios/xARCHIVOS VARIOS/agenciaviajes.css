@@ -1,0 +1,282 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0e8f8;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* HEADER */
+header {
+  position: relative;
+  background-color: #6b2d99;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  border-bottom: 5px solid #4a1a6b;
+}
+
+header h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 16px;
+  color: #e0d5f0;
+  margin-bottom: 15px;
+}
+
+header img {
+  max-width: 100%;
+  height: auto;
+  max-height: 150px;
+  border-radius: 10px;
+}
+
+.logo-esquina {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  height: 65px;
+  width: auto;
+  background-color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* NAV */
+nav {
+  background-color: #8b3fb8;
+  padding: 15px;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+nav li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* MAIN */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* SECTION: DESTINOS POPULARES */
+.destinos-section {
+  margin-bottom: 60px;
+}
+
+.destinos-section h2 {
+  font-size: 32px;
+  color: #6b2d99;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.destinos-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.articulo {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #d4a5e0;
+  padding: 0;
+}
+
+.articulo img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.articulo-contenido {
+  padding: 20px;
+}
+
+.articulo h3 {
+  color: #6b2d99;
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.articulo p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* SECTION: PROMOCIÓN DEL MES */
+.promocion-section {
+  background-color: #8b3fb8;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.promocion-section h2 {
+  font-size: 28px;
+  color: white;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.promocion-section p {
+  font-size: 18px;
+  color: #f0e8f8;
+  font-weight: bold;
+}
+
+/* FOOTER */
+footer {
+  background-color: #6b2d99;
+  color: white;
+  padding: 30px;
+  text-align: center;
+  margin-top: 40px;
+  border-top: 5px solid #4a1a6b;
+}
+
+footer h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+footer p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+footer a {
+  color: #e0d5f0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.redes-sociales {
+  margin-bottom: 20px;
+}
+
+.redes-sociales a {
+  margin: 0 5px;
+}
+
+/* SECTION: FORMULARIO DE RESERVA */
+.reserva-section {
+  background-color: white;
+  border: 2px solid #d4a5e0;
+  border-radius: 10px;
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.reserva-section h2 {
+  font-size: 28px;
+  color: #6b2d99;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.reserva-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-table th {
+  text-align: left;
+  width: 30%;
+  padding: 10px 10px 10px 0;
+  color: #4a1a6b;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.form-table td {
+  padding: 6px 0;
+}
+
+.form-table input,
+.form-table select,
+.form-table textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #8b3fb8;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: #f0e8f8;
+}
+
+.form-table input:focus,
+.form-table select:focus,
+.form-table textarea:focus {
+  outline: none;
+  border-color: #6b2d99;
+  background-color: white;
+}
+
+.btn-reserva {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #6b2d99;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-reserva:hover {
+  background-color: #4a1a6b;
+}
+
+@media (max-width: 640px) {
+  .reserva-section {
+    padding: 20px;
+  }
+
+  .form-table th,
+  .form-table td {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* Mini base de datos (CSV) */
+.datos-section { padding: 20px; }
+.datos-section h2 { text-align: center; color: #6b2d99; font-size: 28px; margin: 30px 0 10px; }
+#tabla-datos { width: 100%; max-width: 760px; margin: 0 auto; border-collapse: collapse; background-color: #ffffff; color: #222222; font-family: Arial, sans-serif; }
+#tabla-datos th, #tabla-datos td { border: 1px solid #888888; padding: 10px; text-align: left; }
+#tabla-datos th { background-color: #dddddd; }

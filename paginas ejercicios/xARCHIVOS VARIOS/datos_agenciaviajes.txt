@@ -1,0 +1,4 @@
+Destino,Tipo,Mejor época
+Playa Paraíso,Playa,Verano
+Montañas Majestosas,Montaña,Invierno
+Ciudades Vibrantes,Ciudad,Primavera
