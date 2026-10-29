@@ -236,3 +236,6 @@ img { display: block; max-width: 100%; }
   .projects__grid { grid-template-columns: 1fr; }
   .stack__grid { grid-template-columns: repeat(3, 120px); }
 }
+
+/* Nota debajo de los enlaces de una tarjeta */
+.card__note { font-family: "Poppins", sans-serif; font-size: 13px; color: #666; margin: 12px 0 0; line-height: 1.4; }

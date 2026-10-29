@@ -3,12 +3,21 @@ import asyncio #Libreria para eventos(audio)
 import hashlib #Libreria para claves
 import json #Liberia para gurdar
 import os #Libreria para archivos
+import shutil #Libreria para copiar carpetas
+import sys #Libreria del sistema (saber si corre como .exe)
 import math #Libreria para calculos
 import random #Libreria aleatoria
 from pathlib import Path #Libreria para rutas
 import edge_tts #Libreria para voces
 
-BASE_DIR = Path(__file__).resolve().parent
+# Rutas: si el juego corre como .exe (PyInstaller), los recursos estan en una carpeta temporal
+# y los datos (partida y voces) se guardan junto al .exe. Desde Python, todo esta en la misma carpeta.
+if getattr(sys, "frozen", False):
+    BASE_DIR = Path(sys._MEIPASS)
+    DATOS_DIR = Path(sys.executable).resolve().parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+    DATOS_DIR = BASE_DIR
 
 # Tamaño de la ventana y velocidades del personaje
 ANCHO = 800
@@ -80,7 +89,7 @@ LIBRO_ROJO_IMG = str(BASE_DIR / "assets_falla" / "libro_rojo.png")
 LIBRO_AZUL_IMG = str(BASE_DIR / "assets_falla" / "libro_azul.png")
 LIBRO_VERDE_IMG = str(BASE_DIR / "assets_falla" / "libro_verde.png")
 
-SAVE_FILE = str(BASE_DIR / "partida_guardada.json")
+SAVE_FILE = str(DATOS_DIR / "partida_guardada.json")
 
 FRENTE = 0
 ESPALDA = 1
@@ -549,7 +558,9 @@ class Lediago(arcade.Sprite):
 
 
 # Distancia entre dos puntos y movimiento del personaje con W/A/S/D
-CARPETA_VOCES = BASE_DIR / "voces"
+CARPETA_VOCES = DATOS_DIR / "voces"
+if getattr(sys, "frozen", False) and not CARPETA_VOCES.exists() and (BASE_DIR / "voces").exists():
+    shutil.copytree(BASE_DIR / "voces", CARPETA_VOCES)
 VOLUMEN_VOCES = 1.0
 _cache_sonidos_voz = {}
 _reproductor_voz_actual = None
